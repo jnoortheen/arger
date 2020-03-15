@@ -1,5 +1,5 @@
 site_name: arger
-site_description: Create argparser automatically from fun
+site_description: Create argparser automatically from functions
 site_author: Noortheen Raja
 
 repo_url: https://github.com/jnoortheen/arger

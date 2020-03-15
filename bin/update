@@ -18,7 +18,7 @@ CONFIG = {
     "default_branch": "master",
     "project_name": "arger",
     "package_name": "arger",
-    "project_short_description": "Create argparser automatically from fun",
+    "project_short_description": "Create argparser automatically from functions",
     "python_major_version": 3,
     "python_minor_version": 6,
 }

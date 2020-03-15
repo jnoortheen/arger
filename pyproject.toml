@@ -2,7 +2,7 @@
 
 name = "arger"
 version = "0.0"
-description = "Create argparser automatically from fun"
+description = "Create argparser automatically from functions"
 
 license = "MIT"
 
