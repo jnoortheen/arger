@@ -18,11 +18,9 @@ jobs:
         python-version: ${{ matrix.python-version }}
         poetry_version: 1.0.5
         args: install
-      run:
-        - pip install tox-gh-actions
+      run: pip install tox-gh-actions
     - name: Test with tox
-      run:
-        - tox
+      run: tox
 
   lint:
     runs-on: ubuntu-latest
