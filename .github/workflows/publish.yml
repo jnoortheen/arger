@@ -37,8 +37,8 @@ jobs:
         with:
           python-version: 3.8
           poetry_version: 1.0.5
+          args: poetry config pypi-token.pypi $PYPI_TOKEN
         env:
            PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
-        run: |
-          poetry config pypi-token.pypi $PYPI_TOKEN
-          poetry publish
+      - name: Publish 
+        run: poetry publish
