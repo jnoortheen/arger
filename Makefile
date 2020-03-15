@@ -108,7 +108,6 @@ test-all: install
 	@ if test -e $(FAILURES); then poetry run pytest $(PACKAGES) $(PYTEST_RERUN_OPTIONS); fi
 	@ rm -rf $(FAILURES)
 	poetry run pytest $(PACKAGES) $(PYTEST_OPTIONS)
-	poetry run coveragespace $(REPOSITORY) overall
 
 .PHONY: read-coverage
 read-coverage:
