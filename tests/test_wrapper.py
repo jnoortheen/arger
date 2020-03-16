@@ -3,7 +3,7 @@ from typing import Any, Callable
 import pytest
 from arger import Arger
 
-from .examples.doc_types import GDOC_CASES, google_doc
+from .examples.single_funcs import GDOC_CASES, google_doc
 from .utils import Case
 
 
@@ -22,7 +22,7 @@ def dispatch_gdoc(arg):
 @pytest.mark.parametrize("case", GDOC_CASES)
 def test_single_function(case, capsys, dispatch_gdoc):
     # type: (Case, Any, Callable) -> None
-    if case.err:
+    if case.err or case.haserr:
         with pytest.raises(SystemExit):
             dispatch_gdoc(*case.cmd)  # start function
     else:
