@@ -1,7 +1,8 @@
 from argparse import ArgumentParser
-from typing import Any, Callable, Dict, TypeVar, Optional
+from typing import Any, Callable, Dict, Optional, TypeVar
 
 from .parser import opterate
+
 
 CMD = "commands"
 F = TypeVar('F', bound=Callable[..., Any])
@@ -42,7 +43,7 @@ class Arger:
     def __init__(self, desc: Optional[str] = None, add_help=True):
         self.desc = desc
         self.add_help = add_help
-        self.funcs = {} # type: Dict[str, Any]
+        self.funcs = {}  # type: Dict[str, Any]
 
     @property
     def first_func(self):
@@ -64,12 +65,12 @@ class Arger:
             raise NotImplementedError("No function added.")
 
         parser = self.get_parser()
-        args = vars(parser.parse_args(args))
+        kwargs = vars(parser.parse_args(args))  # type: Dict[str, Any]
         if len(self.funcs) == 1:
-            return self.first_func(**args)
+            return self.first_func(**kwargs)
 
-        func = self.funcs[args[CMD]]
-        return func(**args)
+        func = self.funcs[kwargs[CMD]]
+        return func(**kwargs)
 
     def __call__(self, func: F) -> F:
         """Decorator.

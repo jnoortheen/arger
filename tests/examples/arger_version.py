@@ -10,6 +10,8 @@ from arger import Arger
 arg = Arger("Test Commands")
 
 
+# pylint: disable=redefined-builtin
+# noinspection PyShadowingBuiltins
 @arg
 def list(dirname):
     """List contents
