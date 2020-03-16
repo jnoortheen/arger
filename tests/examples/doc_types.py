@@ -1,3 +1,6 @@
+"""to show the docstring support"""
+
+
 def google_doc(param1: int, param2: str, kw1=None, kw2=False):
     """Example function with types documented in the docstring.
 

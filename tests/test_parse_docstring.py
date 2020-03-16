@@ -1,12 +1,11 @@
 # pylint: disable=unused-variable
 from arger.parser import parse_docstring
+from tests.examples.doc_types import google_doc, rest_doc
 
-from . import samples
 
-
-class describe_parse_docstring:
+class Test_describe_parse_docstring:
     def test_it_parses_google_doc(self):
-        doc, params = parse_docstring(samples.google_doc.__doc__)
+        doc, params = parse_docstring(google_doc.__doc__)
         assert doc == "Example function with types documented in the docstring."
         assert params == {
             "param1": "The first parameter.",
@@ -14,7 +13,7 @@ class describe_parse_docstring:
         }
 
     def test_it_parses_rest_doc(self):
-        doc, params = parse_docstring(samples.rest_doc.__doc__)
+        doc, params = parse_docstring(rest_doc.__doc__)
         assert (
             doc
             == """Set the temperature value.
