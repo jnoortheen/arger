@@ -1,4 +1,4 @@
-# most of it taken from https://github.com/dusty-phillips/opterator
+# most of this module is taken from https://github.com/dusty-phillips/opterator
 import inspect
 from argparse import ArgumentParser
 from enum import Enum
@@ -115,6 +115,28 @@ def add_param(
     default: Any = UNDEFINED,
     option_generator=None,
 ):
+    """Add each function's parameter to parser
+
+    Args:
+        parser:
+        param:
+        param_docs:
+        _type:
+        default:
+            The default value assigned to a keyword argument helps determine
+                the type of option and action.
+            The default value is assigned directly to the parser's default for that option.
+
+            In addition, it determines the ArgumentParser action
+            a default value of False implies store_true, while True implies store_false.
+            If the default value is a list, the action is append
+                (multiple instances of that option are permitted).
+            Strings or None imply a store action.
+        option_generator: create shorthand options from the function names
+    Returns:
+
+    """
+
     param_doc = (param_docs.get(param) or "").split()
     option_kwargs = {}
 
@@ -138,8 +160,40 @@ def add_param(
 
 
 def prepare_arguments(
-    parser: ArgumentParser, positional_params, kw_params, annotations: dict, param_docs,
+    parser: ArgumentParser, func, param_docs,
 ):
+    """
+
+    Args:
+        parser:
+        func: Function's signature is used to create parser
+            positional_params:
+                Positional arguments become mandatory.
+            kw_params:
+                All keyword arguments in the function definition are options.
+                Arbitrary args and values can be captured with **kwargs
+            annotations:
+                used to determine the type and action of the arguments
+                list, tuple, Enum are supported, List[Enum] are supported
+        param_docs:
+            The top part of the docstring becomes the usage message for the app.
+
+            Below that, ReST-style :param: lines in the following format describe the option
+
+            Options are further defined in the docstring.
+                the format is:
+                :param name: [short option and/or long option] help text
+                :param variable_name: -v --verbose the help_text for the variable
+                :param variable_name: -v the help_text no long option
+                :param variable_name: --verbose the help_text no short option
+
+                Variable_name is the name of the variable in the function specification and
+            must refer to a keyword argument. All options must have a :param: line like
+            this.
+    Returns:
+
+    """
+    (positional_params, kw_params, annotations) = portable_argspec(func)
     option_generator = generate_options()
     next(option_generator)
 
@@ -158,60 +212,20 @@ def prepare_arguments(
     return parser
 
 
-def opterate(subparser, func):
+def opterate(func, subparser=None, add_help=True):
     """A decorator for a main function entry point to a script.
 
     It automatically generates the options for the main entry point based on the
     arguments, keyword arguments, and docstring.
 
-    Positional arguments are mandatory arguments that store a string value.
-    All keyword arguments in the function definition are options.
-
-    arbitrary args and values can be captured with **kwargs
-
-    Annotations:
-        - used to determine the type and action of the arguments
-        - list, tuple, Enum are supported, List[Enum] are supported
-
-    The default value assigned to a keyword argument helps determine
-        the type of option and action.
-    The default value is assigned directly to the parser's default for that option.
-    In addition, it determines the ArgumentParser action
-        --
-        a default value of False implies store_true, while True implies store_false.
-        If the default value is a list, the action is append
-            (multiple instances of that option are permitted).
-        Strings or None imply a store action.
-
-
-        the format is:
-        :param name: [short option and/or long option] help text
-
-        The top part of the docstring becomes the usage message for the app.
-
-        Below that, ReST-style :param: lines in the following format describe the option
-
-    Options are further defined in the docstring.
-        :param variable_name: -v --verbose the help_text for the variable
-        :param variable_name: -v the help_text no long option
-        :param variable_name: --verbose the help_text no short option
-
-
-        Variable_name is the name of the variable in the function specification and
-    must refer to a keyword argument. All options must have a :param: line like
-    this.
-
-    If you can have an arbitrary length of positional arguments, add a
-    *arglist variable; It can be named with any valid python identifier.
     See tests/* for some examples.
-
     """
 
-    (positional_params, kw_params, annotations) = portable_argspec(func)
     description, param_docs = parse_docstring(func.__doc__)
 
-    parser = subparser.add_parser(func.__name__, help=description)
+    if subparser is None:
+        parser = ArgumentParser(description=description, add_help=add_help)
+    else:
+        parser = subparser.add_parser(func.__name__, help=description)
 
-    return prepare_arguments(
-        parser, positional_params, kw_params, annotations, param_docs
-    )
+    return prepare_arguments(parser, func, param_docs)
