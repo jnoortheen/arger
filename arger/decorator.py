@@ -1,11 +1,10 @@
 from argparse import ArgumentParser
-from types import FunctionType
-from typing import Dict
+from typing import Any, Callable, Dict, TypeVar, Optional
 
 from .parser import opterate
 
-
 CMD = "commands"
+F = TypeVar('F', bound=Callable[..., Any])
 
 
 class Arger:
@@ -40,10 +39,10 @@ class Arger:
         python main.py install 10
     """
 
-    def __init__(self, desc: str = None, add_help=True):
+    def __init__(self, desc: Optional[str] = None, add_help=True):
         self.desc = desc
         self.add_help = add_help
-        self.funcs = {}  # type: Dict[str, callable]
+        self.funcs = {} # type: Dict[str, Any]
 
     @property
     def first_func(self):
@@ -72,9 +71,10 @@ class Arger:
         func = self.funcs[args[CMD]]
         return func(**args)
 
-    def __call__(self, func: FunctionType):
+    def __call__(self, func: F) -> F:
         """Decorator.
 
         called as a decorator to add any function as a command to the parser
         """
         self.funcs[func.__name__] = func
+        return func

@@ -117,24 +117,23 @@ def add_param(
 ):
     """Add each function's parameter to parser
 
-    Args:
-        parser:
-        param:
-        param_docs:
-        _type:
-        default:
-            The default value assigned to a keyword argument helps determine
+    :param parser:
+    :param param:
+    :param param_docs:
+    :param _type:
+    :param default:
+            * The default value assigned to a keyword argument helps determine
                 the type of option and action.
-            The default value is assigned directly to the parser's default for that option.
+            * The default value is assigned directly to the parser's default for that option.
 
-            In addition, it determines the ArgumentParser action
-            a default value of False implies store_true, while True implies store_false.
-            If the default value is a list, the action is append
+            * In addition, it determines the ArgumentParser action
+                * a default value of False implies store_true, while True implies store_false.
+                * If the default value is a list, the action is append
                 (multiple instances of that option are permitted).
-            Strings or None imply a store action.
-        option_generator: create shorthand options from the function names
-    Returns:
+                * Strings or None imply a store action.
+    :param option_generator: create shorthand options from the function names
 
+    :returns parser
     """
 
     param_doc = (param_docs.get(param) or "").split()
@@ -162,36 +161,34 @@ def add_param(
 def prepare_arguments(
     parser: ArgumentParser, func, param_docs,
 ):
-    """
+    """Parses 'func' and adds parser arguments from function signature
 
-    Args:
-        parser:
-        func: Function's signature is used to create parser
-            positional_params:
-                Positional arguments become mandatory.
-            kw_params:
-                All keyword arguments in the function definition are options.
-                Arbitrary args and values can be captured with **kwargs
-            annotations:
-                used to determine the type and action of the arguments
-                list, tuple, Enum are supported, List[Enum] are supported
-        param_docs:
-            The top part of the docstring becomes the usage message for the app.
+    :param parser:
+    :param func: Function's signature is used to create parser
+        * positional_params:
+            Positional arguments become mandatory.
+        * kw_params:
+            All keyword arguments in the function definition are options.
+            Arbitrary args and values can be captured with **kwargs
+        * annotations:
+            used to determine the type and action of the arguments
+            list, tuple, Enum are supported, List[Enum] are supported
+    :param param_docs:
+        * The top part of the docstring becomes the usage message for the app.
 
-            Below that, ReST-style :param: lines in the following format describe the option
+        * Below that, ReST-style :param: lines in the following format describe the option
 
-            Options are further defined in the docstring.
-                the format is:
+        * Options are further defined in the docstring.
+            * the format is
+            .. highlight::
                 :param name: [short option and/or long option] help text
                 :param variable_name: -v --verbose the help_text for the variable
                 :param variable_name: -v the help_text no long option
                 :param variable_name: --verbose the help_text no short option
 
-                Variable_name is the name of the variable in the function specification and
-            must refer to a keyword argument. All options must have a :param: line like
-            this.
-    Returns:
-
+            * Variable_name is the name of the variable in the function specification and
+        must refer to a keyword argument. All options must have a :param: line like
+        this.
     """
     (positional_params, kw_params, annotations) = portable_argspec(func)
     option_generator = generate_options()
