@@ -1,5 +1,20 @@
 """to show the docstring support"""
 
+from tests.utils import Case
+
+
+def _reprint(*args):
+    print(*[repr(a) for a in args])
+
+
+def rest_doc(param1: int, param2: str, kw1=None, kw2=False):
+    """Example function with types documented in the docstring.
+
+    :param param1: The first parameter.
+    :param param2: The second parameter.
+    """
+    _reprint(param1, param2, kw1, kw2)
+
 
 def google_doc(param1: int, param2: str, kw1=None, kw2=False):
     """Example function with types documented in the docstring.
@@ -8,31 +23,48 @@ def google_doc(param1: int, param2: str, kw1=None, kw2=False):
         param1 (int): The first parameter.
         param2: The second parameter.
 
-    Returns:
-        bool: The return value. True for success, False otherwise.
-
-    .. _PEP 484:
-        https://www.python.org/dev/peps/pep-0484/
-
     """
-    return param1, param2, kw1, kw2
+    _reprint(param1, param2, kw1, kw2)
 
 
-def rest_doc(temp, empty, arg2, arg3):
-    """Set the temperature value.
+GDOC_CASES = [
+    Case(  # Ensure a method that expects no arguments runs properly when it receives none.
+        [],
+        out="",
+        err="""\
+usage: pytest [-h] [-k KW1] [-w] param1 param2
+pytest: error: the following arguments are required: param1, param2""",
+    ),
+    Case(  # assert that a help message is shown when -h is passed
+        ["-h"],
+        out='''\
+usage: pytest [-h] [-k KW1] [-w] param1 param2
 
-    The value of the temp parameter is stored as a value in
-    the class variable temperature. The given value is converted
-    into a float value if not yet done.
+Example function with types documented in the docstring.
 
-    :param temp: the temperature value
-    :param empty:
-    :param arg2: the temperature value multi line string
-    to the third line
-    :param arg3: just one line
-    :type temp: float
-    :return: no value
-    :rtype: none
-    """
+positional arguments:
+  param1             The first parameter.
+  param2             The second parameter.
 
-    return temp, empty, arg2, arg3
+optional arguments:
+  -h, --help         show this help message and exit
+  -k KW1, --kw1 KW1
+  -w, --kw2''',
+        err="",
+    ),
+    Case(
+        ["--invalid"],
+        out="",
+        err="""\
+usage: pytest [-h] [-k KW1] [-w] param1 param2
+pytest: error: the following arguments are required: param1, param2""",
+    ),
+    Case(  # pass only one positional arg
+        ["p1"],
+        out="",
+        err="""\
+usage: pytest [-h] [-k KW1] [-w] param1 param2
+pytest: error: the following arguments are required: param2""",
+    ),
+    Case(["p1", "p2"], out="p1 p2", err='',),  # pass both required
+]

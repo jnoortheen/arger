@@ -145,8 +145,8 @@ def add_param(
         option_kwargs["dest"] = param
         names = get_arg_names(param, param_doc, option_generator)
 
-    if _type is UNDEFINED:
-        _type = type(default)
+        if _type is UNDEFINED:
+            _type = type(default)
 
     option_kwargs.update(
         {"action": get_action(_type, default), "help": " ".join(param_doc),}
