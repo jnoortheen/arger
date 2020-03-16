@@ -1,6 +1,3 @@
-import log
-
-
 def google_doc(param1: int, param2: str, kw1=None, kw2=False):
     """Example function with types documented in the docstring.
 
@@ -15,10 +12,10 @@ def google_doc(param1: int, param2: str, kw1=None, kw2=False):
         https://www.python.org/dev/peps/pep-0484/
 
     """
-    log.info(f"Got params: {param1}, {param2}, {kw1}, {kw2}")
+    return param1, param2, kw1, kw2
 
 
-def rest_doc():
+def rest_doc(temp, empty, arg2, arg3):
     """Set the temperature value.
 
     The value of the temp parameter is stored as a value in
@@ -34,3 +31,5 @@ def rest_doc():
     :return: no value
     :rtype: none
     """
+
+    return temp, empty, arg2, arg3

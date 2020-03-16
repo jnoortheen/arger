@@ -4,8 +4,8 @@ from arger.parser import parse_docstring
 from . import samples
 
 
-def describe_parse_docstring():
-    def it_parses_google_doc():
+class describe_parse_docstring:
+    def test_it_parses_google_doc(self):
         doc, params = parse_docstring(samples.google_doc.__doc__)
         assert doc == "Example function with types documented in the docstring."
         assert params == {
@@ -13,7 +13,7 @@ def describe_parse_docstring():
             "param2": "The second parameter.",
         }
 
-    def it_parses_rest_doc():
+    def test_it_parses_rest_doc(self):
         doc, params = parse_docstring(samples.rest_doc.__doc__)
         assert (
             doc
