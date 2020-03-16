@@ -22,8 +22,7 @@ class Options:
 
     targets = [
         (('make', 'test-all'), "Integration Tests", False),
-        (('make', 'check'), "Static Analysis", True),
-        (('make', 'docs'), None, True),
+        (('make', 'lint'), "Static Analysis", True),
     ]
 
 

@@ -66,13 +66,16 @@ format: install
 	poetry run black $(PACKAGES) notebooks
 	@ echo
 
+.PHONY: lint
+lint:
+	poetry run mypy $(PACKAGES) --config-file=.mypy.ini
+	poetry run pylint $(PACKAGES) --rcfile=.pylint.ini
+
 .PHONY: check
-check: install format  ## Run formaters, linters, and static analysis
+check: install format lint  ## Run formaters, linters, and static analysis
 ifdef CI
 	git diff --exit-code
 endif
-	poetry run mypy $(PACKAGES) --config-file=.mypy.ini
-	poetry run pylint $(PACKAGES) --rcfile=.pylint.ini
 	poetry run pydocstyle $(PACKAGES) $(CONFIG)
 
 # TESTS #######################################################################
