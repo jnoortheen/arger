@@ -1,4 +1,13 @@
 # Usages
+1. ran with both options
+```shell script
+$ python 1_single_function.py 10 p2
+param1 (<class 'str'>): 10
+param2 (<class 'str'>): p2
+kw1 (<class 'NoneType'>): None
+kw2 (<class 'bool'>): False
+```
+
 1. ran empty
 ```shell script
 $ python 1_single_function.py
@@ -8,7 +17,7 @@ pytest: error: the following arguments are required: param1, param2
 
 2. ran help
 ```shell script
-$ python 1_single_function.py
+$ python 1_single_function.py --help
 usage: pytest [-h] [-k KW1] [-w] param1 param2
 
 Example function with types documented in the docstring.
@@ -30,14 +39,16 @@ usage: pytest [-h] [-k KW1] [-w] param1 param2
 pytest: error: the following arguments are required: param1, param2
 ```
 
-4. ran with one argument missing
+4. ran with invalid type
+```shell script
+$ python 1_single_function.py p1 p2
+usage: pytest [-h] [-k KW1] [-w]  param1 param2
+pytest: error: unrecognized arguments: p1
+```
+
+5. ran with one argument missing
 ```shell script
 $ python 1_single_function.py p1
 usage: pytest [-h] [-k KW1] [-w] param1 param2
 pytest: error: the following arguments are required: param2
-```
-
-5. ran with both options
-```shell script
-$ python 1_single_function.py 10 p2
 ```

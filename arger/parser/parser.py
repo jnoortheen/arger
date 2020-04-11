@@ -1,10 +1,9 @@
 # most of this module is taken from https://github.com/dusty-phillips/opterator
-import inspect
-from argparse import ArgumentParser
 from enum import Enum
 from typing import Any, List, Set, Tuple
 
-from arger.docstring import parse_docstring
+from arger.parser.docstring import parse_docstring
+from arger.utils import portable_argspec
 
 
 def generate_options():
@@ -28,38 +27,6 @@ def generate_options():
                 names.insert(0, "-" + letter)
                 break
         param_name = yield names
-
-
-def portable_argspec(func):
-    """Return function signature.
-
-    given a function, return a tuple of
-    (positional_params, keyword_params, varargs, defaults, annotations)
-    where
-    * positional_params is a list of parameters that don't have default values
-    * keyword_params is a list of parameters that have default values
-    * varargs is the string name for variable arguments
-    * defaults is a dict of default values for the keyword parameters
-    * annotations is a dictionary of param_name: annotation pairs
-        it may be empty, and on python 2 will always be empty.
-    This function is portable between Python 2 and Python 3, and does some
-    extra processing of the output from inspect.
-    """
-    (argnames, _, _, defaults, _, _, annotations,) = inspect.getfullargspec(func)
-
-    kw_params = {}
-    if defaults:
-        kw_boundary = len(argnames) - len(defaults)
-        kw_params = {
-            argnames[kw_boundary + idx]: val for idx, val in enumerate(defaults)
-        }
-        argnames = argnames[:kw_boundary]
-
-    return (
-        argnames,
-        kw_params,
-        annotations,
-    )
 
 
 def get_action(
@@ -90,7 +57,6 @@ def get_arg_names(
 
 
 def add_param(
-    parser,
     param: str,
     param_docs: dict,
     _type: Any = UNDEFINED,
@@ -99,7 +65,6 @@ def add_param(
 ):
     """Add each function's parameter to parser
 
-    :param parser:
     :param param:
     :param param_docs:
     :param _type:
@@ -137,15 +102,14 @@ def add_param(
     if issubclass(_type, Enum):
         option_kwargs["choices"] = [e.value for e in _type]
 
-    return parser.add_argument(*names, **option_kwargs)
+    return (names, option_kwargs)
 
 
 def prepare_arguments(
-    parser: ArgumentParser, func, param_docs,
+    func, param_docs,
 ):
     """Parses 'func' and adds parser arguments from function signature
 
-    :param parser:
     :param func: Function's signature is used to create parser
         * positional_params:
             Positional arguments become mandatory.
@@ -176,35 +140,25 @@ def prepare_arguments(
     option_generator = generate_options()
     next(option_generator)
 
+    arguments = []
     for param in positional_params:
-        add_param(parser, param, param_docs, _type=annotations.get(param, UNDEFINED))
+        arguments.append(
+            add_param(param, param_docs, _type=annotations.get(param, UNDEFINED))
+        )
 
     for param, default in kw_params.items():
-        add_param(
-            parser,
-            param,
-            param_docs,
-            _type=annotations.get(param, UNDEFINED),
-            default=default,
-            option_generator=option_generator,
+        arguments.append(
+            add_param(
+                param,
+                param_docs,
+                _type=annotations.get(param, UNDEFINED),
+                default=default,
+                option_generator=option_generator,
+            )
         )
-    return parser
+    return arguments
 
 
-def opterate(func, subparser=None, add_help=True):
-    """A decorator for a main function entry point to a script.
-
-    It automatically generates the options for the main entry point based on the
-    arguments, keyword arguments, and docstring.
-
-    See tests/* for some examples.
-    """
-
+def opterate(func):
     description, param_docs = parse_docstring(func.__doc__)
-
-    if subparser is None:
-        parser = ArgumentParser(description=description, add_help=add_help)
-    else:
-        parser = subparser.add_parser(func.__name__, help=description)
-
-    return prepare_arguments(parser, func, param_docs)
+    return description, prepare_arguments(func, param_docs)

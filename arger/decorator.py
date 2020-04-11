@@ -2,10 +2,7 @@ from argparse import ArgumentParser
 from typing import Any, Callable, Dict, Optional, TypeVar
 
 from .parser import opterate
-
-
-CMD = "commands"
-F = TypeVar('F', bound=Callable[..., Any])
+from .types import F
 
 
 class Arger(ArgumentParser):
@@ -15,20 +12,44 @@ class Arger(ArgumentParser):
     Usage: see `tests/examples`_.
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, fn: F = None, **kwargs):
+        self._fn = fn
+
+        desc, add_args = self._add_fn(fn)
+        if desc:
+            kwargs.setdefault("description", desc)
+
         super().__init__(**kwargs)
+
+        if add_args:
+            add_args()
+
         self._funcs: Dict[str, Any] = {}  # registry
 
-    def dispatch(self, *args):
-        if not self._funcs:
-            raise NotImplementedError("No function added.")
+    def _add_fn(self, fn) -> (str, Optional[Callable]):
+        if fn is not None:
+            desc, args = opterate(fn)
+
+            def add_args():  # lazy adding of arguments
+                for arg, kw in args:
+                    self.add_argument(*arg, **kw)
+
+            return desc, add_args
+        return "", None
+
+    def run(self, *args):
+        """The arguments will be passed onto self.parse_args and
+        then the respective function will get called with parsed arguments."""
+        if not self._funcs and not self._fn:
+            raise NotImplementedError("No function to dispatch.")
 
         kwargs = vars(self.parse_args(args))  # type: Dict[str, Any]
-        if len(self._funcs) == 1:
-            return self.first_func(**kwargs)
+        if self._fn is not None:
+            return self._fn(**kwargs)
 
-        func = self._funcs[kwargs[CMD]]
-        return func(**kwargs)
+        # todo: implement
+        # func = self._funcs[kwargs[CMD]]
+        # return func(**kwargs)
 
     def __call__(self, func: F) -> F:
         """Decorator.
