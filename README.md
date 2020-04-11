@@ -4,8 +4,7 @@ A wrapper around argparser to help build CLIs from functions. Uses typehints ext
 
 [![PyPi Version](https://img.shields.io/pypi/v/arger.svg?style=flat)](https://pypi.python.org/pypi/arger)
 [![Python Version](https://img.shields.io/pypi/pyversions/returns.svg)](https://pypi.org/project/arger/)
-![](https://github.com/jnoortheen/arger/workflows/tests/badge.svg)
-![](https://github.com/jnoortheen/arger/workflows/release/badge.svg)
+![](https://github.com/jnoortheen/arger/workflows/test-and-publish/badge.svg)
 [![PyPI License](https://img.shields.io/pypi/l/arger.svg)](https://pypi.org/project/arger)
 
 # Setup
