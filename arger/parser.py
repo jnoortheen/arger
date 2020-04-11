@@ -2,27 +2,9 @@
 import inspect
 from argparse import ArgumentParser
 from enum import Enum
-from typing import Any, Iterable, Optional, Set
+from typing import Any, List, Set, Tuple
 
-from docstring_parser import parse
-
-
-def parse_docstring(doc: Optional[str]):
-    if doc:
-        parsed = parse(doc)
-        params = {arg.arg_name: arg.description for arg in parsed.params}
-        params = {k: val.replace("\n", " ") for k, val in params.items()}
-        return (
-            "\n".join(
-                (
-                    desc
-                    for desc in (parsed.short_description, parsed.long_description)
-                    if desc
-                )
-            ),
-            params,
-        )
-    return "", {}
+from arger.docstring import parse_docstring
 
 
 def generate_options():
@@ -87,7 +69,7 @@ def get_action(
         return "store_true"
     if default is True:
         return "store_false"
-    if issubclass(_type, Iterable):
+    if (_type is not UNDEFINED) and issubclass(_type, (List, Tuple)):
         return "append"
     return "store"
 
