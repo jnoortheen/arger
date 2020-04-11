@@ -13,7 +13,8 @@ class Option:
         metavar: Optional[str] = None,
         required=False,
     ):
-        """represents optional arguments to the command.
+        """Represent optional arguments to the command.
+
         Tries to be compatible to `ArgumentParser.add_argument
         https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_argument`_.
 
@@ -51,7 +52,7 @@ class Option:
 
 
 class Argument(Option):
-    """represents positional argument and are required."""
+    """Represent positional argument that are required."""
 
     def __init__(
         self, type: Callable, help: Optional[str] = None, metavar: Optional[str] = None

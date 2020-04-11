@@ -8,7 +8,7 @@ from arger.utils import portable_argspec
 
 
 def generate_options():
-    """Helper coroutine to identify short options that haven't been used yet.
+    """Coroutine to identify short options that haven't been used yet.
 
     Yields lists of short option (if available) and long option for
     the given name, keeping track of which short options have been previously
@@ -64,7 +64,7 @@ def add_param(
     default: Any = UNDEFINED,
     option_generator=None,
 ):
-    """Add each function's parameter to parser
+    """Add each function's parameter to parser.
 
     :param param:
     :param param_docs:
@@ -111,7 +111,7 @@ def add_param(
 def prepare_arguments(
     func, param_docs,
 ):
-    """Parses 'func' and adds parser arguments from function signature
+    """Parse 'func' and adds parser arguments from function signature.
 
     :param func: Function's signature is used to create parser
         * positional_params:

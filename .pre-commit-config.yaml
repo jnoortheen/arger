@@ -1,21 +1,9 @@
 ---
 
 repos:
-#  - repo: local
-#    hooks:
-#      - id: check
-#        name: check
-#        entry: make format # make is not able to handle filenames
-#        language: system
-  - repo: https://github.com/pre-commit/mirrors-isort
-    rev: v4.3.21
+  - repo: local
     hooks:
-      - id: isort
-        exclude: (.+)/migrations/(.+)
-
-  - repo: https://github.com/psf/black
-    rev: 19.10b0
-    hooks:
-      - id: black
-        language_version: python3.7
-        exclude: (.+)/migrations/(.+)
+      - id: check
+        name: check
+        entry: make format # make is not able to handle filenames
+        language: system

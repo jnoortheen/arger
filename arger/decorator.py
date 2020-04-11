@@ -7,6 +7,7 @@ from .types import F
 
 class Arger(ArgumentParser):
     """Contains one function (parser) or more functions (subparsers).
+
     Also a decorator to ease up the process of creating parser with its own options.
 
     Usage: see `tests/examples`_.
@@ -38,8 +39,11 @@ class Arger(ArgumentParser):
         return "", None
 
     def run(self, *args) -> Any:
-        """The arguments will be passed onto self.parse_args and
-        then the respective function will get called with parsed arguments."""
+        """Dispatch functions.
+
+        The arguments will be passed onto self.parse_args
+        then the respective function will get called with parsed arguments.
+        """
         if not self._funcs and not self._fn:
             raise NotImplementedError("No function to dispatch.")
 
@@ -51,16 +55,17 @@ class Arger(ArgumentParser):
         # func = self._funcs[kwargs[CMD]]
         # return func(**kwargs)
 
-    def __call__(self, func: F) -> F:
-        """Decorator.
-
-        called as a decorator to add any function as a command to the parser
-        """
-        self._funcs[func.__name__] = func
-        return func
+    # def __call__(self, func: F) -> F:
+    #     """Call the given function
+    #
+    #     called as a decorator to add any function as a command to the parser
+    #     """
+    #     self._funcs[func.__name__] = func
+    #     return func
 
     def add_command(self, func: F) -> F:
-        """Creates subparser and adds the function as one of the subcommand
+        """Add the function as a sub-command.
+
         :param func:
         :return:
         """

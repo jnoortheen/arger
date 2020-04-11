@@ -1,9 +1,11 @@
 """Configuration file for sniffer."""
 
-import time
 import subprocess
+import time
 
-from sniffer.api import select_runnable, file_validator, runnable
+from sniffer.api import file_validator, runnable, select_runnable
+
+
 try:
     from pync import Notifier
 except ImportError:
@@ -22,7 +24,7 @@ class Options:
 
     targets = [
         (('make', 'test-all'), "Integration Tests", False),
-        (('make', 'lint'), "Static Analysis", True),
+        (('make', 'check'), "Static Analysis", True),
     ]
 
 
