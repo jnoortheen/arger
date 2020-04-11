@@ -29,7 +29,7 @@ run: install
 
 .PHONY: ipython ## Launch an IPython session
 ipython: install
-	poetry run ipython --ipython-dir=notebooks
+	poetry run ipython
 
 # SYSTEM DEPENDENCIES #########################################################
 
@@ -62,8 +62,8 @@ endif
 
 .PHONY: format
 format: install
-	poetry run isort $(PACKAGES) notebooks --recursive --apply
-	poetry run black $(PACKAGES) notebooks
+	poetry run isort $(PACKAGES) --recursive --apply
+	poetry run black $(PACKAGES)
 	@ echo
 
 .PHONY: lint

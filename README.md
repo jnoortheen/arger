@@ -4,12 +4,8 @@ A wrapper around argparser to help build CLIs from functions. Uses typehints ext
 
 [![PyPi Version](https://img.shields.io/pypi/v/arger.svg?style=flat)](https://pypi.python.org/pypi/arger)
 [![Python Version](https://img.shields.io/pypi/pyversions/returns.svg)](https://pypi.org/project/arger/)
-
-[![Unix Build Status](https://img.shields.io/travis/jnoortheen/arger/master.svg?label=unix)](https://travis-ci.org/jnoortheen/arger)
-[![Windows Build Status](https://img.shields.io/appveyor/ci/jnoortheen/arger/master.svg?label=windows)](https://ci.appveyor.com/project/jnoortheen/arger)
-[![Coverage Status](https://img.shields.io/coveralls/jnoortheen/arger/master.svg)](https://coveralls.io/r/jnoortheen/arger)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/jnoortheen/arger.svg)](https://scrutinizer-ci.com/g/jnoortheen/arger/?branch=master)
-[![PyPI Version](https://img.shields.io/pypi/v/arger.svg)](https://pypi.org/project/arger)
+![](https://github.com/jnoortheen/arger/workflows/tests/badge.svg)
+![](https://github.com/jnoortheen/arger/workflows/release/badge.svg)
 [![PyPI License](https://img.shields.io/pypi/l/arger.svg)](https://pypi.org/project/arger)
 
 # Setup
