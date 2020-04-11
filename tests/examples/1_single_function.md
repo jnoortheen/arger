@@ -2,10 +2,10 @@
 1. ran with both options
 ```shell script
 $ python 1_single_function.py 10 p2
-param1 (<class 'int'>): 10
-param2 (<class 'str'>): p2
 kw1 (<class 'NoneType'>): None
 kw2 (<class 'bool'>): False
+param1 (<class 'int'>): 10
+param2 (<class 'str'>): p2
 ```
 
 1. ran empty
