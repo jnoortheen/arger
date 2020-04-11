@@ -103,7 +103,7 @@ test-int: install
 test-all: install
 	@ if test -e $(FAILURES); then poetry run pytest $(PACKAGES) $(PYTEST_RERUN_OPTIONS); fi
 	@ rm -rf $(FAILURES)
-	poetry run pytest $(PACKAGES) $(PYTEST_OPTIONS)
+	poetry run pytest $(PACKAGES) $(PYTEST_OPTIONS) --cov=$(PACKAGE) --cov-report=html --cov-report=term-missing:skip-covered
 
 .PHONY: read-coverage
 read-coverage:
