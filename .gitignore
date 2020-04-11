@@ -45,3 +45,4 @@ Icon*
 # Eclipse
 .settings
 .idea/
+.local/
