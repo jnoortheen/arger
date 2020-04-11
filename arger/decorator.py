@@ -1,5 +1,5 @@
 from argparse import ArgumentParser
-from typing import Any, Callable, Dict, Optional, TypeVar
+from typing import Any, Callable, Dict, Optional, Tuple
 
 from .parser import opterate
 from .types import F
@@ -12,7 +12,7 @@ class Arger(ArgumentParser):
     Usage: see `tests/examples`_.
     """
 
-    def __init__(self, fn: F = None, **kwargs):
+    def __init__(self, fn: Optional[F] = None, **kwargs):
         self._fn = fn
 
         desc, add_args = self._add_fn(fn)
@@ -26,7 +26,7 @@ class Arger(ArgumentParser):
 
         self._funcs: Dict[str, Any] = {}  # registry
 
-    def _add_fn(self, fn) -> (str, Optional[Callable]):
+    def _add_fn(self, fn) -> Tuple[str, Optional[Callable]]:
         if fn is not None:
             desc, args = opterate(fn)
 
@@ -37,7 +37,7 @@ class Arger(ArgumentParser):
             return desc, add_args
         return "", None
 
-    def run(self, *args):
+    def run(self, *args) -> Any:
         """The arguments will be passed onto self.parse_args and
         then the respective function will get called with parsed arguments."""
         if not self._funcs and not self._fn:
@@ -46,7 +46,7 @@ class Arger(ArgumentParser):
         kwargs = vars(self.parse_args(args))  # type: Dict[str, Any]
         if self._fn is not None:
             return self._fn(**kwargs)
-
+        return None
         # todo: implement
         # func = self._funcs[kwargs[CMD]]
         # return func(**kwargs)

@@ -37,7 +37,7 @@ def get_action(
         return "store_true"
     if default is True:
         return "store_false"
-    if (_type is not UNDEFINED) and issubclass(_type, (List, Tuple)):
+    if (_type is not UNDEFINED) and issubclass(_type, (List, Tuple)):  # type: ignore
         return "append"
     return "store"
 

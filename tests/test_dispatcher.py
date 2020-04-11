@@ -7,7 +7,7 @@ from arger import Arger
 
 @pytest.fixture
 def arger(pyfile: Path) -> Arger:
-    ctx = {}
+    ctx: dict = {}
     exec(pyfile.read_text(), ctx)
     return ctx["arger"]
 

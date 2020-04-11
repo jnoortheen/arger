@@ -1,7 +1,7 @@
 """Integration tests configuration file."""
 import codecs
 from pathlib import Path
-from typing import Tuple
+from typing import Iterator, Tuple
 
 import mistune
 from bs4 import BeautifulSoup
@@ -17,7 +17,7 @@ def get_soup(file: str):
         return BeautifulSoup(html, 'html.parser')
 
 
-def get_scenarios(md_file: Path) -> Tuple[str, str, str]:
+def get_scenarios(md_file: Path) -> Iterator[Tuple[str, str, str]]:
     soup = get_soup(str(md_file))
     titles = soup.find_all("li")
     codes = soup.find_all("code")

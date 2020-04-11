@@ -1,5 +1,6 @@
+# pylint: disable = W0622
 import argparse
-from typing import Callable
+from typing import Callable, Optional
 
 
 class Option:
@@ -7,9 +8,9 @@ class Option:
         self,
         type: Callable,
         default=None,
-        flags: str = None,
-        help: str = None,
-        metavar: str = None,
+        flags: Optional[str] = None,
+        help: Optional[str] = None,
+        metavar: Optional[str] = None,
         required=False,
     ):
         """represents optional arguments to the command.
@@ -52,5 +53,7 @@ class Option:
 class Argument(Option):
     """represents positional argument and are required."""
 
-    def __init__(self, type: Callable, help: str = None, metavar: str = None):
+    def __init__(
+        self, type: Callable, help: Optional[str] = None, metavar: Optional[str] = None
+    ):
         super().__init__(type, help=help, metavar=metavar, required=True)
