@@ -1,5 +1,6 @@
 # most of this module is taken from https://github.com/dusty-phillips/opterator
 from enum import Enum
+from inspect import isclass
 from typing import Any, List, Set, Tuple
 
 from arger.parser.docstring import parse_docstring
@@ -92,15 +93,17 @@ def add_param(
         option_kwargs["dest"] = param
         names = get_arg_names(param, param_doc, option_generator)
 
-        if _type is UNDEFINED:
+        if _type is UNDEFINED and default is not None:
             _type = type(default)
 
     option_kwargs.update(
-        {"action": get_action(_type, default), "help": " ".join(param_doc),}
+        {"action": get_action(_type, default), "help": " ".join(param_doc)}
     )
 
-    if issubclass(_type, Enum):
+    if isclass(_type) and issubclass(_type, Enum):
         option_kwargs["choices"] = [e.value for e in _type]
+    elif (_type is not UNDEFINED) and _type != bool:
+        option_kwargs["type"] = _type
 
     return (names, option_kwargs)
 

@@ -31,8 +31,8 @@ class Arger(ArgumentParser):
             desc, args = opterate(fn)
 
             def add_args():  # lazy adding of arguments
-                for arg, kw in args:
-                    self.add_argument(*arg, **kw)
+                for flags, kw in args:
+                    self.add_argument(*flags, **kw)
 
             return desc, add_args
         return "", None
