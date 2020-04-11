@@ -39,7 +39,7 @@ def main(param1: int, param2: str, kw1=None, kw2=False):
     :param param1: The first parameter.
     :param param2: The second parameter.
     """
-    print(**locals())
+    print(locals())
 
 
 if __name__ == '__main__':
