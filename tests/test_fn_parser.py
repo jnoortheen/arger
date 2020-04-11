@@ -24,12 +24,6 @@ def test_opterate():
         ),
         (
             ['-w', '--kw2'],
-            {
-                'action': 'store_true',
-                'default': False,
-                'dest': 'kw2',
-                'help': '',
-                "type": bool,
-            },
+            {'action': 'store_true', 'default': False, 'dest': 'kw2', 'help': '',},
         ),
     ]
