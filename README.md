@@ -29,14 +29,30 @@ $ poetry add arger
 ```
 
 # Usage
+- create a python file called test.py
+```python
+from arger import Arger
 
-After installation, the package can imported:
+def main(param1: int, param2: str, kw1=None, kw2=False):
+    """Example function with types documented in the docstring.
 
-```text
-$ python
->>> import arger
->>> arger.__version__
+    :param param1: The first parameter.
+    :param param2: The second parameter.
+    """
+    print(**locals())
+
+
+if __name__ == '__main__':
+    Arger(main).run()
 ```
+
+- run this normally with 
+
+```shell script
+$ python test.py 100 param2
+```
+
+- Checkout [examples](./tests/examples) folder and documentation to see more of `arger` in action.
 
 # Alternatives
 
