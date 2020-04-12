@@ -2,9 +2,14 @@ import argparse
 
 
 # create the top-level parser
-parser = argparse.ArgumentParser(prog='PROG')
+parser = argparse.ArgumentParser(prog='PROG', description='parser desc')
 parser.add_argument('--foo', action='store_true', help='foo help')
-subparsers = parser.add_subparsers(help='sub-command help')
+subparsers = parser.add_subparsers(
+    title='Commands',
+    dest='command'
+    # help='sub-command help'
+)
+
 # create the parser for the "a" command
 parser_a = subparsers.add_parser('a', help='a help')
 parser_a.add_argument('bar', type=int, help='bar help')
@@ -23,3 +28,7 @@ def doc():
     >>> parser.parse_args(['b', '--baz', 'Z',])
     Namespace(baz='Z', foo=False)
     '''
+
+
+if __name__ == '__main__':
+    parser.parse_args(['-h'])

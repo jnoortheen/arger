@@ -22,7 +22,7 @@ def args(cmd: str):
 
 
 def test_example(capsys, arger, args, expected: str):
-    if "error" in expected or 'optional arguments:' in expected:
+    if "error" in expected or expected.startswith('usage:'):
         with pytest.raises(SystemExit):
             arger.run(*args)  # start function
     else:
@@ -32,7 +32,10 @@ def test_example(capsys, arger, args, expected: str):
     out = capture.err or capture.out
 
     if out != expected:
-        print(out, "----", expected)
+        import time
+
+        tmp = Path('-'.join(args) + str(time.time()) + ".log")
+        tmp.write_text("\n\n\n".join([out, expected]))
     assert out == expected
 
 

@@ -1,42 +1,49 @@
 from argparse import ArgumentParser
-from typing import Any, Callable, Dict, Optional, Tuple
+from typing import Any, Dict, Optional
 
-from .parser import opterate
+from .structs import Command
 from .types import F
+
+
+def _add_args(parser, args):
+    for flags, kw in args:
+        parser.add_argument(*flags, **kw)
+
+
+def _cmd_prepare(parser, cmd: Command):
+    cmd_parser = parser.add_parser(name=cmd.name, help=cmd.desc)
+    _add_args(cmd_parser, cmd.args)
+    return cmd_parser
+
+
+CMD = 'command'
+CMD_TITLE = 'commands'
+
+
+def _add_parsers(parser: "Arger", cmd: Command):
+    commands = list(cmd)
+    if commands:
+        subparser = parser.add_subparsers(title=CMD_TITLE, dest=CMD)
+        for _, sub in commands:
+            cmd_parser = _cmd_prepare(subparser, sub)
+            _add_parsers(cmd_parser, sub)  # recursively add any nested commands
 
 
 class Arger(ArgumentParser):
     """Contains one function (parser) or more functions (subparsers).
 
-    Also a decorator to ease up the process of creating parser with its own options.
-
     Usage: see `tests/examples`_.
     """
 
     def __init__(self, fn: Optional[F] = None, **kwargs):
-        self._fn = fn
-
-        desc, add_args = self._add_fn(fn)
-        if desc:
-            kwargs.setdefault("description", desc)
+        self._command = Command(fn)
+        if self._command.desc:
+            kwargs.setdefault("description", self._command.desc)
 
         super().__init__(**kwargs)
 
-        if add_args:
-            add_args()
-
-        self._funcs: Dict[str, Any] = {}  # registry
-
-    def _add_fn(self, fn) -> Tuple[str, Optional[Callable]]:
-        if fn is not None:
-            desc, args = opterate(fn)
-
-            def add_args():  # lazy adding of arguments
-                for flags, kw in args:
-                    self.add_argument(*flags, **kw)
-
-            return desc, add_args
-        return "", None
+        if fn:  # lazily add arguments
+            _add_args(self, self._command.args)
 
     def run(self, *args) -> Any:
         """Dispatch functions.
@@ -44,30 +51,28 @@ class Arger(ArgumentParser):
         The arguments will be passed onto self.parse_args
         then the respective function will get called with parsed arguments.
         """
-        if not self._funcs and not self._fn:
+        if not self._command.is_valid():
             raise NotImplementedError("No function to dispatch.")
 
+        # populate sub-parsers
+        _add_parsers(self, self._command)
+
         kwargs = vars(self.parse_args(args))  # type: Dict[str, Any]
-        if self._fn is not None:
-            return self._fn(**kwargs)
-        return None
-        # todo: implement
-        # func = self._funcs[kwargs[CMD]]
-        # return func(**kwargs)
 
-    # def __call__(self, func: F) -> F:
-    #     """Call the given function
-    #
-    #     called as a decorator to add any function as a command to the parser
-    #     """
-    #     self._funcs[func.__name__] = func
-    #     return func
+        return self._command.run(**kwargs)
 
-    def add_command(self, func: F) -> F:
+    @classmethod
+    def init(cls, func: F) -> 'Arger':
+        """Create parser from function as a decorator
+
+        :param func: main function that has description and has sub-command level arguments
+        """
+        return cls(func)
+
+    def add_cmd(self, func: F) -> Command:
         """Add the function as a sub-command.
 
         :param func:
         :return:
         """
-        self._funcs[func.__name__] = func
-        return func
+        return self._command.add(func)

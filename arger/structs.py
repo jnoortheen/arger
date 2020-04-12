@@ -1,6 +1,10 @@
 # pylint: disable = W0622
 import argparse
-from typing import Callable, Optional
+from collections import OrderedDict
+from typing import Callable, Dict, Optional
+
+from .parser import opterate
+from .types import F
 
 
 class Option:
@@ -58,3 +62,33 @@ class Argument(Option):
         self, type: Callable, help: Optional[str] = None, metavar: Optional[str] = None
     ):
         super().__init__(type, help=help, metavar=metavar, required=True)
+
+
+class Command:
+    def __init__(self, fn: Optional[F] = None):
+        self._fn = fn  # only the root element may not have a function associated.
+        self.name: Optional[str] = fn.__name__ if fn else None
+        self.desc, self.args = opterate(self._fn) if fn else (None, [])
+        self._sub: Dict[str, 'Command'] = OrderedDict()
+
+    def is_valid(self) -> bool:
+        return bool(self._fn or len(self._sub))
+
+    def run(self, command: Optional[str] = None, **kwargs):
+        fn = self._sub[command] if command else self
+        return fn(**kwargs)
+
+    def __call__(self, *args, **kwargs):
+        if self._fn:
+            return self._fn(*args, **kwargs)
+        raise NotImplementedError("No function to dispatch")
+
+    def add(self, func: F) -> 'Command':
+        cmd = Command(func)
+        if cmd.name in self._sub:
+            raise KeyError(f"Already defined a command named {cmd.name}")
+        self._sub[func.__name__] = cmd
+        return cmd
+
+    def __iter__(self):
+        yield from self._sub.items()
