@@ -34,7 +34,7 @@ def test_example(capsys, arger, args, expected: str):
     if out != expected:
         import time
 
-        tmp = Path('-'.join(args) + str(time.time()) + ".log")
+        tmp = Path(__file__).with_name('-'.join(args) + str(time.time()) + ".log")
         tmp.write_text("\n\n\n".join([out, expected]))
     assert out == expected
 

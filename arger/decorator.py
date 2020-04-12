@@ -1,5 +1,5 @@
 from argparse import ArgumentParser
-from typing import Any, Dict, Optional
+from typing import Any, Callable, Dict, Optional
 
 from .structs import Command
 from .types import F
@@ -62,12 +62,16 @@ class Arger(ArgumentParser):
         return self._command.run(**kwargs)
 
     @classmethod
-    def init(cls, func: F) -> 'Arger':
+    def init(cls, **kwargs) -> Callable[[Callable], 'Arger']:
         """Create parser from function as a decorator
 
         :param func: main function that has description and has sub-command level arguments
         """
-        return cls(func)
+
+        def _wrapper(fn):
+            return cls(fn, **kwargs)
+
+        return _wrapper
 
     def add_cmd(self, func: F) -> Command:
         """Add the function as a sub-command.

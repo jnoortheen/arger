@@ -4,7 +4,7 @@ from inspect import isclass
 from typing import Any, List, Set, Tuple
 
 from arger.parser.docstring import parse_docstring
-from arger.utils import portable_argspec
+from arger.utils import match_types, portable_argspec
 
 
 def generate_options():
@@ -37,7 +37,7 @@ def get_action(
         return "store_true"
     if default is True:
         return "store_false"
-    if (_type is not UNDEFINED) and issubclass(_type, (List, Tuple)):  # type: ignore
+    if (_type is not UNDEFINED) and match_types(_type, (List, Tuple)):  # type: ignore
         return "append"
     return "store"
 
