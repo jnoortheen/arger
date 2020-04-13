@@ -4,7 +4,8 @@ from inspect import isclass
 from typing import Any, List, Set, Tuple
 
 from arger.parser.docstring import parse_docstring
-from arger.utils import match_types, portable_argspec
+from arger.typing_utils import match_types
+from arger.utils import portable_argspec
 
 
 def generate_options():

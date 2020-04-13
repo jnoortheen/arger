@@ -1,5 +1,4 @@
 import inspect
-from typing import Any, List, Tuple
 
 
 def portable_argspec(func):
@@ -32,19 +31,3 @@ def portable_argspec(func):
         kw_params,
         annotations,
     )
-
-
-def match_types(type, *matches):
-    """Match the given type to list of other types.
-
-    :param type:
-    :param matches:
-
-    >>> match_types(List, List[str], List, Tuple, Tuple[str], Tuple[Any])
-    True
-    >>> match_types(List[str], List[Any])
-    True
-    >>> match_types(List[str], List)
-    True
-    """
-    return any([str(m).startswith(str(type)) for m in matches])
