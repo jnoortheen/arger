@@ -23,19 +23,13 @@ def args(cmd: str):
 def test_example(capsys, arger, args, expected: str):
     if "error" in expected or expected.startswith('usage:'):
         with pytest.raises(SystemExit):
-            arger.run(*args)  # start function
+            arger.run(*args, capture_sys=False)  # start function
     else:
-        arger.run(*args)
+        arger.run(*args, capture_sys=False)
 
     capture = capsys.readouterr()
     out = capture.err or capture.out
-
-    if out != expected:
-        import time
-
-        tmp = Path(__file__).with_name('-'.join(args) + str(time.time()) + ".log")
-        tmp.write_text("\n\n\n".join([out, expected]))
-    assert out == expected
+    assert out == expected, f"\ncmd: {args}\nout: \n{out}\nexpected:\n{expected}\n"
 
 
 # def test_var_positional_help(capsys, arg):

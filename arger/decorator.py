@@ -1,3 +1,4 @@
+import sys
 from argparse import ArgumentParser
 from typing import Any, Callable, Dict, Optional
 
@@ -45,7 +46,7 @@ class Arger(ArgumentParser):
         if fn:  # lazily add arguments
             _add_args(self, self._command.args)
 
-    def run(self, *args) -> Any:
+    def run(self, *args, capture_sys=True) -> Any:
         """Dispatch functions.
 
         The arguments will be passed onto self.parse_args
@@ -57,7 +58,9 @@ class Arger(ArgumentParser):
         # populate sub-parsers
         _add_parsers(self, self._command)
 
-        kwargs = vars(self.parse_args(args or None))  # type: Dict[str, Any]
+        if not args and capture_sys:
+            args = tuple(sys.argv[:1])
+        kwargs = vars(self.parse_args(args))  # type: Dict[str, Any]
 
         return self._command.run(**kwargs)
 
