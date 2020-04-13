@@ -32,9 +32,6 @@ classifiers = [
 
 python = "^3.6"
 
-# TODO: Remove these and add your library's requirements
-click = "^6.0"
-minilog = "^1.4"
 docstring-parser = "^0.6.1"
 
 [tool.poetry.dev-dependencies]

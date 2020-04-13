@@ -43,7 +43,7 @@ def release(type: str):
     if answer.lower() in {'no', 'n'}:
         return
     prun('git add .')
-    prun(f'git commit -m {msg}')
+    prun(f'git commit -m "{msg}"')
     prun(f'git tag v{version}')
     prun('git push')
     prun('git push --tags')
