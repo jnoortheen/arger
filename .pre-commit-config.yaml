@@ -7,3 +7,4 @@ repos:
         name: check
         entry: make format # make is not able to handle filenames
         language: system
+        pass_filenames: false
