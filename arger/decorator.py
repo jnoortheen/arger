@@ -59,7 +59,7 @@ class Arger(ArgumentParser):
         _add_parsers(self, self._command)
 
         if not args and capture_sys:
-            args = tuple(sys.argv[:1])
+            args = tuple(sys.argv[1:])
         kwargs = vars(self.parse_args(args))  # type: Dict[str, Any]
 
         return self._command.run(**kwargs)

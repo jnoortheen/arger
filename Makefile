@@ -61,7 +61,7 @@ endif
 # CHECKS ######################################################################
 
 .PHONY: format
-format: install
+format:
 	poetry run isort $(PACKAGES) --recursive --apply
 	poetry run black $(PACKAGES)
 	@ echo
