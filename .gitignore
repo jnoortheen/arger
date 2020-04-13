@@ -46,3 +46,4 @@ Icon*
 .settings
 .idea/
 .local/
+*.log

@@ -58,14 +58,20 @@ optional arguments:
 1. ran create
 ```shell script
 $ python 3_nested_commands.py create direcory
+log (<class 'bool'>): False
+log_file (<class 'NoneType'>): None
 name (<class 'str'>): direcory
+verbose (<class 'bool'>): False
 ```
 
 
 1. ran remove
 ```shell script
 $ python 3_nested_commands.py remove direcory
+log (<class 'bool'>): False
+log_file (<class 'NoneType'>): None
 name (<class 'str'>): direcory
+verbose (<class 'bool'>): False
 ```
 
 
@@ -73,6 +79,9 @@ name (<class 'str'>): direcory
 ```shell script
 $ python 3_nested_commands.py list
 container (<class 'list'>): []
+log (<class 'bool'>): False
+log_file (<class 'NoneType'>): None
+verbose (<class 'bool'>): False
 ```
 
 1. ran combined

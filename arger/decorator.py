@@ -57,7 +57,7 @@ class Arger(ArgumentParser):
         # populate sub-parsers
         _add_parsers(self, self._command)
 
-        kwargs = vars(self.parse_args(args))  # type: Dict[str, Any]
+        kwargs = vars(self.parse_args(args or None))  # type: Dict[str, Any]
 
         return self._command.run(**kwargs)
 

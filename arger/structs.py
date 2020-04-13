@@ -75,8 +75,21 @@ class Command:
         return bool(self._fn or len(self._sub))
 
     def run(self, command: Optional[str] = None, **kwargs):
-        fn = self._sub[command] if command else self
-        return fn(**kwargs)
+        args = set()
+        for k in self.args:
+            if 'dest' in k[1]:
+                args.add(k[1]['dest'])
+            else:
+                args.add(k[0][0])
+        root_kwargs = {k: v for k, v in kwargs.items() if k in args}
+        cmd_kwargs = {k: v for k, v in kwargs.items() if k not in args}
+
+        results = OrderedDict()
+        if root_kwargs and self.name:
+            results[self.name] = self(**root_kwargs)
+        if command:
+            results[command] = self._sub[command](**cmd_kwargs)
+        return results
 
     def __call__(self, *args, **kwargs):
         if self._fn:
