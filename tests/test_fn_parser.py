@@ -1,7 +1,4 @@
-from collections import OrderedDict
-
 from arger.parser import opterate
-from arger.parser.classes import Argument
 
 from .utils import _reprint
 

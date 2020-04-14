@@ -57,7 +57,10 @@ def prepare_arguments(func, param_docs,) -> Dict[str, Option]:
         if isinstance(default, Argument):
             default.flags = [param]
         elif isinstance(default, Option):
-            default.set_flags(option_generator)
+            if 'dest' not in default.kwargs:
+                default.kwargs['dest'] = param
+            if not default.flags:
+                default.set_flags(option_generator)
         else:
             default = Option(dest=param, default=default, **get_args(param))
             default.set_flags(option_generator)

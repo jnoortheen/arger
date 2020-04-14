@@ -1,7 +1,7 @@
 import argparse
 from enum import Enum
 from inspect import isclass
-from typing import Any, List, Tuple
+from typing import Any, List, Optional, Tuple
 
 from arger.parser.utils import generate_flags
 
@@ -23,7 +23,7 @@ def get_action(
 
 class Option:
     def __init__(
-        self, flags: List[str], default: Any = UNDEFINED, **kwargs,
+        self, flags: Optional[List[str]] = None, default: Any = UNDEFINED, **kwargs,
     ):
         """Represent optional arguments to the command.
 
@@ -62,7 +62,7 @@ class Option:
         #         :param choices: A container of the allowable values for the argument.
         # will covered by enum type
 
-        self.flags = flags
+        self.flags = flags or []
 
         type_ = kwargs.pop('type', UNDEFINED)
         if default is not UNDEFINED:
