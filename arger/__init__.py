@@ -1,6 +1,6 @@
 from pkg_resources import DistributionNotFound, get_distribution
 
-from .decorator import Arger
+from .arger import Arger
 
 
 try:
