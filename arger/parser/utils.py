@@ -1,4 +1,4 @@
-from typing import Set
+from typing import List, Set
 
 
 def generate_options():
@@ -25,7 +25,7 @@ def generate_options():
 
 
 def generate_flags(
-    param, param_doc, option_generator,
+    param: str, param_doc: List[str], option_generator,
 ):
     names = []
 

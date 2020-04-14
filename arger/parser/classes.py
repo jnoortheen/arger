@@ -1,7 +1,9 @@
 import argparse
 from enum import Enum
 from inspect import isclass
-from typing import Any, List, Optional, Tuple
+from typing import Any, List, Tuple
+
+from arger.parser.utils import generate_flags
 
 from ..types import UNDEFINED
 from ..typing_utils import match_types
@@ -21,14 +23,7 @@ def get_action(
 
 class Option:
     def __init__(
-        self,
-        flags: Tuple[str, ...] = (),
-        type_: Any = UNDEFINED,
-        default: Any = UNDEFINED,
-        help_: str = "",
-        metavar: Optional[str] = None,
-        required=False,
-        **kwargs,
+        self, flags: List[str], default: Any = UNDEFINED, **kwargs,
     ):
         """Represent optional arguments to the command.
 
@@ -69,6 +64,7 @@ class Option:
 
         self.flags = flags
 
+        type_ = kwargs.pop('type', UNDEFINED)
         if default is not UNDEFINED:
             kwargs["default"] = default
 
@@ -82,20 +78,20 @@ class Option:
         elif (type_ is not UNDEFINED) and type_ != bool:
             kwargs.setdefault("type", type_)
 
-        kwargs.setdefault('help', help_)
-        kwargs.setdefault('metavar', metavar)
-        kwargs.setdefault('required', required)
         self.kwargs = kwargs
 
     def add(self, parser: argparse.ArgumentParser):
         return parser.add_argument(*self.flags, **self.kwargs)
 
+    def __repr__(self):
+        return f'{self.__class__.__name__}: {self.flags}, {repr(self.kwargs)}'
+
+    def set_flags(self, option_generator):
+        hlp = self.kwargs.pop('help').split()
+        # generate flags
+        self.flags = generate_flags(self.flags[0], hlp, option_generator)
+        self.kwargs['help'] = " ".join(hlp)
+
 
 class Argument(Option):
     """Represent positional argument that are required."""
-
-    def __init__(
-        self, **kwargs,
-    ):
-        """See Option.__init__'s doc for more info."""
-        super().__init__(required=True, **kwargs)

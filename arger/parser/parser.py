@@ -6,7 +6,7 @@ from arger.utils import portable_argspec
 
 from ..types import UNDEFINED
 from .classes import Argument, Option
-from .utils import generate_flags, generate_options
+from .utils import generate_options
 
 
 def prepare_arguments(func, param_docs,) -> Dict[str, Option]:
@@ -42,26 +42,26 @@ def prepare_arguments(func, param_docs,) -> Dict[str, Option]:
     option_generator = generate_options()
     next(option_generator)
 
-    arguments: Dict[str, Option] = OrderedDict()
-    for param in positional_params:
-        arguments[param] = Argument(
-            help_=param_docs.get(param, ""),
+    def get_args(param):
+        return dict(
             flags=[param],
-            dest=param,
-            type_=annotations.get(param, UNDEFINED),
+            help=param_docs.get(param, ""),
+            type=annotations.get(param, UNDEFINED),
         )
 
+    arguments: Dict[str, Option] = OrderedDict()
+    for param in positional_params:
+        arguments[param] = Argument(**get_args(param))
+
     for param, default in kw_params.items():
-        hlp = param_docs.get(param, "")
-        flags = generate_flags(param, hlp, option_generator)
-        hlp = " ".join(hlp)
-        arguments[param] = Option(
-            help_=hlp,
-            flags=flags,
-            dest=param,
-            type_=annotations.get(param, UNDEFINED),
-            default=default,
-        )
+        if isinstance(default, Argument):
+            default.flags = [param]
+        elif isinstance(default, Option):
+            default.set_flags(option_generator)
+        else:
+            default = Option(dest=param, default=default, **get_args(param))
+            default.set_flags(option_generator)
+        arguments[param] = default
     return arguments
 
 
