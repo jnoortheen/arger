@@ -2,13 +2,14 @@ import sys
 from argparse import ArgumentParser
 from typing import Any, Callable, Dict, Optional
 
+from .parser.classes import Option
 from .structs import Command
 from .types import F
 
 
-def _add_args(parser, args):
-    for flags, kw in args:
-        parser.add_argument(*flags, **kw)
+def _add_args(parser, args: Dict[str, Option]):
+    for _, arg in args.items():
+        parser.add_argument(*arg.flags, **arg.kwargs)
 
 
 def _cmd_prepare(parser, cmd: Command):
@@ -66,7 +67,7 @@ class Arger(ArgumentParser):
 
     @classmethod
     def init(cls, **kwargs) -> Callable[[Callable], 'Arger']:
-        """Create parser from function as a decorator
+        """Create parser from function as a decorator.
 
         :param func: main function that has description and has sub-command level arguments
         """

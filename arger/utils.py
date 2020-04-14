@@ -1,7 +1,8 @@
 import inspect
+from typing import Any, Dict, List, Tuple
 
 
-def portable_argspec(func):
+def portable_argspec(func) -> Tuple[List[str], Dict[str, Any], Dict[str, Any]]:
     """Return function signature.
 
     given a function, return a tuple of
