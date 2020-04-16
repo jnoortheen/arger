@@ -440,6 +440,46 @@ version = "0.5.6"
 
 [[package]]
 category = "dev"
+description = "A Material Design theme for MkDocs"
+name = "mkdocs-material"
+optional = false
+python-versions = "*"
+version = "5.1.0"
+
+[package.dependencies]
+Pygments = ">=2.4"
+markdown = ">=3.2"
+mkdocs = ">=1.1"
+mkdocs-material-extensions = ">=1.0b1"
+pymdown-extensions = ">=7.0"
+
+[[package]]
+category = "dev"
+description = "Extension pack for Python Markdown."
+name = "mkdocs-material-extensions"
+optional = false
+python-versions = ">=3.5"
+version = "1.0b1"
+
+[package.dependencies]
+mkdocs-material = ">=5.0.0"
+
+[[package]]
+category = "dev"
+description = "Automatic documentation from sources, for MkDocs."
+name = "mkdocstrings"
+optional = false
+python-versions = ">=3.6,<4.0"
+version = "0.10.3"
+
+[package.dependencies]
+beautifulsoup4 = ">=4.8.2,<5.0.0"
+mkdocs = ">=1.1,<2.0"
+pymdown-extensions = ">=6.3,<8.0"
+pytkdocs = ">=0.2.0,<0.4.0"
+
+[[package]]
+category = "dev"
 description = "More routines for operating on iterables, beyond itertools"
 name = "more-itertools"
 optional = false
@@ -649,6 +689,17 @@ mccabe = ">=0.6,<0.7"
 
 [[package]]
 category = "dev"
+description = "Extension pack for Python Markdown."
+name = "pymdown-extensions"
+optional = false
+python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*"
+version = "7.0"
+
+[package.dependencies]
+Markdown = ">=3.2"
+
+[[package]]
+category = "dev"
 description = "Python Wrapper for Mac OS 10.10 Notification Center"
 marker = "sys_platform == \"darwin\""
 name = "pync"
@@ -770,6 +821,14 @@ version = "0.1.10"
 
 [package.dependencies]
 setuptools = "*"
+
+[[package]]
+category = "dev"
+description = "Load Python objects documentation."
+name = "pytkdocs"
+optional = false
+python-versions = ">=3.6,<4.0"
+version = "0.3.0"
 
 [[package]]
 category = "dev"
@@ -971,7 +1030,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "0caed4283b516ae6f624aacf8b505130531704a2bd8c4167c8203274dfb3a823"
+content-hash = "866a565e1d9ea6b80740837cefc891be0f5ed36d9bd25fbf64a963efe6720d24"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1200,6 +1259,18 @@ mkdocs = [
     {file = "mkdocs-1.1-py2.py3-none-any.whl", hash = "sha256:1e385a70aea8a9dedb731aea4fd5f3704b2074801c4f96f06b2920999babda8a"},
     {file = "mkdocs-1.1.tar.gz", hash = "sha256:9243291392f59e20b655e4e46210233453faf97787c2cf72176510e868143174"},
 ]
+mkdocs-material = [
+    {file = "mkdocs-material-5.1.0.tar.gz", hash = "sha256:fb8ffa2b1779efad4f57206456bb480980f06c4e38260ea449ff4361531b17f1"},
+    {file = "mkdocs_material-5.1.0-py2.py3-none-any.whl", hash = "sha256:5dd84931447281d48694b7bc6401cafdca0237c967df7801ec5240385e64ce58"},
+]
+mkdocs-material-extensions = [
+    {file = "mkdocs-material-extensions-1.0b1.tar.gz", hash = "sha256:8aaf3b1e81bdc503cb73bb90f91e7e635be5f54397bb22fb60d68b247cd8f7bd"},
+    {file = "mkdocs_material_extensions-1.0b1-py3-none-any.whl", hash = "sha256:a5f4d995923381e0dbfa36919dc7004fd0a69e3e0027058b153cc04d5f725f47"},
+]
+mkdocstrings = [
+    {file = "mkdocstrings-0.10.3-py3-none-any.whl", hash = "sha256:6a432b90703c343c445aa5bf59bf93ef0efa0f55395daee79c59ab57c732bf79"},
+    {file = "mkdocstrings-0.10.3.tar.gz", hash = "sha256:13722641310562ad1ca6a225d65cfdad6554831b5e17dc1101ac66be35d0dbe5"},
+]
 more-itertools = [
     {file = "more-itertools-8.2.0.tar.gz", hash = "sha256:b1ddb932186d8a6ac451e1d95844b382f55e12686d51ca0c68b6f61f2ab7a507"},
     {file = "more_itertools-8.2.0-py3-none-any.whl", hash = "sha256:5dd8bcf33e5f9513ffa06d5ad33d78f31e1931ac9a18f33d37e77a180d393a7c"},
@@ -1286,6 +1357,10 @@ pylint = [
     {file = "pylint-2.4.4-py3-none-any.whl", hash = "sha256:886e6afc935ea2590b462664b161ca9a5e40168ea99e5300935f6591ad467df4"},
     {file = "pylint-2.4.4.tar.gz", hash = "sha256:3db5468ad013380e987410a8d6956226963aed94ecb5f9d3a28acca6d9ac36cd"},
 ]
+pymdown-extensions = [
+    {file = "pymdown-extensions-7.0.tar.gz", hash = "sha256:d27a8bc8bb7ecac589e832465dbefe24d7fedd9792636c6d0ac521e5045bedc0"},
+    {file = "pymdown_extensions-7.0-py2.py3-none-any.whl", hash = "sha256:71cbc748789959d4b964fe8dc038f5436779d244399fd5ba3a0bbfe9a0e43b1f"},
+]
 pync = [
     {file = "pync-2.0.3.tar.gz", hash = "sha256:38b9e61735a3161f9211a5773c5f5ea698f36af4ff7f77fa03e8d1ff0caa117f"},
 ]
@@ -1322,6 +1397,10 @@ python-dateutil = [
 python-termstyle = [
     {file = "python-termstyle-0.1.10.tar.gz", hash = "sha256:f42a6bb16fbfc5e2c66d553e7ad46524ea833872f75ee5d827c15115fafc94e2"},
     {file = "python-termstyle-0.1.10.tgz", hash = "sha256:6faf42ba42f2826c38cf70dacb3ac51f248a418e48afc0e36593df11cf3ab1d2"},
+]
+pytkdocs = [
+    {file = "pytkdocs-0.3.0-py3-none-any.whl", hash = "sha256:62338e73b1950d3d0ab2785be9311919f44271d89fe959677e04e8f01aa5b6ad"},
+    {file = "pytkdocs-0.3.0.tar.gz", hash = "sha256:575ad6bb4c3a5b7b422ae08b4b557b7c411e89e54bc0535eb3cb610db1669c6e"},
 ]
 pyyaml = [
     {file = "PyYAML-5.3.1-cp27-cp27m-win32.whl", hash = "sha256:74809a57b329d6cc0fdccee6318f44b9b8649961fa73144a98735b0aaf029f1f"},

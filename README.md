@@ -1,15 +1,15 @@
 # Overview
 
-A wrapper around argparser to help build CLIs from functions. Uses typehints extensively.
+A wrapper around argparser to help build CLIs from functions. Uses type-hints extensively :snake:.
 
 [![PyPi Version](https://img.shields.io/pypi/v/arger.svg?style=flat)](https://pypi.python.org/pypi/arger)
 [![Python Version](https://img.shields.io/pypi/pyversions/returns.svg)](https://pypi.org/project/arger/)
 ![](https://github.com/jnoortheen/arger/workflows/test-and-publish/badge.svg)
 [![PyPI License](https://img.shields.io/pypi/l/arger.svg)](https://pypi.org/project/arger)
 
-# Setup
+# Setup 
 
-## Installation
+## :gear: Installation
 
 Install it directly into an activated virtual environment:
 
@@ -23,8 +23,9 @@ or add it to your [Poetry](https://poetry.eustace.io/) project:
 $ poetry add arger
 ```
 
-# Usage
+# :books: Usage
 - create a python file called test.py
+
 ```python
 from arger import Arger
 
@@ -43,11 +44,11 @@ if __name__ == '__main__':
 
 - run this normally with 
 
-```shell script
-$ python test.py 100 param2
+```sh
+python test.py 100 param2
 ```
 
-- Checkout [examples](./tests/examples) folder and documentation to see more of `arger` in action.
+- Checkout [examples](docs/examples) folder and documentation to see more of `arger` in action.
 
 # Alternatives
 

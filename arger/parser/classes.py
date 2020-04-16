@@ -26,8 +26,9 @@ class Option:
         Tries to be compatible to `ArgumentParser.add_argument
         https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_argument`_.
 
-        :param flags: Either a name or a list of option strings, e.g. -f, --foo.
-        :param default: The value produced if the argument is absent from the command line.
+        Args:
+            flags: Either a name or a list of option strings, e.g. -f, --foo.
+            default: The value produced if the argument is absent from the command line.
             * The default value assigned to a keyword argument helps determine
                 the type of option and action.
             * The default value is assigned directly to the parser's default for that option.
@@ -37,18 +38,18 @@ class Option:
                 * If the default value is a list, the action is append
                 (multiple instances of that option are permitted).
                 * Strings or None imply a store action.
-        :param type: The type to which the command-line argument should be converted.
-        :param help: A brief description of what the argument does.
-        :param metavar: A name for the argument in usage messages.
-        :param required: Whether or not the command-line option may be omitted (optionals only).
-        :param kwargs: will be passed onto parser.add_argument
+            type: The type to which the command-line argument should be converted.
+            help: A brief description of what the argument does.
+            metavar: A name for the argument in usage messages.
+            required: Whether or not the command-line option may be omitted (optionals only).
+            kwargs: will be passed onto parser.add_argument
 
-        :param nargs: The number of command-line arguments that should be consumed. nargs: to be generated from the type
-        :param dest: The name of the attribute to be added to the object returned by parse_args().
-        :param const: covered by type-hint and default value given
-        :param choices: covered by enum type
+            nargs: The number of command-line arguments that should be consumed. nargs: to be generated from the type
+            dest: The name of the attribute to be added to the object returned by parse_args().
+            const: covered by type-hint and default value given
+            choices: covered by enum type
 
-        :param action: The basic type of action to be taken when this argument is encountered at the command line.
+            action: The basic type of action to be taken when this argument is encountered at the command line.
         :type action: Union[str, Type[argparse.Action]]
         """
         name = kwargs.pop('name', None)

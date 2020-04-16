@@ -1,8 +1,14 @@
-# Usages
+# Multiple Commands
 
-1. ran help
-```shell script
-$ python 2_multi_functions.py -h
+in a file named `main.py`
+
+```python
+--8<-- "multi_functions.py"
+```
+
+## Run help
+```sh
+$ python main.py -h
 usage: pytest [-h] {create,remove,list} ...
 
 App Description goes here
@@ -17,9 +23,9 @@ commands:
     list                List all tests.
 ```
 
-1. ran create help
-```shell script
-$ python 2_multi_functions.py create -h
+## Run `create` help
+```sh
+$ python main.py create -h
 usage: pytest create [-h] name
 
 positional arguments:
@@ -29,9 +35,9 @@ optional arguments:
   -h, --help  show this help message and exit
 ```
 
-1. ran remove help
-```shell script
-$ python 2_multi_functions.py remove -h
+## Run `remove` help
+```sh
+$ python main.py remove -h
 usage: pytest remove [-h] [name [name ...]]
 
 positional arguments:
@@ -41,9 +47,9 @@ optional arguments:
   -h, --help  show this help message and exit
 ```
 
-1. ran list help
-```shell script
-$ python 2_multi_functions.py list -h
+## Run `list` help
+```sh
+$ python main.py list -h
 usage: pytest list [-h]
 
 optional arguments:
@@ -51,29 +57,29 @@ optional arguments:
 ```
 
 
-1. ran create
-```shell script
-$ python 2_multi_functions.py create direcory
+## Run `create`
+```sh
+$ python main.py create direcory
 name (<class 'str'>): direcory
 ```
 
 
-1. ran remove
-```shell script
-$ python 2_multi_functions.py remove direcory
+## Run `remove`
+```sh
+$ python main.py remove direcory
 name (<class 'tuple'>): ('direcory',)
 ```
 
 
-1. ran list
-```shell script
-$ python 2_multi_functions.py list
+## Run `list`
+```sh
+$ python main.py list
 container (<class 'list'>): []
 ```
 
-1. ran combined
-```shell script
-$ python 2_multi_functions.py create directory list
+## Run combined
+```sh
+$ python main.py create directory list
 usage: pytest [-h] {create,remove,list} ...
 pytest: error: unrecognized arguments: list
 ```

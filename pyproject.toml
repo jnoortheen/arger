@@ -72,6 +72,9 @@ beautifulsoup4 = "^4.9.0"
 mistune = "2.0.0a2"
 pytest-lazy-fixture = "^0.6.3"
 "delegator.py" = "^0.1.1"
+mkdocs-material = "^5.1.0"
+pymdown-extensions = "^7.0"
+mkdocstrings = "^0.10.3"
 
 [tool.black]
 

@@ -5,16 +5,22 @@ site_author: Noortheen Raja
 repo_url: https://github.com/jnoortheen/arger
 edit_uri: https://github.com/jnoortheen/arger/edit/master/docs
 
-theme: readthedocs
+theme: material
 
 markdown_extensions:
   - codehilite:
       linenums: true
+  - pymdownx.snippets:
+      base_path: docs/snippets
+  - pymdownx.emoji
 
-nav:
-- Home: index.md
-- Advanced: advanced.md
-- About:
-  - Release Notes: about/changelog.md
-  - Contributing: about/contributing.md
-  - License: about/license.md
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          rendering:
+            show_source: false
+      watch:
+        - arger
