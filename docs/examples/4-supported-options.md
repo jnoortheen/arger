@@ -5,57 +5,72 @@ in a file named `main.py`
 --8<-- "supported_options.py"
 ```
 
-## ran with both positional arguments
+## ran with valid arguments
 
 ```sh
-$ python single_function.py 10 p2
-kw1 (<class 'NoneType'>): None
-kw2 (<class 'bool'>): False
-param1 (<class 'int'>): 10
-param2 (<class 'str'>): p2
+$ python main.py cmd1 10 str1 tp1 tp2 tp3 vtp1 -t otp1 -t otp2 -o ostr -p 100 -a two
+a_tuple (<class 'tuple'>): ('tp1', 'tp2', 'tp3')
+a_var_tuple (<class 'tuple'>): ('vtp1',)
+an_enum (<enum 'Choice'>): Choice.one
+an_int (<class 'int'>): 10
+an_str (<class 'str'>): str1
+optional_int (<class 'int'>): 100
+optional_str (<class 'str'>): ostr
+optional_tpl (<class 'tuple'>): ('otp1', 'otp2')
 ```
 
 ##  ran empty
 ```sh
-$ python single_function.py
-usage: pytest [-h] [-k KW1] [-w] param1 param2
-pytest: error: the following arguments are required: param1, param2
+$ python main.py
 ```
 
-## ran help
+## ran `help`
 ```sh
-$ python single_function.py --help
-usage: pytest [-h] [-k KW1] [-w] param1 param2
+$ python main.py --help
+usage: pytest [-h] {cmd1,cmd2} ...
 
-Example function with types documented in the docstring.
-
-positional arguments:
-  param1             The first parameter.
-  param2             The second parameter.
+App Description goes here
 
 optional arguments:
-  -h, --help         show this help message and exit
-  -k KW1, --kw1 KW1
-  -w, --kw2
+  -h, --help   show this help message and exit
+
+commands:
+  {cmd1,cmd2}
+    cmd1       Example function with types documented in the docstring.
+    cmd2       A script with three optional values, no short option left for last value.
 ```
 
-## ran with invalid option
+## ran `cmd1` help
 ```sh
-$ python single_function.py --invalid
-usage: pytest [-h] [-k KW1] [-w] param1 param2
-pytest: error: the following arguments are required: param1, param2
+$ python main.py cmd1 --help
+usage: pytest cmd1 [-h] [-a {one,two}] [-o OPTIONAL_STR] [-p OPTIONAL_INT] [-t [OPTIONAL_TPL [OPTIONAL_TPL ...]]]
+                   an_int an_str a_tuple a_tuple a_tuple a_var_tuple [a_var_tuple ...]
+
+positional arguments:
+  an_int
+  an_str
+  a_tuple
+  a_var_tuple
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -a {one,two}, --an_enum {one,two}
+  -o OPTIONAL_STR, --optional_str OPTIONAL_STR
+  -p OPTIONAL_INT, --optional_int OPTIONAL_INT
+  -t [OPTIONAL_TPL [OPTIONAL_TPL ...]], --optional_tpl [OPTIONAL_TPL [OPTIONAL_TPL ...]]
 ```
 
-## ran with invalid type
+## ran `cmd2` help
 ```sh
-$ python single_function.py p1 p2
-usage: pytest [-h] [-k KW1] [-w] param1 param2
-pytest: error: argument param1: invalid int value: 'p1'
-```
+$ python main.py cmd2 --help
+usage: pytest cmd2 [-h] [-m] [-y] [--my] [a_list [a_list ...]]
 
-## ran with one argument missing
-```sh
-$ python single_function.py p1
-usage: pytest [-h] [-k KW1] [-w] param1 param2
-pytest: error: argument param1: invalid int value: 'p1'
+positional arguments:
+  a_list       catch all positional arguments
+
+optional arguments:
+  -h, --help   show this help message and exit
+  -m, --m_opt  the m_opt helptext
+  -y, --y_opt  the y_opt helptext
+  --my         the my helptext
 ```

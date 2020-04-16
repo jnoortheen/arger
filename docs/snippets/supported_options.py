@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List
+from typing import List, Tuple
 
 from arger import Arger
 from tests.utils import _reprint
@@ -16,13 +16,12 @@ container = []
 
 
 @arger.add_cmd
-def varargs(
+def cmd1(
     an_int: int,
     an_str: str,
-    a_tuple: List[str, str, str],
-    a_var_tuple: List[str, ...],
-    a_list: List[int],
-    an_enum=Enum.one,
+    a_tuple: Tuple[str, str, str],  # nargs: 3
+    a_var_tuple: Tuple[str, ...],  # nargs: + - one or more
+    an_enum=Choice.one,
     optional_str='',
     optional_int=0,
     optional_tpl=(),
@@ -32,19 +31,14 @@ def varargs(
 
 
 @arger.add_cmd
-def optstring3(m_opt=False, y_opt=False, my=False):
+def cmd2(
+    a_list: List[int], m_opt=False, y_opt=False, my=False,
+):
     """A script with three optional values, no short option left for last value.
+    :param a_list: catch all positional arguments
     :param m_opt: the m_opt helptext
     :param y_opt: the y_opt helptext
     :param my: the my helptext
-    """
-    _reprint(**locals())
-
-
-def optstring2(myoption=False, mysecondoption=False):
-    """A script with two optional values.
-    :param myoption: the myoption helptext
-    :param secondoption: the second helptext
     """
     _reprint(**locals())
 

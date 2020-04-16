@@ -53,7 +53,11 @@ def pytest_generate_tests(metafunc):
     if metafunc.function.__name__ == "test_example":
         idlist = []
         argvalues = []
-        for py_file, _, cmd, output in get_examples():
-            idlist.append(cmd)
+        for py_file, _, cmd, output in get_examples():  # type: (Path, str, str, str)
+            cmds = cmd.split()
+            cmds.pop(0)
+            cmds.pop(0)
+            cmds.insert(0, py_file.name)
+            idlist.append("-".join(cmds))
             argvalues.append((py_file, cmd, output))
         metafunc.parametrize("pyfile, cmd, expected", argvalues, ids=idlist)

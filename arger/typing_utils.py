@@ -1,5 +1,6 @@
 # pylint: disable = W0212
 import sys
+from typing import Any
 
 
 NEW_TYPING = sys.version_info[:3] >= (3, 7, 0)  # PEP 560
@@ -21,3 +22,25 @@ def match_types(tp, *matches) -> bool:
     :param matches:
     """
     return any([get_origin(m) is get_origin(tp) for m in matches])
+
+
+ARGS = '__args__'
+
+
+def unpack_type(tp, default=str) -> Any:
+    """Unpack subscripted type.
+
+    Args:
+        tp:
+        default:
+
+    Returns:
+        type inside the container type
+    """
+    if getattr(tp, ARGS, None) is not None:
+        inner_tp = getattr(tp, ARGS)
+        if match_types(tp, list):
+            if str(inner_tp[0]) != '~T':
+                return inner_tp[0]
+        return inner_tp
+    return default

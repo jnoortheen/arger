@@ -8,7 +8,7 @@ in a file named `main.py`
 
 ## Run help
 ```sh
-$ python 3_nested_commands.py -h
+$ python main.py -h
 usage: pytest [-h] [-v] [-l] [-o LOG_FILE] {create,remove,list} ...
 
 App Description goes here.
@@ -29,7 +29,7 @@ commands:
 
 ## Run create help
 ```sh
-$ python 3_nested_commands.py create -h
+$ python main.py create -h
 usage: pytest create [-h] name
 
 positional arguments:
@@ -41,7 +41,7 @@ optional arguments:
 
 ## Run remove help
 ```sh
-$ python 3_nested_commands.py remove -h
+$ python main.py remove -h
 usage: pytest remove [-h] name
 
 positional arguments:
@@ -53,7 +53,7 @@ optional arguments:
 
 ## Run list help
 ```sh
-$ python 3_nested_commands.py list -h
+$ python main.py list -h
 usage: pytest list [-h]
 
 optional arguments:
@@ -63,7 +63,7 @@ optional arguments:
 
 ## Run create
 ```sh
-$ python 3_nested_commands.py create direcory
+$ python main.py create direcory
 log (<class 'bool'>): False
 log_file (<class 'NoneType'>): None
 name (<class 'str'>): direcory
@@ -73,7 +73,7 @@ verbose (<class 'bool'>): False
 
 ## Run remove
 ```sh
-$ python 3_nested_commands.py remove direcory
+$ python main.py remove direcory
 log (<class 'bool'>): False
 log_file (<class 'NoneType'>): None
 name (<class 'str'>): direcory
@@ -83,7 +83,7 @@ verbose (<class 'bool'>): False
 
 ## Run list
 ```sh
-$ python 3_nested_commands.py list
+$ python main.py list
 container (<class 'list'>): []
 log (<class 'bool'>): False
 log_file (<class 'NoneType'>): None
@@ -92,7 +92,7 @@ verbose (<class 'bool'>): False
 
 ## Run combined
 ```sh
-$ python 3_nested_commands.py create directory list
+$ python main.py create directory list
 usage: pytest [-h] [-v] [-l] [-o LOG_FILE] {create,remove,list} ...
 pytest: error: unrecognized arguments: list
 ```
