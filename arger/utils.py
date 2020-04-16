@@ -17,7 +17,7 @@ def portable_argspec(func) -> Tuple[List[str], Dict[str, Any], Dict[str, Any]]:
     This function is portable between Python 2 and Python 3, and does some
     extra processing of the output from inspect.
     """
-    (argnames, _, _, defaults, _, _, annotations,) = inspect.getfullargspec(func)
+    (argnames, varargs, _, defaults, _, _, annotations) = inspect.getfullargspec(func)
 
     kw_params = {}
     if defaults:
@@ -26,7 +26,11 @@ def portable_argspec(func) -> Tuple[List[str], Dict[str, Any], Dict[str, Any]]:
             argnames[kw_boundary + idx]: val for idx, val in enumerate(defaults)
         }
         argnames = argnames[:kw_boundary]
-
+    if varargs:
+        argnames.append(varargs)
+        annotations[varargs] = Tuple[annotations.get(varargs, str)]
+    # if varkw:
+    #     kw_params['']
     return (
         argnames,
         kw_params,

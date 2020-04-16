@@ -1,4 +1,4 @@
-from collections import OrderedDict
+from collections import OrderedDict, namedtuple
 from typing import Dict, Tuple
 
 from arger.parser.docstring import parse_docstring
@@ -9,7 +9,40 @@ from .classes import Argument, Option
 from .utils import generate_options
 
 
-def prepare_arguments(func, param_docs,) -> Dict[str, Option]:
+Param = namedtuple('Param', ['name', 'type', 'help'])
+
+
+def to_dict(p: Param):
+    return p._asdict()
+
+
+def prepare_params(func, docs: Dict[str, str]):
+    (args, kwargs, annotations) = portable_argspec(func)
+
+    def get_param(param):
+        return Param(param, annotations.get(param, UNDEFINED), docs.get(param, ""))
+
+    return (
+        [get_param(param) for param in args],
+        [(get_param(param), default) for param, default in kwargs.items()],
+    )
+
+
+def create_option(param: Param, default, option_generator):
+    if isinstance(default, Argument):
+        default.flags = [param.name]
+    elif isinstance(default, Option):
+        if 'dest' not in default.kwargs:
+            default.kwargs['dest'] = param.name
+        if not default.flags:
+            default.set_flags(option_generator, param.name)
+    else:
+        default = Option(dest=param, default=default, **param._asdict())
+        default.set_flags(option_generator, param.name)
+    return default
+
+
+def prepare_arguments(func, param_docs) -> Dict[str, Option]:
     """Parse 'func' and adds parser arguments from function signature.
 
     :param func: Function's signature is used to create parser
@@ -38,33 +71,16 @@ def prepare_arguments(func, param_docs,) -> Dict[str, Option]:
         must refer to a keyword argument. All options must have a :param: line like
         this.
     """
-    (positional_params, kw_params, annotations) = portable_argspec(func)
+    positional_params, kw_params = prepare_params(func, param_docs)
     option_generator = generate_options()
     next(option_generator)
 
-    def get_args(param):
-        return dict(
-            flags=[param],
-            help=param_docs.get(param, ""),
-            type=annotations.get(param, UNDEFINED),
-        )
-
     arguments: Dict[str, Option] = OrderedDict()
     for param in positional_params:
-        arguments[param] = Argument(**get_args(param))
+        arguments[param.name] = Argument(**param._asdict())
 
-    for param, default in kw_params.items():
-        if isinstance(default, Argument):
-            default.flags = [param]
-        elif isinstance(default, Option):
-            if 'dest' not in default.kwargs:
-                default.kwargs['dest'] = param
-            if not default.flags:
-                default.set_flags(option_generator)
-        else:
-            default = Option(dest=param, default=default, **get_args(param))
-            default.set_flags(option_generator)
-        arguments[param] = default
+    for param, default in kw_params:
+        arguments[param.name] = create_option(param, default, option_generator)
     return arguments
 
 

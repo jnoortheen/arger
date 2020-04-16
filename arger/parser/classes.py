@@ -41,28 +41,22 @@ class Option:
                 * If the default value is a list, the action is append
                 (multiple instances of that option are permitted).
                 * Strings or None imply a store action.
-        :param type_: The type to which the command-line argument should be converted.
-        :param help_: A brief description of what the argument does.
+        :param type: The type to which the command-line argument should be converted.
+        :param help: A brief description of what the argument does.
         :param metavar: A name for the argument in usage messages.
         :param required: Whether or not the command-line option may be omitted (optionals only).
         :param kwargs: will be passed onto parser.add_argument
+
+        :param nargs: The number of command-line arguments that should be consumed. nargs: to be generated from the type
+        :param dest: The name of the attribute to be added to the object returned by parse_args().
+        :param const: covered by type-hint and default value given
+        :param choices: covered by enum type
+
+        :param action: The basic type of action to be taken when this argument is encountered at the command line.
+        :type action: Union[str, Type[argparse.Action]]
         """
-
-        # :param nargs: The number of command-line arguments that should be consumed.
-        # nargs: to be generated from the type
-
-        #  action: Union[str, Type[argparse.Action]]
-        # :param action: The basic type of action to be taken when this argument is encountered at the command line.
-
-        #         :param dest: The name of the attribute to be added to the object returned by parse_args().
-
-        #         :param const: A constant value required by some action and nargs selections.
-        # will be covered by type-hint and default value given
-
-        #         :param choices: A container of the allowable values for the argument.
-        # will covered by enum type
-
-        self.flags = flags or []
+        name = kwargs.pop('name', None)
+        self.flags = flags or ([name] if name else [])
 
         type_ = kwargs.pop('type', UNDEFINED)
         if default is not UNDEFINED:
@@ -86,10 +80,10 @@ class Option:
     def __repr__(self):
         return f'{self.__class__.__name__}: {self.flags}, {repr(self.kwargs)}'
 
-    def set_flags(self, option_generator):
+    def set_flags(self, option_generator, name: str):
         hlp = self.kwargs.pop('help').split()
         # generate flags
-        self.flags = generate_flags(self.flags[0], hlp, option_generator)
+        self.flags = generate_flags(name, hlp, option_generator)
         self.kwargs['help'] = " ".join(hlp)
 
 
