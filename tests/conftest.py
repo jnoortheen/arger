@@ -13,7 +13,7 @@ def get_text(elem) -> str:
 
 def get_soup(file: Path):
     html = mistune.html(file.read_text())
-    return BeautifulSoup(html, 'html.parser')
+    return BeautifulSoup(html, "html.parser")
 
 
 def get_scenarios(soup) -> Iterator[Tuple[str, str, str]]:
@@ -24,7 +24,7 @@ def get_scenarios(soup) -> Iterator[Tuple[str, str, str]]:
         yield title.text, cmd, out
 
 
-PY_FILE = re.compile(r'[\"](.+\.py)')
+PY_FILE = re.compile(r"[\"](.+\.py)")
 
 
 def get_pyfile(soup):
@@ -34,14 +34,14 @@ def get_pyfile(soup):
 
 def parse_example(md_file: Path):
     soup = get_soup(md_file)
-    snippets = md_file.parent.parent.joinpath('snippets')
+    snippets = md_file.parent.parent.joinpath("snippets")
     py_file = snippets / get_pyfile(soup)
     for scenario, cmd, output in get_scenarios(soup):
         yield py_file, scenario, cmd, output
 
 
 def get_examples():
-    path = Path(__file__).parent.parent.joinpath('docs', 'examples')
+    path = Path(__file__).parent.parent.joinpath("docs", "examples")
     examples = []
     for file in path.rglob("*.md"):
         examples.extend(parse_example(file))
@@ -56,4 +56,4 @@ def pytest_generate_tests(metafunc):
         for py_file, _, cmd, output in get_examples():
             idlist.append(cmd)
             argvalues.append((py_file, cmd, output))
-        metafunc.parametrize('pyfile, cmd, expected', argvalues, ids=idlist)
+        metafunc.parametrize("pyfile, cmd, expected", argvalues, ids=idlist)

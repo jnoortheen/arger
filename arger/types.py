@@ -1,7 +1,7 @@
 from typing import Any, Callable, TypeVar
 
 
-F = TypeVar('F', bound=Callable[..., Any])
+F = TypeVar("F", bound=Callable[..., Any])
 
 UNDEFINED = object()
 """sometimes the value could be None. we need this to distinguish such values."""
@@ -20,7 +20,7 @@ class VarArg:
 
     def __repr__(self):
         tp = getattr(self.type, "__name__", self.type)
-        return f'{self.__class__.__name__}[{tp}]'
+        return f"{self.__class__.__name__}[{tp}]"
 
     def __eq__(self, other):
         return repr(self) == repr(other)

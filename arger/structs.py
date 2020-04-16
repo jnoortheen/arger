@@ -9,8 +9,8 @@ class Command:
     def __init__(self, fn: Optional[F] = None):
         self._fn = fn  # only the root element may not have a function associated.
         self.name: Optional[str] = fn.__name__ if fn else None
-        self.desc, self.args = opterate(self._fn) if fn else ('', dict())
-        self._sub: Dict[str, 'Command'] = OrderedDict()
+        self.desc, self.args = opterate(self._fn) if fn else ("", dict())
+        self._sub: Dict[str, "Command"] = OrderedDict()
 
     def is_valid(self) -> bool:
         return bool(self._fn or len(self._sub))
@@ -34,13 +34,13 @@ class Command:
             if not args:
                 for k in list(kwargs):
                     if k in self.args and isinstance(
-                        self.args[k].kwargs.get('type'), VarArg
+                        self.args[k].kwargs.get("type"), VarArg
                     ):
                         args = kwargs.pop(k)
             return self._fn(*args, **kwargs)
         raise NotImplementedError("No function to dispatch")
 
-    def add(self, func: F) -> 'Command':
+    def add(self, func: F) -> "Command":
         cmd = Command(func)
         if cmd.name in self._sub:
             raise KeyError(f"Already defined a command named {cmd.name}")

@@ -15,12 +15,12 @@ class TypeAction(argparse.Action):
             typ = get_origin(typ)
 
             if typ in {list, tuple} or isinstance(typ, (VarArg, VarKw)):
-                kwargs['nargs'] = '*'
+                kwargs["nargs"] = "*"
 
             if isclass(typ) and issubclass(typ, Enum):
                 kwargs.setdefault("choices", [e.name for e in typ])
 
-            kwargs['type'] = typ
+            kwargs["type"] = typ
         super().__init__(*args, **kwargs)
 
     def __call__(self, parser, namespace, values, option_string=None):

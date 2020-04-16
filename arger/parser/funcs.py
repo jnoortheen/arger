@@ -9,7 +9,7 @@ from .classes import Argument, Option
 from .utils import generate_options
 
 
-Param = namedtuple('Param', ['name', 'type', 'help'])
+Param = namedtuple("Param", ["name", "type", "help"])
 
 
 def to_dict(p: Param):
@@ -32,8 +32,8 @@ def create_option(param: Param, default, option_generator):
     if isinstance(default, Argument):
         default.flags = [param.name]
     elif isinstance(default, Option):
-        if 'dest' not in default.kwargs:
-            default.kwargs['dest'] = param.name
+        if "dest" not in default.kwargs:
+            default.kwargs["dest"] = param.name
         if not default.flags:
             default.set_flags(option_generator, param.name)
     else:

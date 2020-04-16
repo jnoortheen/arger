@@ -19,12 +19,12 @@ def tuple_type(request):
 
 
 @mark.parametrize(
-    'tp, tps, expected',
+    "tp, tps, expected",
     [
-        (lz('list_type'), lz('list_type'), True),
-        (lz('list_type'), lz('tuple_type'), False),
-        (lz('tuple_type'), lz('tuple_type'), True),
-        (lz('tuple_type'), lz('list_type'), False),
+        (lz("list_type"), lz("list_type"), True),
+        (lz("list_type"), lz("tuple_type"), False),
+        (lz("tuple_type"), lz("tuple_type"), True),
+        (lz("tuple_type"), lz("list_type"), False),
     ],
 )
 def test_match_types(tp, tps, expected):

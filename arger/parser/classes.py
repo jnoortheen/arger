@@ -52,10 +52,10 @@ class Option:
             action: The basic type of action to be taken when this argument is encountered at the command line.
         :type action: Union[str, Type[argparse.Action]]
         """
-        name = kwargs.pop('name', None)
+        name = kwargs.pop("name", None)
         self.flags = flags or ([name] if name else [])
 
-        tp = kwargs.pop('type', UNDEFINED)
+        tp = kwargs.pop("type", UNDEFINED)
         if default is not UNDEFINED:
             kwargs["default"] = default
 
@@ -63,12 +63,12 @@ class Option:
                 tp = type(default)
 
         action = get_action(tp, default)
-        kwargs.setdefault('action', action)
+        kwargs.setdefault("action", action)
         if tp is not UNDEFINED and action not in {  # bool actions dont need type
-            'store_false',
-            'store_true',
+            "store_false",
+            "store_true",
         }:
-            kwargs['type'] = tp
+            kwargs["type"] = tp
 
         self.kwargs = kwargs
 
@@ -76,13 +76,13 @@ class Option:
         return parser.add_argument(*self.flags, **self.kwargs)
 
     def __repr__(self):
-        return f'{self.__class__.__name__}: {self.flags}, {repr(self.kwargs)}'
+        return f"{self.__class__.__name__}: {self.flags}, {repr(self.kwargs)}"
 
     def set_flags(self, option_generator, name: str):
-        hlp = self.kwargs.pop('help').split()
+        hlp = self.kwargs.pop("help").split()
         # generate flags
         self.flags = generate_flags(name, hlp, option_generator)
-        self.kwargs['help'] = " ".join(hlp)
+        self.kwargs["help"] = " ".join(hlp)
 
 
 class Argument(Option):

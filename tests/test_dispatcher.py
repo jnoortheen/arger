@@ -21,7 +21,7 @@ def args(cmd: str):
 
 
 def test_example(capsys, arger, args, expected: str):
-    if "error" in expected or expected.startswith('usage:'):
+    if "error" in expected or expected.startswith("usage:"):
         with pytest.raises(SystemExit):
             arger.run(*args, capture_sys=False)  # start function
     else:

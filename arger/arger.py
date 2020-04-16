@@ -18,8 +18,8 @@ def _cmd_prepare(parser, cmd: Command):
     return cmd_parser
 
 
-CMD = 'command'
-CMD_TITLE = 'commands'
+CMD = "command"
+CMD_TITLE = "commands"
 
 
 def _add_parsers(parser: "Arger", cmd: Command):
@@ -72,7 +72,7 @@ class Arger(ArgumentParser):
         return self._command.run(**kwargs)
 
     @classmethod
-    def init(cls, **kwargs) -> Callable[[Callable], 'Arger']:
+    def init(cls, **kwargs) -> Callable[[Callable], "Arger"]:
         """Create parser from function as a decorator.
 
         :param func: main function that has description and has sub-command level arguments
