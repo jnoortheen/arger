@@ -5,7 +5,7 @@ import sys
 NEW_TYPING = sys.version_info[:3] >= (3, 7, 0)  # PEP 560
 
 
-def _origin(tp):
+def get_origin(tp):
     """Return x.__origin__ or type(x) based on the Python version."""
     if hasattr(tp, "_gorg"):
         return tp._gorg
@@ -20,4 +20,4 @@ def match_types(tp, *matches) -> bool:
     :param tp:
     :param matches:
     """
-    return any([_origin(m) is _origin(tp) for m in matches])
+    return any([get_origin(m) is get_origin(tp) for m in matches])

@@ -2,7 +2,7 @@ from collections import OrderedDict
 from typing import Dict, Optional
 
 from .parser import opterate
-from .types import F
+from .types import F, VarArg
 
 
 class Command:
@@ -15,10 +15,12 @@ class Command:
     def is_valid(self) -> bool:
         return bool(self._fn or len(self._sub))
 
+    # def callback(self, ns):
+    #     self.namespace = ns
+
     def run(self, command: Optional[str] = None, **kwargs):
-        args = set(self.args)
-        root_kwargs = {k: v for k, v in kwargs.items() if k in args}
-        cmd_kwargs = {k: v for k, v in kwargs.items() if k not in args}
+        root_kwargs = {k: v for k, v in kwargs.items() if k in set(self.args)}
+        cmd_kwargs = {k: v for k, v in kwargs.items() if k not in set(self.args)}
 
         results = OrderedDict()
         if root_kwargs and self.name:
@@ -29,6 +31,12 @@ class Command:
 
     def __call__(self, *args, **kwargs):
         if self._fn:
+            if not args:
+                for k in list(kwargs):
+                    if k in self.args and isinstance(
+                        self.args[k].kwargs.get('type'), VarArg
+                    ):
+                        args = kwargs.pop(k)
             return self._fn(*args, **kwargs)
         raise NotImplementedError("No function to dispatch")
 

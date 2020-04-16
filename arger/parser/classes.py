@@ -1,12 +1,10 @@
 import argparse
-from enum import Enum
-from inspect import isclass
-from typing import Any, List, Optional, Tuple
+from typing import Any, List, Optional
 
 from arger.parser.utils import generate_flags
 
 from ..types import UNDEFINED
-from ..typing_utils import match_types
+from .actions import TypeAction
 
 
 def get_action(
@@ -16,9 +14,7 @@ def get_action(
         return "store_true"
     if default is True:
         return "store_false"
-    if (_type is not UNDEFINED) and match_types(_type, (List, Tuple)):  # type: ignore
-        return "append"
-    return "store"
+    return TypeAction
 
 
 class Option:
@@ -58,19 +54,20 @@ class Option:
         name = kwargs.pop('name', None)
         self.flags = flags or ([name] if name else [])
 
-        type_ = kwargs.pop('type', UNDEFINED)
+        tp = kwargs.pop('type', UNDEFINED)
         if default is not UNDEFINED:
             kwargs["default"] = default
 
-            if type_ is UNDEFINED and default is not None:
-                type_ = type(default)
+            if tp is UNDEFINED and default is not None:
+                tp = type(default)
 
-        kwargs.setdefault('action', get_action(type_, default))
-
-        if isclass(type_) and issubclass(type_, Enum):
-            kwargs.setdefault("choices", [e.value for e in type_])
-        elif (type_ is not UNDEFINED) and type_ != bool:
-            kwargs.setdefault("type", type_)
+        action = get_action(tp, default)
+        kwargs.setdefault('action', action)
+        if tp is not UNDEFINED and action not in {  # bool actions dont need type
+            'store_false',
+            'store_true',
+        }:
+            kwargs['type'] = tp
 
         self.kwargs = kwargs
 

@@ -25,7 +25,13 @@ CMD_TITLE = 'commands'
 def _add_parsers(parser: "Arger", cmd: Command):
     commands = list(cmd)
     if commands:
-        subparser = parser.add_subparsers(title=CMD_TITLE, dest=CMD)
+        subparser = parser.add_subparsers(
+            title=CMD_TITLE,  # cmd.name
+            dest=CMD,  # cmd.name,
+            # action=CommandAction,
+            # description=cmd.desc,
+            # type=cmd.callback,
+        )
         for _, sub in commands:
             cmd_parser = _cmd_prepare(subparser, sub)
             _add_parsers(cmd_parser, sub)  # recursively add any nested commands

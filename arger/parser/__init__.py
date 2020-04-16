@@ -1,1 +1,1 @@
-from .parser import opterate
+from .funcs import opterate

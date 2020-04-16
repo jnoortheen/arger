@@ -1,10 +1,10 @@
+import inspect
 from collections import OrderedDict, namedtuple
-from typing import Dict, Tuple
+from typing import Any, Dict, List, Tuple
 
 from arger.parser.docstring import parse_docstring
-from arger.utils import portable_argspec
 
-from ..types import UNDEFINED
+from ..types import UNDEFINED, VarArg, VarKw
 from .classes import Argument, Option
 from .utils import generate_options
 
@@ -37,7 +37,7 @@ def create_option(param: Param, default, option_generator):
         if not default.flags:
             default.set_flags(option_generator, param.name)
     else:
-        default = Option(dest=param, default=default, **param._asdict())
+        default = Option(dest=param.name, default=default, **param._asdict())
         default.set_flags(option_generator, param.name)
     return default
 
@@ -87,3 +87,42 @@ def prepare_arguments(func, param_docs) -> Dict[str, Option]:
 def opterate(func) -> Tuple[str, Dict[str, Option]]:
     description, param_docs = parse_docstring(func.__doc__)
     return description, prepare_arguments(func, param_docs)
+
+
+def portable_argspec(func) -> Tuple[List[str], Dict[str, Any], Dict[str, Any]]:
+    """Return function signature.
+
+    given a function, return a tuple of
+    (positional_params, keyword_params, varargs, defaults, annotations)
+    where
+    * positional_params is a list of parameters that don't have default values
+    * keyword_params is a list of parameters that have default values
+    * varargs is the string name for variable arguments
+    * defaults is a dict of default values for the keyword parameters
+    * annotations is a dictionary of param_name: annotation pairs
+        it may be empty, and on python 2 will always be empty.
+    This function is portable between Python 2 and Python 3, and does some
+    extra processing of the output from inspect.
+    """
+    (argnames, varargs, varkw, defaults, _, _, annotations) = inspect.getfullargspec(
+        func
+    )
+
+    kw_params: Dict[str, Any] = OrderedDict()
+    if defaults:
+        kw_boundary = len(argnames) - len(defaults)
+        kw_params = {
+            argnames[kw_boundary + idx]: val for idx, val in enumerate(defaults)
+        }
+        argnames = argnames[:kw_boundary]
+    if varargs:
+        argnames.append(varargs)
+        annotations[varargs] = VarArg(annotations.get(varargs, str))
+    if varkw:
+        argnames.append(varkw)
+        annotations[varkw] = VarKw(annotations.get(varkw, str))
+    return (
+        argnames,
+        kw_params,
+        annotations,
+    )
