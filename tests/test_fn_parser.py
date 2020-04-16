@@ -1,6 +1,8 @@
 from typing import Tuple
 
 from arger.parser import opterate
+from arger.parser.actions import TypeAction
+from arger.types import VarArg
 
 from .utils import _reprint
 
@@ -17,19 +19,24 @@ def main(param1: int, param2: str, kw1=None, kw2=False, *args: int):
 def test_opterate():
     doc, args = opterate(func=main)
     assert doc == "Example function with types documented in the docstring."
-    assert list(args) == ['param1', 'param2', 'args', 'kw1', 'kw2']
+    exp_args = ['param1', 'param2', 'args', 'kw1', 'kw2']
+    assert list(args) == exp_args
 
-    assert [v.flags for v in args.values()] == [
+    exp_flags = [
         ['param1'],
         ['param2'],
         ['args'],
         ['-k', '--kw1'],
         ['-w', '--kw2'],
     ]
-    assert [v.kwargs for v in args.values()] == [
-        {'action': 'store', 'help': 'The first parameter.', 'type': int,},
-        {'action': 'store', 'help': 'The second parameter.', 'type': str,},
-        {'action': 'store', 'help': '', 'type': Tuple[int]},
-        {'action': 'store', 'default': None, 'dest': 'kw1', 'help': '',},
+    exp_kwargs = [
+        {'action': TypeAction, 'help': 'The first parameter.', 'type': int,},
+        {'action': TypeAction, 'help': 'The second parameter.', 'type': str,},
+        {'action': TypeAction, 'help': '', 'type': VarArg(int)},
+        {'action': TypeAction, 'default': None, 'dest': 'kw1', 'help': '',},
         {'action': 'store_true', 'default': False, 'dest': 'kw2', 'help': '',},
     ]
+
+    for idx, arg in enumerate(args.values()):
+        assert arg.flags == exp_flags[idx]
+        assert arg.kwargs == exp_kwargs[idx]

@@ -13,7 +13,7 @@ optional arguments:
 commands:
   {create,remove,list}
     create              Create new test.
-    remove              Remove a test.
+    remove              Remove a test with variadic argument.
     list                List all tests.
 ```
 
@@ -32,10 +32,10 @@ optional arguments:
 1. ran remove help
 ```shell script
 $ python 2_multi_functions.py remove -h
-usage: pytest remove [-h] name
+usage: pytest remove [-h] [name [name ...]]
 
 positional arguments:
-  name        Name of the test
+  name        tests to remove
 
 optional arguments:
   -h, --help  show this help message and exit
@@ -61,7 +61,7 @@ name (<class 'str'>): direcory
 1. ran remove
 ```shell script
 $ python 2_multi_functions.py remove direcory
-name (<class 'str'>): direcory
+name (<class 'tuple'>): ('direcory',)
 ```
 
 

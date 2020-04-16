@@ -18,12 +18,12 @@ def create(name: str):
 
 
 @arger.add_cmd
-def remove(name: str):
-    """Remove a test.
+def remove(*name: str):
+    """Remove a test with variadic argument.
 
-    :param name: Name of the test
+    :param name: tests to remove
     """
-    if remove in container:
+    if name in container:
         container.remove(remove)
     _reprint(**locals())
 
