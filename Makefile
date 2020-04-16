@@ -87,7 +87,7 @@ PYTEST_OPTIONS := --random --random-seed=$(RANDOM_SEED)
 ifdef DISABLE_COVERAGE
 PYTEST_OPTIONS += --no-cov --disable-warnings
 endif
-PYTEST_RERUN_OPTIONS := --last-failed --exitfirst
+PYTEST_RERUN_OPTIONS := --last-failed --exitfirst -vvv
 
 .PHONY: test
 test: test-all ## Run unit and integration tests
