@@ -1,8 +1,10 @@
-from typing import Tuple
+import pytest
 
 from arger.parser import opterate
 from arger.parser.actions import TypeAction
-from arger.types import VarArg
+from arger.parser.funcs import Param, create_option
+from arger.parser.utils import get_option_generator
+from arger.types import UNDEFINED, VarArg
 
 from .utils import _reprint
 
@@ -40,3 +42,23 @@ def test_opterate():
     for idx, arg in enumerate(args.values()):
         assert arg.flags == exp_flags[idx]
         assert arg.kwargs == exp_kwargs[idx]
+
+
+@pytest.fixture
+def gen_options():
+    return get_option_generator()
+
+
+@pytest.fixture
+def param(name, tp=UNDEFINED, hlp=''):
+    return Param(name, tp, hlp)
+
+
+@pytest.mark.parametrize(
+    'name, default, expected', [('an_int', 10, ''),],
+)
+def test_create_option(
+    gen_options, param, default, expected,
+):
+    option = create_option(param, default, gen_options)
+    assert str(option) == expected
