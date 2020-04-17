@@ -2,9 +2,9 @@ import sys
 from argparse import ArgumentParser
 from typing import Any, Callable, Dict, Optional
 
-from .parser.classes import Option
-from .structs import Command
-from .types import F
+from arger.parser.classes import Option
+from arger.structs import Command
+from arger.types import F
 
 
 def _add_args(parser, args: Dict[str, Option]):

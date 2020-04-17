@@ -1,4 +1,5 @@
 import argparse
+import inspect
 from typing import Any, List, Optional
 
 from arger.parser.utils import generate_flags
@@ -75,7 +76,15 @@ class Option:
     def add(self, parser: argparse.ArgumentParser):
         return parser.add_argument(*self.flags, **self.kwargs)
 
+    @property
+    def _kwargs_repr_(self):
+        return {
+            k: f"`{val.__name__}" if inspect.isclass(val) else val
+            for k, val in self.kwargs.items()
+        }
+
     def __repr__(self):
+        """helps during tests"""
         return f"{self.__class__.__name__}: {self.flags}, {repr(self.kwargs)}"
 
     def set_flags(self, option_generator, name: str):

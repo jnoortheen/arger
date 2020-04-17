@@ -1,9 +1,9 @@
 from typing import Any, Callable, TypeVar
 
 
-F = TypeVar("F", bound=Callable[..., Any])
+F = TypeVar("F", bound=Callable[..., Any])  # decorator
 
-UNDEFINED = object()
+UNDEFINED = object()  # singleton
 """sometimes the value could be None. we need this to distinguish such values."""
 
 

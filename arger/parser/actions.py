@@ -29,10 +29,13 @@ class TypeAction(argparse.Action):
                 if match_types(typ, list):
                     origin = inner_type
                 else:  # tuple
+                    # origin = inner_type[0] if len(set(inner_type)) == 1 else str
                     origin = str
-                self.container_type = typ
+                    self.container_type = lambda x: tuple(x)
             if isclass(origin) and issubclass(origin, Enum):
                 kwargs.setdefault("choices", [e.name for e in typ])
+                origin = str
+                self.container_type = lambda x: typ[x]
 
             kwargs["type"] = origin
         super().__init__(*args, **kwargs)
@@ -43,8 +46,8 @@ class TypeAction(argparse.Action):
         #         items = _copy_items(items)
         #         items.append(self.const)
         #         setattr(namespace, self.dest, items)
-        if self.container_type and match_types(self.container_type, tuple):
-            values = tuple(values)
+        if self.container_type:
+            values = self.container_type(values)
         setattr(namespace, self.dest, values)
 
 
