@@ -1,17 +1,25 @@
 import argparse
-from enum import Enum
-from inspect import isclass
-from typing import Any, List, Tuple, Union
+from typing import Any, Tuple, Union
 
 from ..types import UNDEFINED, VarArg, VarKw
-from ..typing_utils import ARGS, get_origin, match_types, unpack_type
+from ..typing_utils import (
+    cast,
+    get_inner_args,
+    get_origin,
+    is_enum,
+    is_iterable,
+    is_tuple,
+    unpack_type,
+)
 
 
-def get_nargs(typ: Any) -> Union[int, str]:
-    if match_types(typ, Tuple) and hasattr(typ, ARGS) and getattr(typ, ARGS):
-        args = getattr(typ, ARGS)
-        return '+' if (... in args) else len(args)
-    return "*"
+def get_nargs(typ: Any) -> Tuple[Any, Union[int, str]]:
+    inner = unpack_type(typ)
+    if is_tuple(typ) and get_inner_args(typ):
+        args = get_inner_args(typ)
+        inner = inner if len(set(args)) == 1 else str
+        return inner, '+' if (... in args) else len(args)
+    return inner, "*"
 
 
 class TypeAction(argparse.Action):
@@ -19,36 +27,28 @@ class TypeAction(argparse.Action):
 
     def __init__(self, *args, **kwargs):
         typ = kwargs.pop("type", UNDEFINED)
-        self.container_type = None
+        self.orig_type = typ
         if typ is not UNDEFINED:
             origin = get_origin(typ)
+            if is_iterable(origin) or isinstance(typ, (VarArg, VarKw)):
+                origin, kwargs["nargs"] = get_nargs(typ)
 
-            if origin in {list, tuple} or isinstance(origin, (VarArg, VarKw)):
-                kwargs["nargs"] = get_nargs(typ)
-                inner_type = unpack_type(typ)
-                if match_types(typ, list):
-                    origin = inner_type
-                else:  # tuple
-                    # origin = inner_type[0] if len(set(inner_type)) == 1 else str
-                    origin = str
-                    self.container_type = lambda x: tuple(x)
-            if isclass(origin) and issubclass(origin, Enum):
-                kwargs.setdefault("choices", [e.name for e in typ])
+            if is_enum(origin):
+                kwargs.setdefault("choices", [e.name for e in origin])
                 origin = str
-                self.container_type = lambda x: typ[x]
 
             kwargs["type"] = origin
         super().__init__(*args, **kwargs)
 
     def __call__(self, parser, namespace, values, option_string=None):
-        #     def __call__(self, parser, namespace, values, option_string=None):
-        #         items = getattr(namespace, self.dest, None)
-        #         items = _copy_items(items)
-        #         items.append(self.const)
-        #         setattr(namespace, self.dest, items)
-        if self.container_type:
-            values = self.container_type(values)
-        setattr(namespace, self.dest, values)
+        if is_iterable(self.orig_type):
+            items = getattr(namespace, self.dest, ()) or ()
+            items = list(items)
+            items.extend(values)
+            vals = items
+        else:
+            vals = values
+        setattr(namespace, self.dest, cast(self.orig_type, vals))
 
 
 # class CommandAction(argparse._SubParsersAction):

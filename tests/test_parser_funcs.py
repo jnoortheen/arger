@@ -21,11 +21,11 @@ def test_opterate():
     assert list(args) == exp_args
 
     exp_flags = [
-        ["param1"],
-        ["param2"],
-        ["args"],
-        ["-k", "--kw1"],
-        ["-w", "--kw2"],
+        ("param1",),
+        ("param2",),
+        ("args",),
+        ("-k", "--kw1"),
+        ("-w", "--kw2"),
     ]
     exp_kwargs = [
         {"action": TypeAction, "help": "The first parameter.", "type": int,},

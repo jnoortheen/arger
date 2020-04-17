@@ -10,16 +10,15 @@ UNDEFINED = object()  # singleton
 class VarArg:
     """Represent variadic arguent."""
 
-    container: Any = tuple
+    __origin__: Any = tuple
+    __args__ = ()
 
     def __init__(self, tp):
-        self.type = tp
-
-    def __call__(self, *args, **kwargs):
-        return self.type(*args, **kwargs)
+        self.__args__ = (tp,)
 
     def __repr__(self):
-        tp = getattr(self.type, "__name__", self.type)
+        tp = self.__args__[0]
+        tp = getattr(tp, "__name__", tp)
         return f"{self.__class__.__name__}[{tp}]"
 
     def __eq__(self, other):
@@ -32,4 +31,4 @@ class VarArg:
 class VarKw(VarArg):
     """Represent variadic keyword argument."""
 
-    container = dict
+    __original__ = dict

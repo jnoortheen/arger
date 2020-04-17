@@ -64,7 +64,7 @@ optional_tpl (<class 'tuple'>): ()
 ## ran `cmd1` with valid arguments
 
 ```sh
-$ python main.py cmd1 10 str1 tp1 tp2 tp3 vtp1 -t otp1 otp2 -o ostr -p 100 -a two
+$ python main.py cmd1 10 str1 tp1 tp2 tp3 vtp1 -t otp1 otp2 -t otp3 -o ostr -p 100 -a two
 a_tuple (<class 'tuple'>): ('tp1', 'tp2', 'tp3')
 a_var_tuple (<class 'tuple'>): ('vtp1',)
 an_enum (<enum 'Choice'>): Choice.two
@@ -72,7 +72,7 @@ an_int (<class 'int'>): 10
 an_str (<class 'str'>): str1
 optional_int (<class 'int'>): 100
 optional_str (<class 'str'>): ostr
-optional_tpl (<class 'tuple'>): ('otp1', 'otp2')
+optional_tpl (<class 'tuple'>): ('otp1', 'otp2', 'otp3')
 ```
 
 ## ran `cmd2` help

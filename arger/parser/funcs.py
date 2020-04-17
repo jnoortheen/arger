@@ -12,10 +12,6 @@ from .utils import get_option_generator
 Param = namedtuple("Param", ["name", "type", "help"])
 
 
-def to_dict(p: Param):
-    return p._asdict()
-
-
 def prepare_params(func, docs: Dict[str, str]):
     (args, kwargs, annotations) = portable_argspec(func)
 
@@ -30,16 +26,25 @@ def prepare_params(func, docs: Dict[str, str]):
 
 def create_option(param: Param, default, option_generator):
     if isinstance(default, Argument):
-        default.flags = [param.name]
+        option = default
+        default.update_flags(param.name)
+        default.update(param.type)
     elif isinstance(default, Option):
-        if "dest" not in default.kwargs:
-            default.kwargs["dest"] = param.name
-        if not default.flags:
-            default.set_flags(option_generator, param.name)
+        option = default
+        option.update_flags(param.name, option_generator)
+        option.update(param.type)
     else:
-        default = Option(dest=param.name, default=default, **param._asdict())
-        default.set_flags(option_generator, param.name)
-    return default
+        option = Option(help=param.help)
+        option.update_flags(param.name, option_generator)
+        option.update(param.type, default)
+    return option
+
+
+def create_argument(param: Param):
+    arg = Argument(help=param.help)
+    arg.update_flags(param.name)
+    arg.update(tp=param.type)
+    return arg
 
 
 def prepare_arguments(func, param_docs) -> Dict[str, Option]:
@@ -49,7 +54,7 @@ def prepare_arguments(func, param_docs) -> Dict[str, Option]:
 
     arguments: Dict[str, Option] = OrderedDict()
     for param in positional_params:
-        arguments[param.name] = Argument(**param._asdict())
+        arguments[param.name] = create_argument(param)
 
     for param, default in kw_params:
         arguments[param.name] = create_option(param, default, option_generator)

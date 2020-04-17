@@ -1,5 +1,7 @@
 # pylint: disable = W0212
 import sys
+from enum import Enum
+from inspect import isclass
 from typing import Any, List, Set, Tuple
 
 
@@ -37,8 +39,12 @@ def match_types(tp, *matches) -> bool:
 ARGS = '__args__'
 
 
+def get_inner_args(tp):
+    return getattr(tp, ARGS, ())
+
+
 def unpack_type(tp, default=str) -> Any:
-    """Unpack subscripted type.
+    """Unpack subscripted type for use with argparser.
 
     Args:
         tp:
@@ -47,10 +53,37 @@ def unpack_type(tp, default=str) -> Any:
     Returns:
         type inside the container type
     """
-    if getattr(tp, ARGS, None) is not None:
+    if get_inner_args(tp):
         inner_tp = getattr(tp, ARGS)
-        if match_types(tp, list):
-            if str(inner_tp[0]) != '~T':
-                return inner_tp[0]
-        return inner_tp
+        if inner_tp and str(inner_tp[0]) not in {'~T', 'typing.Any'}:
+            return inner_tp[0]
     return default
+
+
+def is_iterable(tp):
+    origin = get_origin(tp)
+    return origin in {list, tuple, set, frozenset}
+
+
+def is_enum(tp):
+    return isclass(tp) and issubclass(tp, Enum)
+
+
+def is_tuple(tp):
+    return match_types(tp, tuple)
+
+
+def cast(tp, val) -> Any:
+    origin = get_origin(tp)
+
+    if is_enum(origin):
+        return origin[val]
+
+    if is_iterable(origin):
+        val = origin(val)
+        args = get_inner_args(tp)
+        if origin in {tuple,} and args and Ellipsis not in args:
+            return tuple(cast(args[idx], v) for idx, v in enumerate(val))
+        return origin([cast(unpack_type(tp), v) for v in val])
+
+    return origin(val)
