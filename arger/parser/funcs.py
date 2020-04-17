@@ -6,7 +6,7 @@ from arger.parser.docstring import parse_docstring
 
 from ..types import UNDEFINED, VarArg, VarKw
 from .classes import Argument, Option
-from .utils import generate_options
+from .utils import get_option_generator
 
 
 Param = namedtuple("Param", ["name", "type", "help"])
@@ -45,8 +45,7 @@ def create_option(param: Param, default, option_generator):
 def prepare_arguments(func, param_docs) -> Dict[str, Option]:
     """Parse 'func' and adds parser arguments from function signature."""
     positional_params, kw_params = prepare_params(func, param_docs)
-    option_generator = generate_options()
-    next(option_generator)
+    option_generator = get_option_generator()
 
     arguments: Dict[str, Option] = OrderedDict()
     for param in positional_params:
