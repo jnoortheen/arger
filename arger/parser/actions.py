@@ -15,7 +15,12 @@ from ..typing_utils import (
 
 def get_nargs(typ: Any) -> Tuple[Any, Union[int, str]]:
     inner = unpack_type(typ)
-    if is_tuple(typ) and get_inner_args(typ):
+    if (
+        is_tuple(typ)
+        and typ != tuple
+        and not isinstance(typ, (VarKw, VarArg))
+        and get_inner_args(typ)
+    ):
         args = get_inner_args(typ)
         inner = inner if len(set(args)) == 1 else str
         return inner, '+' if (... in args) else len(args)
@@ -30,7 +35,7 @@ class TypeAction(argparse.Action):
         self.orig_type = typ
         if typ is not UNDEFINED:
             origin = get_origin(typ)
-            if is_iterable(origin) or isinstance(typ, (VarArg, VarKw)):
+            if is_iterable(origin):
                 origin, kwargs["nargs"] = get_nargs(typ)
 
             if is_enum(origin):

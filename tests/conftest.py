@@ -58,6 +58,6 @@ def pytest_generate_tests(metafunc):
             cmds.pop(0)
             cmds.pop(0)
             cmds.insert(0, py_file.name)
-            idlist.append("-".join(cmds))
+            idlist.append("-".join(cmds).replace('.', ''))
             argvalues.append((py_file, cmd, output))
         metafunc.parametrize("pyfile, cmd, expected", argvalues, ids=idlist)

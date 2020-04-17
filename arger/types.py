@@ -14,7 +14,7 @@ class VarArg:
     __args__ = ()
 
     def __init__(self, tp):
-        self.__args__ = (tp,)
+        self.__args__ = (tp, ...)
 
     def __repr__(self):
         tp = self.__args__[0]
