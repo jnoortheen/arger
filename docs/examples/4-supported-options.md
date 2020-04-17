@@ -5,20 +5,6 @@ in a file named `main.py`
 --8<-- "supported_options.py"
 ```
 
-## ran with valid arguments
-
-```sh
-$ python main.py cmd1 10 str1 tp1 tp2 tp3 vtp1 -t otp1 -t otp2 -o ostr -p 100 -a two
-a_tuple (<class 'tuple'>): ('tp1', 'tp2', 'tp3')
-a_var_tuple (<class 'tuple'>): ('vtp1',)
-an_enum (<enum 'Choice'>): Choice.one
-an_int (<class 'int'>): 10
-an_str (<class 'str'>): str1
-optional_int (<class 'int'>): 100
-optional_str (<class 'str'>): ostr
-optional_tpl (<class 'tuple'>): ('otp1', 'otp2')
-```
-
 ##  ran empty
 ```sh
 $ python main.py
@@ -37,10 +23,11 @@ optional arguments:
 commands:
   {cmd1,cmd2}
     cmd1       Example function with types documented in the docstring.
-    cmd2       A script with three optional values, no short option left for last value.
+    cmd2       A script with three optional values.
 ```
 
 ## ran `cmd1` help
+
 ```sh
 $ python main.py cmd1 --help
 usage: pytest cmd1 [-h] [-a {one,two}] [-o OPTIONAL_STR] [-p OPTIONAL_INT] [-t [OPTIONAL_TPL [OPTIONAL_TPL ...]]]
@@ -60,6 +47,34 @@ optional arguments:
   -t [OPTIONAL_TPL [OPTIONAL_TPL ...]], --optional_tpl [OPTIONAL_TPL [OPTIONAL_TPL ...]]
 ```
 
+## ran `cmd1` with only required
+
+```sh
+$ python main.py cmd1 10 str1 tp1 tp2 tp3 vtp1
+a_tuple (<class 'tuple'>): ('tp1', 'tp2', 'tp3')
+a_var_tuple (<class 'tuple'>): ('vtp1',)
+an_enum (<enum 'Choice'>): Choice.one
+an_int (<class 'int'>): 10
+an_str (<class 'str'>): str1
+optional_int (<class 'int'>): 0
+optional_str (<class 'str'>): 
+optional_tpl (<class 'tuple'>): ()
+```
+
+## ran `cmd1` with valid arguments
+
+```sh
+$ python main.py cmd1 10 str1 tp1 tp2 tp3 vtp1 -t otp1 otp2 -o ostr -p 100 -a two
+a_tuple (<class 'tuple'>): ('tp1', 'tp2', 'tp3')
+a_var_tuple (<class 'tuple'>): ('vtp1',)
+an_enum (<enum 'Choice'>): Choice.two
+an_int (<class 'int'>): 10
+an_str (<class 'str'>): str1
+optional_int (<class 'int'>): 100
+optional_str (<class 'str'>): ostr
+optional_tpl (<class 'tuple'>): ('otp1', 'otp2')
+```
+
 ## ran `cmd2` help
 ```sh
 $ python main.py cmd2 --help
@@ -74,3 +89,13 @@ optional arguments:
   -y, --y_opt  the y_opt helptext
   --my         the my helptext
 ```
+
+## ran `cmd2` with args
+```sh
+$ python main.py cmd2 10 100 1000
+a_list (<class 'list'>): [10, 100, 1000]
+m_opt (<class 'bool'>): False
+my (<class 'bool'>): False
+y_opt (<class 'bool'>): False
+```
+

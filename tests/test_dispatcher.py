@@ -29,4 +29,6 @@ def test_example(capsys, arger, args, expected: str):
 
     capture = capsys.readouterr()
     out = capture.err or capture.out
-    assert out == expected, f"\ncmd: {args}\nout: \n{out}\nexpected:\n{expected}\n"
+    assert (
+        out.split() == expected.split()
+    ), f"\ncmd: {args}\nout: \n{out}\nexpected:\n{expected}\n"

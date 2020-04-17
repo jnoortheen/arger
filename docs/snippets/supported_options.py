@@ -34,7 +34,8 @@ def cmd1(
 def cmd2(
     a_list: List[int], m_opt=False, y_opt=False, my=False,
 ):
-    """A script with three optional values, no short option left for last value.
+    """A script with three optional values.
+
     :param a_list: catch all positional arguments
     :param m_opt: the m_opt helptext
     :param y_opt: the y_opt helptext
