@@ -1,18 +1,28 @@
 # pylint: disable = W0212
 import sys
-from typing import Any
+from typing import Any, List, Set, Tuple
 
 
 NEW_TYPING = sys.version_info[:3] >= (3, 7, 0)  # PEP 560
 
 
-def get_origin(tp):
+def _get_origin(tp):
     """Return x.__origin__ or type(x) based on the Python version."""
     if hasattr(tp, "_gorg"):
         return tp._gorg
     if getattr(tp, "__origin__", None) is not None:
         return tp.__origin__
     return tp
+
+
+OLD_TYPE_ORIGINS = {List: list, Tuple: tuple, Set: set}
+
+
+def get_origin(tp):
+    origin = _get_origin(tp)
+    if not NEW_TYPING and tp in OLD_TYPE_ORIGINS:
+        return OLD_TYPE_ORIGINS[tp]
+    return origin
 
 
 def match_types(tp, *matches) -> bool:
