@@ -50,7 +50,7 @@ python test.py 100 param2
 
 - Checkout [examples](docs/examples) folder and documentation to see more of `arger` in action.
 
-# Alternatives
+# Similar Projects
 
 ## [argh](https://argh.readthedocs.io/en/latest/tutorial.html) 
  - has similar goals as to ease up using argparser. 
