@@ -26,21 +26,22 @@ def prepare_params(func, docs: Dict[str, str]):
 
 def create_option(param: Param, default, option_generator):
     if isinstance(default, Option):
-        option = default
-        option.kwargs.setdefault('help', param.help)
-        option.update_flags(param.name, option_generator)
-        if 'type' not in option.kwargs:
-            option.update(param.type)
-    elif isinstance(default, Argument):
-        option = default
-        option.kwargs.setdefault('help', param.help)
-        option.update_flags(param.name)
-        if 'type' not in option.kwargs:
-            option.update(param.type)
-    else:
-        option = Option(help=param.help)
-        option.update_flags(param.name, option_generator)
-        option.update(param.type, default)
+        default.kwargs.setdefault('help', param.help)
+        default.update_flags(param.name, option_generator)
+        if 'type' not in default.kwargs:
+            default.update(param.type)
+        return default
+
+    if isinstance(default, Argument):
+        default.kwargs.setdefault('help', param.help)
+        default.update_flags(param.name)
+        if 'type' not in default.kwargs:
+            default.update(param.type)
+        return default
+
+    option = Option(help=param.help)
+    option.update_flags(param.name, option_generator)
+    option.update(param.type, default)
     return option
 
 
