@@ -28,7 +28,7 @@ def get_nargs(typ: Any) -> Tuple[Any, Union[int, str]]:
 
 
 class TypeAction(argparse.Action):
-    """after the parse update the type of value"""
+    """After the parse update the type of value"""
 
     def __init__(self, *args, **kwargs):
         typ = kwargs.pop("type", UNDEFINED)

@@ -1,6 +1,7 @@
 from pkg_resources import DistributionNotFound, get_distribution
 
 from .arger import Arger
+from .parser.classes import Argument, Option
 
 
 try:

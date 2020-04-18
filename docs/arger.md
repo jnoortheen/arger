@@ -1,4 +1,4 @@
-# API
+# Concepts
 A command/sub-command is parsed from function.
     
 ## Function
@@ -27,7 +27,15 @@ Args:
     variable_name: --verbose the help_text no short option
 ```
 
-::: arger.parser.classes.Option
-::: arger.parser.classes.Argument
+## Arger
+
 ::: arger.Arger
+    
+## Argument
+
+::: arger.Argument
+
+## Option
+
+::: arger.Option
 

@@ -9,7 +9,7 @@ from arger.types import F
 
 def _add_args(parser, args: Dict[str, Option]):
     for _, arg in args.items():
-        parser.add_argument(*arg.flags, **arg.kwargs)
+        arg.add(parser)
 
 
 def _cmd_prepare(parser, cmd: Command):
@@ -38,10 +38,7 @@ def _add_parsers(parser: "Arger", cmd: Command):
 
 
 class Arger(ArgumentParser):
-    """Contains one function (parser) or more functions (subparsers).
-
-    Usage: see `tests/examples`_.
-    """
+    """Contains one function (parser) or more functions (subparsers)."""
 
     def __init__(self, fn: Optional[F] = None, **kwargs):
         self._command = Command(fn)
@@ -54,10 +51,10 @@ class Arger(ArgumentParser):
             _add_args(self, self._command.args)
 
     def run(self, *args, capture_sys=True) -> Any:
-        """Dispatch functions.
+        """Parse cli and dispatch functions.
 
-        The arguments will be passed onto self.parse_args
-        then the respective function will get called with parsed arguments.
+        Args:
+            *args: The arguments will be passed onto self.parse_args
         """
         if not self._command.is_valid():
             raise NotImplementedError("No function to dispatch.")
@@ -75,7 +72,8 @@ class Arger(ArgumentParser):
     def init(cls, **kwargs) -> Callable[[Callable], "Arger"]:
         """Create parser from function as a decorator.
 
-        :param func: main function that has description and has sub-command level arguments
+        Args:
+            func: main function that has description and has sub-command level arguments
         """
 
         def _wrapper(fn):
@@ -84,9 +82,9 @@ class Arger(ArgumentParser):
         return _wrapper
 
     def add_cmd(self, func: F) -> Command:
-        """Add the function as a sub-command.
+        """Decorate the function as a sub-command.
 
-        :param func:
-        :return:
+        Args:
+            func: function
         """
         return self._command.add(func)
