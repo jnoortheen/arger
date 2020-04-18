@@ -3,7 +3,7 @@ from typing import Any, List, Tuple
 from pytest import fixture, mark
 from pytest_lazyfixture import lazy_fixture as lz
 
-from arger.typing_utils import match_types
+from arger.typing_utils import get_origin, match_types
 
 
 @fixture(params=[list, List, List[str], List[int], List[Any]])
@@ -29,3 +29,8 @@ def tuple_type(request):
 )
 def test_match_types(tp, tps, expected):
     assert match_types(tp, tps) == expected
+
+
+@mark.parametrize("tp, expected", [(lz("list_type"), list), (lz("tuple_type"), tuple),])
+def test_get_origin(tp, expected):
+    assert get_origin(tp) == expected

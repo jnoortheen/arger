@@ -2,7 +2,7 @@
 import sys
 from enum import Enum
 from inspect import isclass
-from typing import Any, List, Set, Tuple
+from typing import Any, FrozenSet, List, Set, Tuple
 
 
 NEW_TYPING = sys.version_info[:3] >= (3, 7, 0)  # PEP 560
@@ -17,13 +17,27 @@ def _get_origin(tp):
     return tp
 
 
-OLD_TYPE_ORIGINS = {List: list, Tuple: tuple, Set: set}
+def define_old_types():
+    origins = {}
+    if not NEW_TYPING:
+        for tp, orig in {
+            List: list,
+            Tuple: tuple,
+            Set: set,
+            FrozenSet: frozenset,
+        }.items():
+            if hasattr(tp, '__name__'):
+                origins[tp.__name__] = orig  # type: ignore
+    return origins
+
+
+OLD_TYPE_ORIGINS = define_old_types()
 
 
 def get_origin(tp):
     origin = _get_origin(tp)
-    if not NEW_TYPING and tp in OLD_TYPE_ORIGINS:
-        return OLD_TYPE_ORIGINS[tp]
+    if not NEW_TYPING and hasattr(tp, '__name__') and tp.__name__ in OLD_TYPE_ORIGINS:
+        return OLD_TYPE_ORIGINS[tp.__name__]
     return origin
 
 

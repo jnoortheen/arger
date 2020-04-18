@@ -11,7 +11,7 @@ class VarArg:
     """Represent variadic arguent."""
 
     __origin__: Any = tuple
-    __args__ = ()
+    __args__: Any = ()
 
     def __init__(self, tp):
         self.__args__ = (tp, ...)
