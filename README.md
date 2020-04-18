@@ -59,8 +59,8 @@ python test.py 100 param2
 
 ## [typer](https://github.com/tiangolo/typer)
  - if you are using `click`, I highly recommend you to check this library.
- - it is neat and many features are inspired from this library.
- - doesn't support loading help text for arguments from docstrings.
+ - it is neat and feature rich than `Arger` as of now.
+ - doesn't support loading help text for arguments from docstrings. No short flags generated for options.
  
 ## [invoke](http://www.pyinvoke.org/) 
  - doesn't support type hints.
