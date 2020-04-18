@@ -1,5 +1,6 @@
-from arger import Arger
 from delegator import run
+
+from arger import Arger, Option
 
 arger = Arger(description="Common set of tasks to run")
 
@@ -27,10 +28,23 @@ def prun(*cmd, **kwargs):
 
 
 @arger.add_cmd
-def release(type: str):
+def release(
+    type: str = Option(
+        choices=[
+            'patch',
+            'minor',
+            'major',
+            'prepatch',
+            'preminor',
+            'premajor',
+            'prerelease',
+        ],
+        default='patch',
+        action='store',
+    )
+):
     """Bump version, tag and push them.
 
-    # todo: create an Enum
     :param type: one of patch, minor, major, prepatch, preminor, premajor, prerelease. as supported by poetry version
     """
     prun('poetry', 'version', type)
@@ -47,6 +61,11 @@ def release(type: str):
     prun(f'git tag v{version}')
     prun('git push')
     prun('git push --tags')
+
+
+# @arger.add_cmd
+# def test():
+#     print('run tests')
 
 
 if __name__ == '__main__':
