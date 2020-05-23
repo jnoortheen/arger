@@ -3,6 +3,7 @@ import re
 from pathlib import Path
 
 from nbformat import read
+from pytest import param
 
 
 PY_FILE = re.compile(r"[\"](.+\.py)")
@@ -25,16 +26,16 @@ def get_examples():
     return examples
 
 
+def get_example_params():
+    for py_file, cmd, output in get_examples():  # type: (Path, str, str)
+        cmds = cmd.split()
+        cmds.pop(0)
+        cmds.pop(0)
+        cmds.insert(0, py_file.name)
+        yield param(py_file, cmd, output, id="-".join(cmds).replace('.', ''))
+
+
 # parameterize tests from examples directory
 def pytest_generate_tests(metafunc):
     if metafunc.function.__name__ == "test_example":
-        idlist = []
-        argvalues = []
-        for py_file, cmd, output in get_examples():  # type: (Path, str, str)
-            cmds = cmd.split()
-            cmds.pop(0)
-            cmds.pop(0)
-            cmds.insert(0, py_file.name)
-            idlist.append("-".join(cmds).replace('.', ''))
-            argvalues.append((py_file, cmd, output))
-        metafunc.parametrize("pyfile, cmd, expected", argvalues, ids=idlist)
+        metafunc.parametrize("pyfile, cmd, expected", get_example_params())
