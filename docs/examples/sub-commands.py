@@ -48,4 +48,4 @@ def list():
 
 
 if __name__ == '__main__':
-    arger.run('create', '-h')
+    arger.run()

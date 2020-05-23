@@ -14,7 +14,7 @@ def arger(pyfile: Path) -> Arger:
 
 @pytest.fixture
 def args(cmd: str):
-    args = cmd.strip("$ ").split(" ")
+    args = cmd.strip("$").strip().split(" ")
     args.pop(0)  # python
     args.pop(0)  # filename
     return args

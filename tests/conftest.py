@@ -1,49 +1,26 @@
 """Integration tests configuration file."""
 import re
 from pathlib import Path
-from typing import Iterator, Tuple
 
-import mistune
-from bs4 import BeautifulSoup
-
-
-def get_text(elem) -> str:
-    return elem.find(text=True, recursive=False).strip()
-
-
-def get_soup(file: Path):
-    html = mistune.html(file.read_text())
-    return BeautifulSoup(html, "html.parser")
-
-
-def get_scenarios(soup) -> Iterator[Tuple[str, str, str]]:
-    titles = soup.find_all("h2")
-    codes = soup.find_all("code", class_="language-sh")
-    for title, code in zip(titles, codes):
-        cmd, out = code.text.split("\n", 1)
-        yield title.text, cmd, out
+from nbformat import read
 
 
 PY_FILE = re.compile(r"[\"](.+\.py)")
 
 
-def get_pyfile(soup):
-    py_file = soup.find("code", class_="language-python").text.strip()
-    return PY_FILE.findall(py_file)[0]
-
-
-def parse_example(md_file: Path):
-    soup = get_soup(md_file)
-    snippets = md_file.parent.parent.joinpath("snippets")
-    py_file = snippets / get_pyfile(soup)
-    for scenario, cmd, output in get_scenarios(soup):
-        yield py_file, scenario, cmd, output
+def parse_example(ipy_file: Path):
+    nb = read(ipy_file, as_version=4)
+    for cell in nb.cells:
+        if cell.cell_type == "code":
+            cmd = [f for f in cell.source.splitlines() if f.startswith("!")][0]
+            py_file = ipy_file.with_name(cmd.split()[1])
+            yield py_file, cmd, cell.outputs[0].text if cell.outputs else ""
 
 
 def get_examples():
     path = Path(__file__).parent.parent.joinpath("docs", "examples")
     examples = []
-    for file in path.rglob("*.md"):
+    for file in path.rglob("*.ipynb"):
         examples.extend(parse_example(file))
     return examples
 
@@ -53,7 +30,7 @@ def pytest_generate_tests(metafunc):
     if metafunc.function.__name__ == "test_example":
         idlist = []
         argvalues = []
-        for py_file, _, cmd, output in get_examples():  # type: (Path, str, str, str)
+        for py_file, cmd, output in get_examples():  # type: (Path, str, str, str)
             cmds = cmd.split()
             cmds.pop(0)
             cmds.pop(0)

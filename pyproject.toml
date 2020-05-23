@@ -56,6 +56,7 @@ pytest-describe = "*"
 pytest-expecter = "*"
 pytest-random = "*"
 freezegun = "*"
+pytest-lazy-fixture = "^0.6.3"
 
 # Reports
 #coveragespace = "^3.1.1"
@@ -63,6 +64,9 @@ freezegun = "*"
 # Documentation
 mkdocs = "^1.0"
 pygments = "*"
+mkdocs-material = "^5.1.0"
+mkdocstrings = "^0.10.3"
+pymdown-extensions = "^7.0"
 
 # Tooling
 pyinstaller = "*"
@@ -72,13 +76,8 @@ pync = { version = "*", platform = "darwin" }
 ipython = "^7.12.0"
 tox = "^3.14.5"
 pyinotify = "^0.9.6"
-beautifulsoup4 = "^4.9.0"
-mistune = "2.0.0a2"
-pytest-lazy-fixture = "^0.6.3"
 "delegator.py" = "^0.1.1"
-mkdocs-material = "^5.1.0"
-pymdown-extensions = "^7.0"
-mkdocstrings = "^0.10.3"
+jupyter = "^1.0.0"
 
 [tool.black]
 
