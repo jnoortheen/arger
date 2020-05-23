@@ -29,7 +29,7 @@ run: install
 
 .PHONY: ipython ## Launch an IPython session
 ipython: install
-	poetry run ipython
+	poetry run ipython --ipython-dir=docs/examples
 
 # SYSTEM DEPENDENCIES #########################################################
 
@@ -39,13 +39,13 @@ doctor:  ## Confirm system dependencies are available
 
 # PROJECT DEPENDENCIES ########################################################
 
-DEPENDENCIES := $(VIRTUAL_ENV)/.poetry-$(shell bin/checksum pyproject.toml poetry.lock)
+DEPENDENCIES := .cache/.poetry-$(shell bin/checksum pyproject.toml poetry.lock)
 
 .PHONY: install
 install: $(DEPENDENCIES) .cache
 
 $(DEPENDENCIES): poetry.lock
-	@ poetry config virtualenvs.in-project true
+	@ poetry config virtualenvs.in-project false
 	poetry install
 	@ touch $@
 
@@ -104,6 +104,10 @@ test-all: install
 	@ if test -e $(FAILURES); then poetry run pytest $(PACKAGES) $(PYTEST_RERUN_OPTIONS); fi
 	@ rm -rf $(FAILURES)
 	poetry run pytest $(PACKAGES) $(PYTEST_OPTIONS) --cov=$(PACKAGE) --cov-report=html --cov-report=term-missing:skip-covered
+
+.PHONY: tox
+tox: install
+	poetry run tox
 
 .PHONY: read-coverage
 read-coverage:
@@ -171,10 +175,6 @@ upload: dist ## Upload the current version to PyPI
 
 .PHONY: clean
 clean: .clean-build .clean-docs .clean-test .clean-install ## Delete all generated and temporary files
-
-.PHONY: clean-all
-clean-all: clean
-	rm -rf $(VIRTUAL_ENV)
 
 .PHONY: .clean-install
 .clean-install:

@@ -23,8 +23,9 @@ class Options:
     rerun_args = None
 
     targets = [
-        (('make', 'test-all'), "Integration Tests", True),
-        (('make', 'check'), "Static Analysis", True),
+        (('make', 'test-all'), "Integration Tests", False),
+        (('make', 'check'), "Static Analysis", False),
+        (('make', 'tox'), "Make sure that it works on all environments", False),
     ]
 
 
