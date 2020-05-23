@@ -30,7 +30,7 @@ def pytest_generate_tests(metafunc):
     if metafunc.function.__name__ == "test_example":
         idlist = []
         argvalues = []
-        for py_file, cmd, output in get_examples():  # type: (Path, str, str, str)
+        for py_file, cmd, output in get_examples():  # type: (Path, str, str)
             cmds = cmd.split()
             cmds.pop(0)
             cmds.pop(0)

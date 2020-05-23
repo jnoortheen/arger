@@ -1,10 +1,11 @@
 import inspect
 from collections import OrderedDict, namedtuple
-from typing import Any, Dict, List, Tuple
+from itertools import filterfalse, tee
+from typing import Dict, Iterable, Tuple
 
 from arger.parser.docstring import parse_docstring
 
-from ..types import UNDEFINED, VarArg, VarKw
+from ..types import UNDEFINED, T, VarArg, VarKw
 from .classes import Argument, Option
 from .utils import get_option_generator
 
@@ -12,15 +13,37 @@ from .utils import get_option_generator
 Param = namedtuple("Param", ["name", "type", "help"])
 
 
-def prepare_params(func, docs: Dict[str, str]):
-    (args, kwargs, annotations) = portable_argspec(func)
+def partition(pred, iterable: Iterable[T]) -> Tuple[Iterable[T], Iterable[T]]:
+    'Use a predicate to partition entries into false entries and true entries'
+    # partition(is_odd, range(10)) --> 0 2 4 6 8   and  1 3 5 7 9
+    t1, t2 = tee(iterable)
+    return filter(pred, t1), filterfalse(pred, t2)
 
-    def get_param(param):
-        return Param(param, annotations.get(param, UNDEFINED), docs.get(param, ""))
+
+def get_val(val, default):
+    return default if val == inspect.Parameter.empty else val
+
+
+def prepare_params(func, docs: Dict[str, str]):
+    sign = inspect.signature(func)
+
+    args, kwargs = partition(
+        lambda x: x.default == inspect.Parameter.empty, sign.parameters.values()
+    )
+
+    def get_param(param: inspect.Parameter):
+        annot = get_val(param.annotation, UNDEFINED)
+        if param.kind == inspect.Parameter.VAR_POSITIONAL:
+            annot = VarArg(annot)
+        elif param.kind == inspect.Parameter.VAR_KEYWORD:
+            annot = VarKw(annot)
+
+        name = param.name
+        return Param(name, annot, docs.get(name, ""))
 
     return (
         [get_param(param) for param in args],
-        [(get_param(param), default) for param, default in kwargs.items()],
+        [(get_param(param), param.default) for param in kwargs],
     )
 
 
@@ -69,42 +92,3 @@ def prepare_arguments(func, param_docs) -> Dict[str, Option]:
 def opterate(func) -> Tuple[str, Dict[str, Option]]:
     description, param_docs = parse_docstring(func.__doc__)
     return description, prepare_arguments(func, param_docs)
-
-
-def portable_argspec(func) -> Tuple[List[str], Dict[str, Any], Dict[str, Any]]:
-    """Return function signature.
-
-    given a function, return a tuple of
-    (positional_params, keyword_params, varargs, defaults, annotations)
-    where
-    * positional_params is a list of parameters that don't have default values
-    * keyword_params is a list of parameters that have default values
-    * varargs is the string name for variable arguments
-    * defaults is a dict of default values for the keyword parameters
-    * annotations is a dictionary of param_name: annotation pairs
-        it may be empty, and on python 2 will always be empty.
-    This function is portable between Python 2 and Python 3, and does some
-    extra processing of the output from inspect.
-    """
-    (argnames, varargs, varkw, defaults, _, _, annotations) = inspect.getfullargspec(
-        func
-    )
-
-    kw_params: Dict[str, Any] = OrderedDict()
-    if defaults:
-        kw_boundary = len(argnames) - len(defaults)
-        kw_params = {
-            argnames[kw_boundary + idx]: val for idx, val in enumerate(defaults)
-        }
-        argnames = argnames[:kw_boundary]
-    if varargs:
-        argnames.append(varargs)
-        annotations[varargs] = VarArg(annotations.get(varargs, str))
-    if varkw:
-        argnames.append(varkw)
-        annotations[varkw] = VarKw(annotations.get(varkw, str))
-    return (
-        argnames,
-        kw_params,
-        annotations,
-    )

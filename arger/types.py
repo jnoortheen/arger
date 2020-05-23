@@ -2,6 +2,7 @@ from typing import Any, Callable, TypeVar
 
 
 F = TypeVar("F", bound=Callable[..., Any])  # decorator
+T = TypeVar('T')
 
 
 class _Undefined:
