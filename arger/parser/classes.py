@@ -24,8 +24,9 @@ class Argument:
         """Represent optional arguments to the command.
 
         Args:
-            type (Any): The type to which the command-line argument should be converted.
-            help (str): A brief description of what the argument does.
+            type (Any): The type to which the command-line argument should be converted. Got from annotation.
+            help (str): A brief description of what the argument does. From docstring.
+
             metavar (str): A name for the argument in usage messages.
             required (bool): Whether or not the command-line option may be omitted (optionals only).
 
