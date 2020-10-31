@@ -1,8 +1,7 @@
+import pytest
 from decimal import Decimal
 from enum import Enum
 from typing import List, Tuple
-
-import pytest
 
 from arger import Arger
 from arger.parser.classes import Argument

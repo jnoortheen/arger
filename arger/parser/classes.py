@@ -19,7 +19,8 @@ class Argument:
     flags: Tuple[str, ...] = ()
 
     def __init__(
-        self, **kwargs,
+        self,
+        **kwargs,
     ):
         """Represent optional arguments to the command.
 

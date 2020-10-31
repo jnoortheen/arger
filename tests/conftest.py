@@ -1,8 +1,7 @@
 """Integration tests configuration file."""
 import re
-from pathlib import Path
-
 from nbformat import read
+from pathlib import Path
 from pytest import param
 
 

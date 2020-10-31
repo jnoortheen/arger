@@ -96,7 +96,14 @@ def cast(tp, val) -> Any:
     if is_iterable(origin):
         val = origin(val)
         args = get_inner_args(tp)
-        if origin in {tuple,} and args and Ellipsis not in args:
+        if (
+            origin
+            in {
+                tuple,
+            }
+            and args
+            and Ellipsis not in args
+        ):
             return tuple(cast(args[idx], v) for idx, v in enumerate(val))
         return origin([cast(unpack_type(tp), v) for v in val])
 

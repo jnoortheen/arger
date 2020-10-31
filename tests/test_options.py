@@ -1,6 +1,5 @@
-from decimal import Decimal
-
 import pytest
+from decimal import Decimal
 
 from arger import Arger
 from arger.parser.classes import Option

@@ -1,5 +1,5 @@
 import argparse
-from typing import Any, Tuple, Union
+from typing import Any, Callable, Sequence, Text, Tuple, Type, Union
 
 from ..types import UNDEFINED, VarArg, VarKw
 from ..typing_utils import (
