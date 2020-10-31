@@ -28,11 +28,29 @@ def test_opterate():
         ("-w", "--kw2"),
     ]
     exp_kwargs = [
-        {"action": TypeAction, "help": "The first parameter.", "type": int,},
-        {"action": TypeAction, "help": "The second parameter.", "type": str,},
+        {
+            "action": TypeAction,
+            "help": "The first parameter.",
+            "type": int,
+        },
+        {
+            "action": TypeAction,
+            "help": "The second parameter.",
+            "type": str,
+        },
         {"action": TypeAction, "help": "", "type": VarArg(int)},
-        {"action": TypeAction, "default": None, "dest": "kw1", "help": "",},
-        {"action": "store_true", "default": False, "dest": "kw2", "help": "",},
+        {
+            "action": TypeAction,
+            "default": None,
+            "dest": "kw1",
+            "help": "",
+        },
+        {
+            "action": "store_true",
+            "default": False,
+            "dest": "kw2",
+            "help": "",
+        },
     ]
 
     for idx, arg in enumerate(args.values()):

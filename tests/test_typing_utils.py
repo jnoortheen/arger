@@ -31,6 +31,12 @@ def test_match_types(tp, tps, expected):
     assert match_types(tp, tps) == expected
 
 
-@mark.parametrize("tp, expected", [(lz("list_type"), list), (lz("tuple_type"), tuple),])
+@mark.parametrize(
+    "tp, expected",
+    [
+        (lz("list_type"), list),
+        (lz("tuple_type"), tuple),
+    ],
+)
 def test_get_origin(tp, expected):
     assert get_origin(tp) == expected
