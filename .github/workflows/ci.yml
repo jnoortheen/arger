@@ -19,9 +19,9 @@ jobs:
     - uses: actions/cache@v1
       with:
         path: ~/.cache/pypoetry/virtualenvs
-        key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+        key: ${{ runner.os }}-{{ matrix.python-version }}-poetry-test-${{ hashFiles('poetry.lock') }}
         restore-keys: |
-          ${{ runner.os }}-poetry-
+          ${{ runner.os }}-{{ matrix.python-version }}-poetry-test-
     - uses: Gr1N/setup-poetry@v4
     - name: Install dependencies
       run: |
@@ -38,6 +38,12 @@ jobs:
       with:
         python-version: 3.8
     - uses: Gr1N/setup-poetry@v4
+    - uses: actions/cache@v1
+      with:
+        path: ~/.cache/pypoetry/virtualenvs
+        key: ${{ runner.os }}-poetry-lint-${{ hashFiles('poetry.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-poetry-lint-
     - name: Lint source files
       run: |
         poetry install

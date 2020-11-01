@@ -66,6 +66,7 @@ pygments = "*"
 mkdocs-material = "^5.1.0"
 mkdocstrings = "^0.10.3"
 pymdown-extensions = "^7.0"
+commitizen = {version = '^2.4.2', python=">=3.6.1"}
 
 # Tooling
 pyinstaller = "*"

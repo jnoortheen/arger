@@ -49,6 +49,7 @@ def release(
     """
     prun('poetry', 'version', type)
     c = prun('poetry', 'version')
+    prun('cz', 'changelog')
     _, version = c.out.split()
     prun('git status')
     msg = 'chore: bump version'
