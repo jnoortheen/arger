@@ -15,12 +15,12 @@ class Color:
     UNDERLINE = '\033[4m'
 
     # reset
-    END = '\033[0m'
+    RESET = '\033[0m'
 
 
 def prun(*cmd, **kwargs):
     cmd = " ".join(cmd)
-    print(f'{Color.OKGREEN} $ {cmd}{Color.END}')
+    print(f'{Color.OKGREEN} $ {cmd}{Color.RESET}')
     c = run(cmd, **kwargs)
     print(c.out)
     print(c.err)
