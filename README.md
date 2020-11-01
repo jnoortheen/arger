@@ -50,6 +50,27 @@ python test.py 100 param2
 
 * Checkout [examples](docs/examples) folder and documentation to see more of `arger` in action.
 
+# Features
+
+- Uses docstring to parse help comment for arguments. Supports
+    + [google](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html)
+    + [numpy](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html#example-numpy)
+    + [rst](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html)
+- Flags will be generated from parameter-name. 
+  If needed you could declare it inside docstring like `:param arg1: -a --arg this is the document`.
+  Also one can use `def main(arg1:int=Option('-a', '--arg')): ...`
+- The decorated functions can be composed to form nested sub-commands of any level.
+- No external lib dependency
+- Standard types supported. 
+  Please see [examples](docs/examples/supported_options.py) for more supported types with examples.
+- All argument to `ArgumentParser.add_argument` is supported. 
+  It can be updated with `arger.Argument` or `arger.Option` classes.
+- `*args` supported but no `**kwargs` support yet.
+- all optional arguments that start with underscore is not passed to `Parser`. 
+  They are considered private to the function implementation.
+  One can use `_namespace_` to get the output from the `ArgumentParser.parse_args()`
+  
+
 # Similar Projects
 
 ## [argh](https://argh.readthedocs.io/en/latest/tutorial.html)
@@ -75,6 +96,8 @@ python test.py 100 param2
 
 ## [cliar](https://moigagoo.github.io/cliar/)
 
+ - no docstring support for help argument.
+
 # Recommended Alternatives
 
     Projects that I didn't know while creating this project. I highly recommend you to checkout them.
@@ -89,3 +112,6 @@ This project was generated with [cookiecutter](https://github.com/audreyr/cookie
 # Argparser enhancements
 
 * web-ui : https://github.com/nirizr/argparseweb
+* extra actions : https://github.com/kadimisetty/action-hero
+* automatic shell completions using [argcomplete](https://github.com/kislyuk/argcomplete)
+
