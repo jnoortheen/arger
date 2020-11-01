@@ -90,7 +90,7 @@ class NumpyDocParser(DocstringParser):
     def parse(self, doc: str) -> DocstringTp:
         desc, _, params = self.pattern.split(doc, maxsplit=1)
         other_sect, params = self.get_rest_of_section(params)
-        return DocstringTp(desc, other_sect, params=self.parse_params(params))
+        return DocstringTp(desc.strip(), other_sect, params=self.parse_params(params))
 
 
 class GoogleDocParser(NumpyDocParser):
@@ -113,29 +113,35 @@ class RstDocParser(DocstringParser):
 
     def __init__(self):
         self.pattern = re.compile(r':param')
-        self.section_ptrn = re.compile(
-            r'\n:[\w]+\s'
-        )  # matches any start of the section
-        self.param_ptrn = re.compile(r'^\s+(?P<param>\w+):\s+(?P<doc>[\s\S]+)')
+        self.section_ptrn = re.compile(r'\n:[\w]+')  # matches any start of the section
+        self.param_ptrn = re.compile(r'^[ ]+(?P<tp_param>.+):[ ]*(?P<doc>[\s\S]+)')
 
     def parse(self, doc: str) -> DocstringTp:
         lines = self.pattern.split(doc)
         long_desc = lines.pop(0)
+        epilog = ''
         params = {}
-        for lin in lines:
-            param_doc, _ = self.section_ptrn.split(lin, maxsplit=1)
-            match = self.param_ptrn.match(param_doc)
+        for idx, lin in enumerate(lines):
+            sections = self.section_ptrn.split(lin, maxsplit=1)
+            if idx + 1 == len(lines) and len(sections) > 1:
+                epilog = sections[-1]
+            match = self.param_ptrn.match(sections[0])
             if match:
-                param, doc = match.groups()
-                params[param] = ParamDocTp(None, *get_flags_from_param_doc(doc))
+                tp_param, doc = match.groups()  # type: str, str
+                parts = tp_param.strip().rsplit(' ', maxsplit=1)
+                param = parts[-1].strip()
+                type_hint = None
+                if len(parts) > 1:
+                    type_hint = parts[0].strip()
+                params[param] = ParamDocTp(type_hint, *get_flags_from_param_doc(doc))
 
-        return DocstringTp(long_desc, epilog='', params=params)
+        return DocstringTp(long_desc.strip(), epilog, params)
 
 
 @functools.lru_cache(None)
 def get_parsers():
     """Cache costly init phase per session."""
-    return [cls() for cls in DocstringParser.__subclasses__()]
+    return [NumpyDocParser(), GoogleDocParser(), RstDocParser()]
 
 
 def parse_docstring(doc: Optional[str]) -> DocstringTp:
@@ -143,4 +149,4 @@ def parse_docstring(doc: Optional[str]) -> DocstringTp:
         for parser in get_parsers():
             if parser.matches(doc):
                 return parser.parse(doc)
-    return DocstringTp(description=doc, epilog='', params={})
+    return DocstringTp(description=doc or '', epilog='', params={})
