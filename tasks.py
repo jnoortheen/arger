@@ -61,7 +61,7 @@ def release(
         return
     prun('git add .')
     prun(f'git commit -m "{msg}"')
-    prun(f'git tag ')
+    prun(f'git tag {version_num}')
     prun('git push')
     prun('git push --tags')
 
