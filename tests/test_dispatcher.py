@@ -1,9 +1,10 @@
 from pathlib import Path
-
+import re
 import pytest
 from colorama import Back, Fore, Style
 
 from arger import Arger
+import sys
 
 
 @pytest.fixture
@@ -28,6 +29,10 @@ def test_example(capsys, arger, args, expected: str):
     else:
         arger.run(*args, capture_sys=False)
 
+    if sys.version_info >= (3, 9):
+        expected = re.sub(
+            r'\[(?P<arg>\w+) \[(?P=arg) ...]]', r'[\g<arg> ...]', expected
+        )
     capture = capsys.readouterr()
     out = capture.err or capture.out
     assert out.split() == expected.split(), ''.join(
