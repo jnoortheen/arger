@@ -7,26 +7,27 @@ A wrapper around argparser to help build CLIs from functions. Uses type-hints ex
 ![](https://github.com/jnoortheen/arger/workflows/test-and-publish/badge.svg)
 [![PyPI License](https://img.shields.io/pypi/l/arger.svg)](https://pypi.org/project/arger)
 
-# Setup 
+# Setup
 
 ## :gear: Installation
 
 Install it directly into an activated virtual environment:
 
-```text
+``` text
 $ pip install arger
 ```
 
 or add it to your [Poetry](https://poetry.eustace.io/) project:
 
-```text
+``` text
 $ poetry add arger
 ```
 
 # :books: Usage
-- create a python file called test.py
 
-```python
+* create a python file called test.py
+
+``` python
 from arger import Arger
 
 def main(param1: int, param2: str, kw1=None, kw2=False):
@@ -37,36 +38,54 @@ def main(param1: int, param2: str, kw1=None, kw2=False):
     """
     print(locals())
 
-
 if __name__ == '__main__':
     Arger(main).run()
 ```
 
-- run this normally with 
+* run this normally with
 
-```sh
+``` sh
 python test.py 100 param2
 ```
 
-- Checkout [examples](docs/examples) folder and documentation to see more of `arger` in action.
+* Checkout [examples](docs/examples) folder and documentation to see more of `arger` in action.
 
 # Similar Projects
 
-## [argh](https://argh.readthedocs.io/en/latest/tutorial.html) 
- - has similar goals as to ease up using argparser. 
- - doesn't support type hints. 
+## [argh](https://argh.readthedocs.io/en/latest/tutorial.html)
+
+ - has similar goals as to ease up using argparser.
+ - doesn't support type hints.
  - No recent releases.
 
 ## [typer](https://github.com/tiangolo/typer)
- - if you are using `click`, I highly recommend you to check this library.
- - it is neat and feature rich than `Arger` as of now.
- - doesn't support loading help text for arguments from docstrings. No short flags generated for options.
- 
-## [invoke](http://www.pyinvoke.org/) 
+
+ - if you are using `click` , I highly recommend you to check this library.
+ - it is neat and many features are drawn from it.
+ - doesn't support loading help text for arguments from docstrings.
+
+## [invoke](http://www.pyinvoke.org/)
+
  - doesn't support type hints.
 
 ## [cliche](https://github.com/kootenpv/cliche)
- - has similar goals. 
- - doesn't cover much use cases as `arger`.
+
+ - has similar goals.
+ - doesn't cover much use cases as `arger` .
+
+## [cliar](https://moigagoo.github.io/cliar/)
+
+# Recommended Alternatives
+
+    Projects that I didn't know while creating this project. I highly recommend you to checkout them.
+
+1.  [clize](https://github.com/epsy/clize)
+2.  [nuclear](https://github.com/igrek51/nuclear)
+3.  [defopt](https://github.com/anntzer/defopt)
 
 This project was generated with [cookiecutter](https://github.com/audreyr/cookiecutter) using [jacebrowning/template-python](https://github.com/jacebrowning/template-python).
+
+
+# Argparser enhancements
+
+* web-ui : https://github.com/nirizr/argparseweb
