@@ -1,6 +1,6 @@
 import functools
 import re
-from typing import Any, Dict, List, NamedTuple, Optional, Tuple
+from typing import Any, Dict, List, NamedTuple, Optional, Pattern, Tuple
 
 
 class ParamDocTp(NamedTuple):
@@ -41,9 +41,9 @@ def get_flags_from_param_doc(doc: str, flag_symbol='-') -> Tuple[List[str], str]
 class DocstringParser:
     """Abstract class"""
 
-    pattern: re.Pattern
-    section_ptrn: re.Pattern
-    param_ptrn: re.Pattern
+    pattern: Pattern
+    section_ptrn: Pattern
+    param_ptrn: Pattern
 
     def parse(self, doc: str) -> DocstringTp:
         raise NotImplementedError
