@@ -1,10 +1,11 @@
-from pathlib import Path
 import re
+import sys
+from pathlib import Path
+
 import pytest
 from colorama import Back, Fore, Style
 
 from arger import Arger
-import sys
 
 
 @pytest.fixture

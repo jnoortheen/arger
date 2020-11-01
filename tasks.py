@@ -49,8 +49,10 @@ def release(
     """
     prun('poetry', 'version', type)
     c = prun('poetry', 'version')
-    prun('cz', 'changelog')
     _, version = c.out.split()
+
+    version_num = f"v{version}"
+    prun('cz', 'changelog', '--unreleased-version', version_num)
     prun('git status')
     msg = 'chore: bump version'
 
@@ -59,7 +61,7 @@ def release(
         return
     prun('git add .')
     prun(f'git commit -m "{msg}"')
-    prun(f'git tag v{version}')
+    prun(f'git tag ')
     prun('git push')
     prun('git push --tags')
 
