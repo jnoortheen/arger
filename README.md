@@ -3,7 +3,7 @@
 A wrapper around argparser to help build CLIs from functions. Uses type-hints extensively :snake:.
 
 [![PyPi Version](https://img.shields.io/pypi/v/arger.svg?style=flat)](https://pypi.python.org/pypi/arger)
-[![Python Version](https://img.shields.io/pypi/pyversions/returns.svg)](https://pypi.org/project/arger/)
+[![Python Version](https://img.shields.io/pypi/pyversions/arger.svg)](https://pypi.org/project/arger/)
 ![](https://github.com/jnoortheen/arger/workflows/test-and-publish/badge.svg)
 [![PyPI License](https://img.shields.io/pypi/l/arger.svg)](https://pypi.org/project/arger)
 
