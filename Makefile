@@ -47,7 +47,7 @@ install: $(DEPENDENCIES) .cache
 $(DEPENDENCIES): poetry.lock
 	@ poetry config virtualenvs.in-project false
 	poetry install
-	@ touch $@
+	@ mkdir -p $@ && touch $@
 
 ifndef CI
 poetry.lock: pyproject.toml
