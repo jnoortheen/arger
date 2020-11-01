@@ -20,7 +20,7 @@ class Command:
         return bool(self._fn or len(self._sub))
 
     def __repr__(self):
-        return f'<Command: {self._fn}'
+        return f'<Command: {self.name}'
 
     def add(self, func: F) -> "Command":
         cmd = Command(func)

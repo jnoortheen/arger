@@ -1,6 +1,7 @@
 # pylint: disable = W0212 ; protected member
 
 import argparse as ap
+import copy
 import sys
 import typing as tp
 
@@ -9,11 +10,15 @@ from .types import F
 
 CMD_TITLE = "commands"
 LEVEL = '__level__'
+FUNC_PREFIX = '_func_'
+NS_PREFIX = '_namespace_'
 
 
 def _add_args(parser, cmd: Command, level: int):
-    parser.set_defaults(**{f'func_{level}': cmd.callback, LEVEL: level})
-    for _, arg in cmd.docs.args.items():
+    parser.set_defaults(**{f'{FUNC_PREFIX}{level}': cmd.callback, LEVEL: level})
+    for arg_name, arg in cmd.docs.args.items():
+        if arg_name.startswith('_'):
+            continue
         arg.add(parser)
 
 
@@ -69,13 +74,13 @@ class Arger(ap.ArgumentParser):
         if not args and capture_sys:
             args = tuple(sys.argv[1:])
         namespace = self.parse_args(args)
-
+        kwargs = vars(namespace)
+        kwargs[NS_PREFIX] = copy.copy(namespace)
         # dispatch all functions as in hierarchy
-        for level in range(getattr(namespace, LEVEL, 0) + 1):
-            func_name = f'func_{level}'
-            if hasattr(namespace, func_name):
-                func = getattr(namespace, func_name)
-                func(namespace)
+        for level in range(kwargs.get(LEVEL, 0) + 1):
+            func_name = f'{FUNC_PREFIX}{level}'
+            if func_name in kwargs:
+                kwargs[func_name](namespace)
 
         return namespace
 
