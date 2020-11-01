@@ -1,21 +1,22 @@
-import pytest
 from decimal import Decimal
+
+import pytest
 
 from arger import Arger
 from arger.parser.classes import Option
 from arger.parser.funcs import Param, create_option
-from arger.parser.utils import get_option_generator
+from arger.parser.utils import FlagsGenerator
 from arger.types import UNDEFINED
 
 
 @pytest.fixture
 def gen_options():
-    return get_option_generator()
+    return FlagsGenerator()
 
 
 @pytest.fixture
 def option(default, name, gen_options, tp=UNDEFINED, hlp='') -> Option:
-    return create_option(Param(name, tp, hlp), default, gen_options)
+    return create_option(Param(name, tp, hlp, []), default, gen_options)
 
 
 @pytest.fixture

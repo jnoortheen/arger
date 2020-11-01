@@ -1,7 +1,8 @@
-import pytest
 from decimal import Decimal
 from enum import Enum
 from typing import List, Tuple
+
+import pytest
 
 from arger import Arger
 from arger.parser.classes import Argument
@@ -11,7 +12,7 @@ from arger.types import VarArg
 
 @pytest.fixture
 def argument(name, tp, hlp='') -> Argument:
-    return create_argument(Param(name, tp, hlp))
+    return create_argument(Param(name, tp, hlp, []))
 
 
 @pytest.fixture

@@ -27,8 +27,8 @@ def get_flags_from_param_doc(doc: str, flag_symbol='-') -> Tuple[List[str], str]
     Examples:
         ''':param arg1: -a --arg this is the document'''
     """
-    doc_parts = []
-    flags = []
+    doc_parts: List[str] = []
+    flags: List[str] = []
     for part in doc.split():
         if part.startswith(flag_symbol) and not doc_parts:
             # strip both comma and empty space
@@ -42,6 +42,8 @@ class DocstringParser:
     """Abstract class"""
 
     pattern: re.Pattern
+    section_ptrn: re.Pattern
+    param_ptrn: re.Pattern
 
     def parse(self, doc: str) -> DocstringTp:
         raise NotImplementedError
@@ -62,7 +64,7 @@ class NumpyDocParser(DocstringParser):
             r'^(?P<param>\w+)[ \t]*:[ \t]*(?P<type>\w+)?'
         )  # matches parameter_name e.g. param1: or param2 (int):
 
-    def get_rest_of_section(self, params: str) -> (str, str):
+    def get_rest_of_section(self, params: str) -> Tuple[str, str]:
         other_sect = self.section_ptrn.search(params)
         if other_sect:
             pos = other_sect.start()
@@ -98,7 +100,7 @@ class GoogleDocParser(NumpyDocParser):
     `Example <https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html>`_
     """
 
-    def __init__(self):
+    def __init__(self):  # pylint: disable=super-init-not-called
         self.pattern = re.compile(r'\s(Args|Arguments):\s')
         self.section_ptrn = re.compile(r'\n(?P<section>[A-Z]\w+):\n+')
         self.param_ptrn = re.compile(
@@ -116,24 +118,27 @@ class RstDocParser(DocstringParser):
         self.section_ptrn = re.compile(r'\n:[\w]+')  # matches any start of the section
         self.param_ptrn = re.compile(r'^[ ]+(?P<tp_param>.+):[ ]*(?P<doc>[\s\S]+)')
 
+    def parse_doc(self, line: str, params: Dict[str, ParamDocTp]):
+        match = self.param_ptrn.match(line)
+        if match:
+            tp_param, doc = match.groups()  # type: str, str
+            parts = tp_param.strip().rsplit(' ', maxsplit=1)
+            param = parts[-1].strip()
+            type_hint = None
+            if len(parts) > 1:
+                type_hint = parts[0].strip()
+            params[param] = ParamDocTp(type_hint, *get_flags_from_param_doc(doc))
+
     def parse(self, doc: str) -> DocstringTp:
         lines = self.pattern.split(doc)
         long_desc = lines.pop(0)
         epilog = ''
-        params = {}
+        params: Dict[str, ParamDocTp] = {}
         for idx, lin in enumerate(lines):
             sections = self.section_ptrn.split(lin, maxsplit=1)
             if idx + 1 == len(lines) and len(sections) > 1:
                 epilog = sections[-1]
-            match = self.param_ptrn.match(sections[0])
-            if match:
-                tp_param, doc = match.groups()  # type: str, str
-                parts = tp_param.strip().rsplit(' ', maxsplit=1)
-                param = parts[-1].strip()
-                type_hint = None
-                if len(parts) > 1:
-                    type_hint = parts[0].strip()
-                params[param] = ParamDocTp(type_hint, *get_flags_from_param_doc(doc))
+            self.parse_doc(sections[0], params)
 
         return DocstringTp(long_desc.strip(), epilog, params)
 

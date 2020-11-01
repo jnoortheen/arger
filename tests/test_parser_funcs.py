@@ -1,4 +1,4 @@
-from arger.parser import opterate
+from arger.parser import parse_function
 from arger.parser.actions import TypeAction
 from arger.types import VarArg
 
@@ -14,11 +14,13 @@ def main(param1: int, param2: str, kw1=None, kw2=False, *args: int):
     _reprint(**locals())
 
 
-def test_opterate():
-    doc, args = opterate(func=main)
-    assert doc == "Example function with types documented in the docstring."
+def test_parse_function():
+    docs = parse_function(func=main)
+    assert (
+        docs.description == "Example function with types documented in the docstring."
+    )
     exp_args = ["param1", "param2", "args", "kw1", "kw2"]
-    assert list(args) == exp_args
+    assert list(docs.args) == exp_args
 
     exp_flags = [
         ("param1",),
@@ -53,6 +55,6 @@ def test_opterate():
         },
     ]
 
-    for idx, arg in enumerate(args.values()):
+    for idx, arg in enumerate(docs.args.values()):
         assert arg.flags == exp_flags[idx]
         assert arg.kwargs == exp_kwargs[idx]

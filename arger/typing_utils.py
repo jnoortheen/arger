@@ -4,7 +4,6 @@ from enum import Enum
 from inspect import isclass
 from typing import Any, FrozenSet, List, Set, Tuple
 
-
 NEW_TYPING = sys.version_info[:3] >= (3, 7, 0)  # PEP 560
 
 

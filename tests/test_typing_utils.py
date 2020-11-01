@@ -1,6 +1,7 @@
+from typing import Any, List, Tuple
+
 from pytest import fixture, mark
 from pytest_lazyfixture import lazy_fixture as lz
-from typing import Any, List, Tuple
 
 from arger.typing_utils import get_origin, match_types
 

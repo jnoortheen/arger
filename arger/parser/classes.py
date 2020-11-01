@@ -1,9 +1,8 @@
 # pylint: disable = W0221
 import argparse
-import inspect
-from typing import Any, Tuple
+from typing import Any, Optional, Tuple
 
-from arger.parser.utils import generate_flags
+from arger.parser.utils import FlagsGenerator
 
 from ..types import UNDEFINED
 from .actions import TypeAction
@@ -24,7 +23,7 @@ class Argument:
     ):
         """Represent optional arguments to the command.
 
-        Args:
+        Keyword Args:
             type (Any): The type to which the command-line argument should be converted. Got from annotation.
             help (str): A brief description of what the argument does. From docstring.
 
@@ -44,13 +43,6 @@ class Argument:
 
     def add(self, parser: argparse.ArgumentParser):
         return parser.add_argument(*self.flags, **self.kwargs)
-
-    @property
-    def _kwargs_repr_(self):
-        return {
-            k: f"`{val.__name__}" if inspect.isclass(val) else val
-            for k, val in self.kwargs.items()
-        }
 
     def __repr__(self):
         """helps during tests"""
@@ -86,13 +78,12 @@ class Option(Argument):
         super().__init__(**kwargs)
         self.flags = flags
 
-    def update_flags(self, name: str, option_generator: Any = None):
+    def update_flags(
+        self, name: str, option_generator: Optional[FlagsGenerator] = None
+    ):
         self.kwargs.setdefault('dest', name)
         if not self.flags and option_generator is not None:
-            hlp = self.kwargs.pop("help").split()
-            # generate flags
-            self.flags = tuple(generate_flags(name, hlp, option_generator))
-            self.kwargs["help"] = " ".join(hlp)
+            self.flags = tuple(option_generator.generate(name))
 
     def update(self, tp: Any = UNDEFINED, default: Any = UNDEFINED, **_):
         """Update type and default externally"""
@@ -105,7 +96,6 @@ class Option(Argument):
                     "store_true" if default is False else "store_false"
                 )
                 tp = self.kwargs.pop('type', UNDEFINED)
-
             elif default is not None and tp is UNDEFINED:
                 tp = type(default)
         super().update(tp)

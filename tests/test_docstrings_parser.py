@@ -2,7 +2,7 @@ import inspect
 
 import pytest
 
-from arger.parser.docstring import parse_docstring, ParamDocTp
+from arger.parser.docstring import ParamDocTp, parse_docstring
 
 
 def func_numpy():

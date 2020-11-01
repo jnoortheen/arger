@@ -1,56 +1,54 @@
+# pylint: disable = W0212 ; protected member
+
+import argparse as ap
 import sys
-from argparse import ArgumentParser
-from typing import Any, Callable, Dict, Optional
+import typing as tp
 
-from arger.parser.classes import Option
-from arger.structs import Command
-from arger.types import F
+from .parser.classes import Argument
+from .structs import Command
+from .types import F
 
 
-def _add_args(parser, args: Dict[str, Option]):
+def _add_args(parser, args: tp.Dict[str, Argument]):
     for _, arg in args.items():
         arg.add(parser)
 
 
-def _cmd_prepare(parser, cmd: Command):
-    cmd_parser = parser.add_parser(name=cmd.name, help=cmd.desc)
-    _add_args(cmd_parser, cmd.args)
+def _cmd_prepare(parser: ap._SubParsersAction, cmd: Command) -> ap.ArgumentParser:
+    cmd_parser = parser.add_parser(
+        name=cmd.name, help=cmd.docs.description if cmd.docs else ''
+    )
+    cmd_parser.set_defaults(func=cmd.callback)
+    _add_args(cmd_parser, cmd.docs.args if cmd.docs else {})
     return cmd_parser
 
 
-CMD = "command"
-CMD_TITLE = "commands"
-
-
-def _add_parsers(parser: "Arger", cmd: Command):
+def _add_parsers(parser: tp.Union["Arger", ap.ArgumentParser], cmd: Command):
     commands = list(cmd)
     if commands:
         subparser = parser.add_subparsers(
-            title=CMD_TITLE,  # cmd.name
-            dest=CMD,  # cmd.name,
             # action=CommandAction,
             # description=cmd.desc,
-            # type=cmd.callback,
         )
         for _, sub in commands:
             cmd_parser = _cmd_prepare(subparser, sub)
             _add_parsers(cmd_parser, sub)  # recursively add any nested commands
 
 
-class Arger(ArgumentParser):
+class Arger(ap.ArgumentParser):
     """Contains one function (parser) or more functions (subparsers)."""
 
-    def __init__(self, fn: Optional[F] = None, **kwargs):
+    def __init__(self, fn: tp.Optional[F] = None, **kwargs):
         self._command = Command(fn)
-        if self._command.desc:
-            kwargs.setdefault("description", self._command.desc)
+        if self._command.docs and self._command.docs.description:
+            kwargs.setdefault("description", self._command.docs.description)
 
         super().__init__(**kwargs)
 
         if fn:  # lazily add arguments
-            _add_args(self, self._command.args)
+            _add_args(self, self._command.docs.args)
 
-    def run(self, *args, capture_sys=True) -> Any:
+    def run(self, *args, capture_sys=True) -> tp.Dict[str, tp.Any]:
         """Parse cli and dispatch functions.
 
         Args:
@@ -64,12 +62,10 @@ class Arger(ArgumentParser):
 
         if not args and capture_sys:
             args = tuple(sys.argv[1:])
-        kwargs = vars(self.parse_args(args))  # type: Dict[str, Any]
-
-        return self._command.run(**kwargs)
+        return vars(self.parse_args(args))
 
     @classmethod
-    def init(cls, **kwargs) -> Callable[[Callable], "Arger"]:
+    def init(cls, **kwargs) -> tp.Callable[[tp.Callable], "Arger"]:
         """Create parser from function as a decorator.
 
         Args:

@@ -1,9 +1,9 @@
 """Integration tests configuration file."""
 import re
-from nbformat import read
 from pathlib import Path
-from pytest import param
 
+from nbformat import read
+from pytest import param
 
 PY_FILE = re.compile(r"[\"](.+\.py)")
 
