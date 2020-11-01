@@ -4,22 +4,26 @@ import argparse as ap
 import sys
 import typing as tp
 
-from .parser.classes import Argument
 from .structs import Command
 from .types import F
 
+CMD_TITLE = "commands"
+LEVEL = '__level__'
 
-def _add_args(parser, args: tp.Dict[str, Argument]):
-    for _, arg in args.items():
+
+def _add_args(parser, cmd: Command, level: int):
+    parser.set_defaults(**{f'func_{level}': cmd.callback, LEVEL: level})
+    for _, arg in cmd.docs.args.items():
         arg.add(parser)
 
 
-def _cmd_prepare(parser: ap._SubParsersAction, cmd: Command) -> ap.ArgumentParser:
+def _cmd_prepare(
+    parser: ap._SubParsersAction, cmd: Command, level: int
+) -> ap.ArgumentParser:
     cmd_parser = parser.add_parser(
         name=cmd.name, help=cmd.docs.description if cmd.docs else ''
     )
-    cmd_parser.set_defaults(func=cmd.callback)
-    _add_args(cmd_parser, cmd.docs.args if cmd.docs else {})
+    _add_args(cmd_parser, cmd, level)
     return cmd_parser
 
 
@@ -28,10 +32,11 @@ def _add_parsers(parser: tp.Union["Arger", ap.ArgumentParser], cmd: Command):
     if commands:
         subparser = parser.add_subparsers(
             # action=CommandAction,
-            # description=cmd.desc,
+            title=CMD_TITLE,
         )
         for _, sub in commands:
-            cmd_parser = _cmd_prepare(subparser, sub)
+            level = (parser.get_default(LEVEL) or 0) + 1
+            cmd_parser = _cmd_prepare(subparser, sub, level=level)
             _add_parsers(cmd_parser, sub)  # recursively add any nested commands
 
 
@@ -39,16 +44,17 @@ class Arger(ap.ArgumentParser):
     """Contains one function (parser) or more functions (subparsers)."""
 
     def __init__(self, fn: tp.Optional[F] = None, **kwargs):
+        kwargs.setdefault('formatter_class', ap.ArgumentDefaultsHelpFormatter)
         self._command = Command(fn)
-        if self._command.docs and self._command.docs.description:
+        if self._command.docs.description:
             kwargs.setdefault("description", self._command.docs.description)
 
         super().__init__(**kwargs)
 
         if fn:  # lazily add arguments
-            _add_args(self, self._command.docs.args)
+            _add_args(self, self._command, level=0)
 
-    def run(self, *args, capture_sys=True) -> tp.Dict[str, tp.Any]:
+    def run(self, *args: str, capture_sys=True) -> ap.Namespace:
         """Parse cli and dispatch functions.
 
         Args:
@@ -62,7 +68,16 @@ class Arger(ap.ArgumentParser):
 
         if not args and capture_sys:
             args = tuple(sys.argv[1:])
-        return vars(self.parse_args(args))
+        namespace = self.parse_args(args)
+
+        # dispatch all functions as in hierarchy
+        for level in range(getattr(namespace, LEVEL, 0) + 1):
+            func_name = f'func_{level}'
+            if hasattr(namespace, func_name):
+                func = getattr(namespace, func_name)
+                func(namespace)
+
+        return namespace
 
     @classmethod
     def init(cls, **kwargs) -> tp.Callable[[tp.Callable], "Arger"]:

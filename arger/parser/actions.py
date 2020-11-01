@@ -54,8 +54,3 @@ class TypeAction(argparse.Action):
         else:
             vals = values
         setattr(namespace, self.dest, cast(self.orig_type, vals))
-
-
-# class CommandAction(argparse._SubParsersAction):
-#     def __call__(self, *args, **kwargs):
-#         super(CommandAction, self).__call__(*args, **kwargs)

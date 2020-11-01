@@ -4,7 +4,7 @@ from typing import Any, Dict, Optional
 
 from .parser import parse_function
 from .parser.funcs import ParsedFunc
-from .types import F
+from .types import F, VarArg
 
 
 class Command:
@@ -19,6 +19,9 @@ class Command:
     def is_valid(self) -> bool:
         return bool(self._fn or len(self._sub))
 
+    def __repr__(self):
+        return f'<Command: {self._fn}'
+
     def add(self, func: F) -> "Command":
         cmd = Command(func)
         if cmd.name in self._sub:
@@ -28,7 +31,16 @@ class Command:
 
     def callback(self, ns: Namespace) -> Any:
         if self._fn:
-            return self._fn(**vars(ns))
+            kwargs = {}
+            args = []
+            for arg_name, arg_type in self.docs.args.items():
+                val = getattr(ns, arg_name)
+                if isinstance(arg_type.kwargs.get('type'), VarArg):
+                    args = val
+                else:
+                    kwargs[arg_name] = val
+
+            return self._fn(*args, **kwargs)
         return None
 
     def __iter__(self):

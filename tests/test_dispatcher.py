@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pytest
+from colorama import Back, Fore, Style
 
 from arger import Arger
 
@@ -29,6 +30,10 @@ def test_example(capsys, arger, args, expected: str):
 
     capture = capsys.readouterr()
     out = capture.err or capture.out
-    assert (
-        out.split() == expected.split()
-    ), f"\ncmd: {args}\nout: \n{out}\nexpected:\n{expected}\n"
+    assert out.split() == expected.split(), ''.join(
+        [
+            f"\n{Fore.BLUE}{Back.WHITE}cmd: {Style.RESET_ALL}\n{args}",
+            f"\n{Fore.BLUE}{Back.WHITE}out: {Style.RESET_ALL}\n{out}",
+            f"\n{Fore.BLUE}{Back.WHITE}expected: {Style.RESET_ALL}\n{expected}",
+        ]
+    )

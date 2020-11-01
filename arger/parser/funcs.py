@@ -76,14 +76,14 @@ def create_option(param: Param, default, option_generator: FlagsGenerator):
             default.update(param.type)
         return default
 
-    option = Option(help=param.help)
+    option = Option(help=param.help or "")
     option.update_flags(param.name, option_generator)
     option.update(param.type, default)
     return option
 
 
 def create_argument(param: Param) -> Argument:
-    arg = Argument(help=param.help)
+    arg = Argument(help=param.help or "")
     arg.update_flags(param.name)
     arg.update(tp=param.type)
     return arg
