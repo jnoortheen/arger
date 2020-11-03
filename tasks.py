@@ -65,6 +65,7 @@ def release(
     prun(f'git tag {version_num}')
     prun('git push')
     prun('git push --tags')
+    prun('mkdocs gh-deploy')
 
 
 # @arger.add_cmd
