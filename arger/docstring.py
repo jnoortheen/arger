@@ -1,49 +1,44 @@
 import functools
 import re
-from typing import Any, Dict, List, NamedTuple, Optional, Pattern, Tuple
+import typing as tp
 
 
-class ParamDocTp(NamedTuple):
-    type_hint: Any
-    flags: List[str]
+class ParamDocTp(tp.NamedTuple):
+    type_hint: tp.Any
+    flags: tp.List[str]
     doc: str
 
+    @classmethod
+    def init(cls, type_hint: tp.Any, doc: str, flag_symbol='-'):
+        """Parse flags defined in param's doc
 
-class _ParamDoc(NamedTuple):
-    name: str
-    type_hint: Any
-    doc: List[str]  # lines
+        Examples:
+            ''':param arg1: -a --arg this is the document'''
+        """
+        doc_parts: tp.List[str] = []
+        flags: tp.List[str] = []
+        for part in doc.split():
+            if part.startswith(flag_symbol) and not doc_parts:
+                # strip both comma and empty space
+                flags.append(part.strip(", ").strip())
+            else:
+                doc_parts.append(part)
+
+        return cls(type_hint, flags=flags, doc=" ".join(doc_parts))
 
 
-class DocstringTp(NamedTuple):
+class DocstringTp(tp.NamedTuple):
     description: str
     epilog: str
-    params: Dict[str, ParamDocTp]
-
-
-def get_flags_from_param_doc(doc: str, flag_symbol='-') -> Tuple[List[str], str]:
-    """Parse flags defined in param's doc
-
-    Examples:
-        ''':param arg1: -a --arg this is the document'''
-    """
-    doc_parts: List[str] = []
-    flags: List[str] = []
-    for part in doc.split():
-        if part.startswith(flag_symbol) and not doc_parts:
-            # strip both comma and empty space
-            flags.append(part.strip(", ").strip())
-        else:
-            doc_parts.append(part)
-    return flags, " ".join(doc_parts)
+    params: tp.Dict[str, ParamDocTp]
 
 
 class DocstringParser:
     """Abstract class"""
 
-    pattern: Pattern
-    section_ptrn: Pattern
-    param_ptrn: Pattern
+    pattern: tp.Pattern
+    section_ptrn: tp.Pattern
+    param_ptrn: tp.Pattern
 
     def parse(self, doc: str) -> DocstringTp:
         raise NotImplementedError
@@ -64,29 +59,27 @@ class NumpyDocParser(DocstringParser):
             r'^(?P<param>\w+)[ \t]*:[ \t]*(?P<type>\w+)?'
         )  # matches parameter_name e.g. param1: or param2 (int):
 
-    def get_rest_of_section(self, params: str) -> Tuple[str, str]:
+    def get_rest_of_section(self, params: str) -> tp.Tuple[str, str]:
         other_sect = self.section_ptrn.search(params)
         if other_sect:
             pos = other_sect.start()
             return params[pos:].strip(), params[:pos]
         return '', params
 
-    def parse_params(self, params: str) -> Dict[str, ParamDocTp]:
-        docs: List[_ParamDoc] = []
+    def parse_params(self, params: str) -> tp.Dict[str, ParamDocTp]:
+        docs = []
         for line in params.splitlines():
             match = self.param_ptrn.search(line)
             if match:
                 result = match.groupdict()
-                doc = [result['doc']] if 'doc' in result else []
-                docs.append(_ParamDoc(result['param'], result['type'], doc))
+                doc = result.get('doc', '')
+                docs.append((result['param'], result['type'], doc))
             elif docs:
-                docs[-1].doc.append(line)
+                docs[-1][-1] += line
 
         return {
-            p.name.strip('*'): ParamDocTp(
-                p.type_hint, *get_flags_from_param_doc(' '.join(p.doc))
-            )
-            for p in docs
+            param.strip('*'): ParamDocTp.init(tphint, doc)
+            for param, tphint, doc in docs
         }
 
     def parse(self, doc: str) -> DocstringTp:
@@ -118,7 +111,7 @@ class RstDocParser(DocstringParser):
         self.section_ptrn = re.compile(r'\n:[\w]+')  # matches any start of the section
         self.param_ptrn = re.compile(r'^[ ]+(?P<tp_param>.+):[ ]*(?P<doc>[\s\S]+)')
 
-    def parse_doc(self, line: str, params: Dict[str, ParamDocTp]):
+    def parse_doc(self, line: str, params: tp.Dict[str, ParamDocTp]):
         match = self.param_ptrn.match(line)
         if match:
             tp_param, doc = match.groups()  # type: str, str
@@ -127,13 +120,13 @@ class RstDocParser(DocstringParser):
             type_hint = None
             if len(parts) > 1:
                 type_hint = parts[0].strip()
-            params[param] = ParamDocTp(type_hint, *get_flags_from_param_doc(doc))
+            params[param] = ParamDocTp.init(type_hint, doc)
 
     def parse(self, doc: str) -> DocstringTp:
         lines = self.pattern.split(doc)
         long_desc = lines.pop(0)
         epilog = ''
-        params: Dict[str, ParamDocTp] = {}
+        params: tp.Dict[str, ParamDocTp] = {}
         for idx, lin in enumerate(lines):
             sections = self.section_ptrn.split(lin, maxsplit=1)
             if idx + 1 == len(lines) and len(sections) > 1:
@@ -149,7 +142,7 @@ def get_parsers():
     return [NumpyDocParser(), GoogleDocParser(), RstDocParser()]
 
 
-def parse_docstring(doc: Optional[str]) -> DocstringTp:
+def parse_docstring(doc: tp.Optional[str]) -> DocstringTp:
     if doc:
         for parser in get_parsers():
             if parser.matches(doc):

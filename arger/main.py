@@ -5,7 +5,8 @@ import copy
 import sys
 import typing as tp
 
-from .parser.funcs import ParsedFunc, parse_function
+from arger.funcs import ParsedFunc, parse_function
+
 from .typing_utils import VarArg
 
 CMD_TITLE = "commands"

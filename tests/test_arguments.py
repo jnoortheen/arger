@@ -5,7 +5,7 @@ from typing import List, Tuple
 import pytest
 
 from arger import Arger, Argument
-from arger.parser.funcs import Param, create_argument
+from arger.funcs import Param, create_argument
 from arger.typing_utils import VarArg
 
 

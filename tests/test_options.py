@@ -3,7 +3,7 @@ from decimal import Decimal
 import pytest
 
 from arger import Arger, Option
-from arger.parser.funcs import FlagsGenerator, Param, create_option
+from arger.funcs import FlagsGenerator, Param, create_option
 from arger.typing_utils import UNDEFINED
 
 
