@@ -62,7 +62,7 @@ python test.py 100 param2
 - The decorated functions can be composed to form nested sub-commands of any level.
 - No external lib dependency
 - Standard types supported. 
-  Please see [examples](docs/examples/supported_options.py) for more supported types with examples.
+  Please see [examples](./docs/examples/supported_options.py) for more supported types with examples.
 - All argument to `ArgumentParser.add_argument` is supported. 
   It can be updated with `arger.Argument` or `arger.Option` classes.
 - `*args` supported but no `**kwargs` support yet.

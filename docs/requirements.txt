@@ -1,3 +1,4 @@
-mkdocs==1.1
-mkdocs-material==5.1.0
-mkdocs-material-extensions==1.0b1
+mkdocs @ file:///home/noor/.cache/pypoetry/artifacts/9a/d7/52/818c6f01acc30cbc143ac4fa31b4963dae49f00ec4576b25ff84668345/mkdocs-1.1.2-py3-none-any.whl
+mkdocs-material @ file:///home/noor/.cache/pypoetry/artifacts/ff/ed/9a/a80c504206a2ef5a18cdbda21a6eff8c38927b2ea68561db401e5b2f18/mkdocs_material-5.5.14-py2.py3-none-any.whl
+mkdocs-material-extensions @ file:///home/noor/.cache/pypoetry/artifacts/26/5a/a3/33f73d7ceea96eeba0459e7c05e213a36203d52568d4c278a0c2882f1e/mkdocs_material_extensions-1.0.1-py3-none-any.whl
+mkdocstrings @ file:///home/noor/.cache/pypoetry/artifacts/95/43/80/ef6375c2f46fca32e368bafa1fcc9b5af34a186471e21f52c7d1267baa/mkdocstrings-0.10.3-py3-none-any.whl

@@ -63,13 +63,13 @@ pytest-lazy-fixture = "^0.6.3"
 
 # Documentation
 mkdocs = "^1.0"
-pygments = "*"
 mkdocs-material = "^5.1.0"
 mkdocstrings = "^0.10.3"
 pymdown-extensions = "^7.0"
-commitizen = {version = '^2.4.2', python=">=3.6.1"}
+pygments = "*"
 
 # Tooling
+commitizen = {version = '^2.4.2', python=">=3.6.1"}
 pyinstaller = "*"
 sniffer = "*"
 MacFSEvents = { version = "*", platform = "darwin" }

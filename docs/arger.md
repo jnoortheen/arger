@@ -12,12 +12,13 @@ All keyword arguments in the function definition are options.
 Arbitrary args and values can be captured with **kwargs
 
 ### 3. type annotations:
-used to determine the type and action of the arguments
-list, tuple, Enum are supported, List[Enum] are supported
+used to determine the type and action of the arguments.
 
 ### 4. Docstring (ReST or GoogleDoc)
-- The top part of the docstring becomes the usage message for the app.
-- ReST or GoogleDoc-style :param: lines in the following format describe the option
+- The top part of the docstring becomes the usage message for the command.
+- Parameter docstrings become help message for the arguments/options of the command.
+- Rest of the docstrings passed as `epilog` to the parser.  
+- ReST/GoogleDoc-style/NumpyDoc-style are supported
 - Options-strings can further be defined in the docstring.  
 ```pydocstring
 Args:

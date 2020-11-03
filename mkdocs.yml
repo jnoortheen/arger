@@ -4,6 +4,7 @@ site_author: Noortheen Raja
 
 repo_url: https://github.com/jnoortheen/arger
 edit_uri: https://github.com/jnoortheen/arger/edit/master/docs
+site_url: https://jnoortheen.github.io/arger
 
 theme: material
 
