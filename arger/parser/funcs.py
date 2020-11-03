@@ -82,10 +82,12 @@ class Argument:
         **kwargs,
     ):
         """Represent positional arguments to the command that are required by default.
-        Analogous to [ArgumentParser.add_argument](https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_argument)
+        Analogous to
+        [ArgumentParser.add_argument](https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_argument)
 
         Args:
-            type (Union[Callable[[str], T], FileType]): The type to which the command-line argument should be converted. Got from annotation.
+            type (Union[Callable[[str], T], FileType]): The type to which the command-line argument should be converted.
+                Got from annotation.
             help (str): A brief description of what the argument does. From docstring.
 
             metavar (str): A name for the argument in usage messages.
@@ -109,14 +111,14 @@ class Argument:
         """helps during tests"""
         return f"<{self.__class__.__name__}: {self.flags}, {repr(self.kwargs)}>"
 
-    def update_flags(self, name: str):
+    def set_dest(self, name: str, typ: tp.Any):
         self.flags = (name,)
+        self.update_type(typ)
 
-    def update(self, tp: tp.Any = UNDEFINED, **_):
+    def update_type(self, typ: tp.Any):
         """Update type externally."""
-        tp = self.kwargs.pop('type', tp)
-        if tp is not UNDEFINED:
-            self.kwargs['type'] = tp
+        if 'type' not in self.kwargs and typ is not UNDEFINED:
+            self.kwargs['type'] = typ
 
 
 class Option(Argument):
@@ -143,27 +145,32 @@ class Option(Argument):
         super().__init__(**kwargs)
         self.flags = flags
 
-    def update_flags(
-        self, name: str, option_generator: tp.Optional[FlagsGenerator] = None
+    def set_flags(
+        self,
+        name: str,
+        typ: tp.Any,
+        default: tp.Any = UNDEFINED,
+        option_generator: tp.Optional[FlagsGenerator] = None,
     ):
         self.kwargs.setdefault('dest', name)
         if not self.flags and option_generator is not None:
             self.flags = tuple(option_generator.generate(name))
+        self.update_default(typ, default)
 
-    def update(self, tp: tp.Any = UNDEFINED, default: tp.Any = UNDEFINED, **_):
+    def update_default(self, typ: tp.Any, default: tp.Any = UNDEFINED):
         """Update type and default externally"""
-        default = self.kwargs.pop('default', default)
-        if default is not UNDEFINED:
+        if default is not UNDEFINED and 'default' not in self.kwargs:
             self.kwargs["default"] = default
+        else:
+            default = self.kwargs["default"]
 
-            if isinstance(default, bool):
-                self.kwargs['action'] = (
-                    "store_true" if default is False else "store_false"
-                )
-                tp = self.kwargs.pop('type', UNDEFINED)
-            elif default is not None and tp is UNDEFINED:
-                tp = type(default)
-        super().update(tp)
+        if isinstance(default, bool):
+            self.kwargs['action'] = "store_true" if default is False else "store_false"
+            typ = self.kwargs.pop('type', UNDEFINED)
+        elif default is not None and typ is UNDEFINED:
+            typ = type(default)
+
+        self.update_type(typ)
 
 
 class ParsedFunc(tp.NamedTuple):
@@ -176,28 +183,22 @@ class ParsedFunc(tp.NamedTuple):
 def create_option(param: Param, default, option_generator: FlagsGenerator):
     if isinstance(default, Option):
         default.kwargs.setdefault('help', param.help)
-        default.update_flags(param.name, option_generator)
-        if 'type' not in default.kwargs:
-            default.update(param.type)
+        default.set_flags(param.name, param.type, option_generator)
         return default
 
     if isinstance(default, Argument):
         default.kwargs.setdefault('help', param.help)
-        default.update_flags(param.name)
-        if 'type' not in default.kwargs:
-            default.update(param.type)
+        default.set_dest(param.name, param.type)
         return default
 
     option = Option(help=param.help or "")
-    option.update_flags(param.name, option_generator)
-    option.update(param.type, default)
+    option.set_flags(param.name, param.type, default, option_generator)
     return option
 
 
 def create_argument(param: Param) -> Argument:
     arg = Argument(help=param.help or "")
-    arg.update_flags(param.name)
-    arg.update(tp=param.type)
+    arg.set_dest(param.name, param.type)
     return arg
 
 
