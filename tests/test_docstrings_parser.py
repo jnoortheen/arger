@@ -71,19 +71,16 @@ def test_docstring_parser(fn):
     assert result.description == "Summary line.\n\nExtended description of function."
     assert list(result.params) == ['arg1', 'arg2', 'arg3']
     assert list(result.params.values()) == [
-        ParamDocTp(
+        ParamDocTp.init(
             type_hint='int',
-            flags=[],
             doc='Description of arg1',
         ),
-        ParamDocTp(
+        ParamDocTp.init(
             type_hint='str',
-            flags=[],
             doc='Description of arg2 a line that extends to next line',
         ),
-        ParamDocTp(
+        ParamDocTp.init(
             type_hint=None,
-            flags=[],
             doc='arg3 without any type',
         ),
     ]

@@ -1,5 +1,4 @@
-from arger.funcs import TypeAction
-from arger.parser import parse_function
+from arger.funcs import ParsedFunc, TypeAction
 from arger.typing_utils import VarArg
 
 from .utils import _reprint
@@ -15,7 +14,7 @@ def main(param1: int, param2: str, kw1=None, kw2=False, *args: int):
 
 
 def test_parse_function():
-    docs = parse_function(func=main)
+    docs = ParsedFunc(func=main)
     assert (
         docs.description == "Example function with types documented in the docstring."
     )

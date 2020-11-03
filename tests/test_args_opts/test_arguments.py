@@ -4,21 +4,12 @@ from typing import List, Tuple
 
 import pytest
 
-from arger import Arger, Argument
-from arger.funcs import Param, create_argument
 from arger.typing_utils import VarArg
 
 
 @pytest.fixture
-def argument(name, tp, hlp='') -> Argument:
-    return create_argument(Param(name, tp, hlp, []))
-
-
-@pytest.fixture
-def arger(argument):
-    arg = Arger()
-    argument.add(arg)
-    return arg
+def parser(add_arger, argument):
+    return add_arger(argument)
 
 
 class Num(Enum):
@@ -60,7 +51,7 @@ class Num(Enum):
         ('a_list', set, '1 2 3', {'1', '2', '3'}),
     ],
 )
-def test_arguments(arger, argument, input, expected, name):
+def test_arguments(parser, argument, input, expected, name):
     # parses input
-    ns = arger.parse_args(input.split())
+    ns = parser.parse_args(input.split())
     assert getattr(ns, name) == expected

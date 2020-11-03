@@ -2,26 +2,10 @@ from decimal import Decimal
 
 import pytest
 
-from arger import Arger, Option
-from arger.funcs import FlagsGenerator, Param, create_option
-from arger.typing_utils import UNDEFINED
-
 
 @pytest.fixture
-def gen_options():
-    return FlagsGenerator()
-
-
-@pytest.fixture
-def option(default, name, gen_options, tp=UNDEFINED, hlp='') -> Option:
-    return create_option(Param(name, tp, hlp, []), default, gen_options)
-
-
-@pytest.fixture
-def arger(option):
-    arg = Arger()
-    option.add(arg)
-    return arg
+def parser(add_arger, option):
+    return add_arger(option)
 
 
 @pytest.mark.parametrize(
@@ -40,11 +24,11 @@ def arger(option):
         ('a_list', [], '1 2 3', ['1', '2', '3']),
     ],
 )
-def test_options(arger, option, name, default, input, expected):
+def test_options(parser, option, name, default, input, expected):
     # parse defaults
-    ns = arger.parse_args([])
+    ns = parser.parse_args([])
     assert getattr(ns, name) == default
 
     # parses input
-    ns = arger.parse_args([option.flags[0]] + input.split())
+    ns = parser.parse_args([option.flags[0]] + input.split())
     assert getattr(ns, name) == expected

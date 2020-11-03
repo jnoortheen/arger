@@ -114,16 +114,6 @@ def cast(tp, val) -> Any:
 T = TypeVar('T')
 
 
-class _Undefined:
-    """sometimes the value could be None. we need this to distinguish such values."""
-
-    def __repr__(self):
-        return 'UNDEFINED'
-
-
-UNDEFINED = _Undefined()  # singleton
-
-
 class VarArg:
     """Represent variadic arguent."""
 

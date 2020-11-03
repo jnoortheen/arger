@@ -5,7 +5,7 @@ import copy
 import sys
 import typing as tp
 
-from arger.funcs import ParsedFunc, parse_function
+from arger.funcs import ParsedFunc
 
 from .typing_utils import VarArg
 
@@ -41,7 +41,7 @@ class Arger(ap.ArgumentParser):
         kwargs.setdefault('formatter_class', ap.ArgumentDefaultsHelpFormatter)
 
         self.sub_parser_action: tp.Optional[ap._SubParsersAction] = None
-        self.func = parse_function(func) if _parsed_fn is None else _parsed_fn
+        self.func = ParsedFunc(func) if _parsed_fn is None else _parsed_fn
 
         if self.func.description:
             kwargs.setdefault("description", self.func.description)
@@ -120,7 +120,7 @@ class Arger(ap.ArgumentParser):
                 title=CMD_TITLE,
             )
 
-        parsed_fn = parse_function(func)
+        parsed_fn = ParsedFunc(func)
         return self.sub_parser_action.add_parser(
             name=func.__name__,
             help=parsed_fn.description,

@@ -3,58 +3,12 @@ import inspect
 import typing as tp
 from argparse import Action, ArgumentParser
 from collections import OrderedDict
-from itertools import filterfalse, tee
 from typing import Any, Tuple, Union
 
 from arger import typing_utils as tp_utils
-from arger.docstring import parse_docstring
+from arger.docstring import ParamDocTp, parse_docstring
 
-
-class Param(tp.NamedTuple):
-    name: str
-    type: str
-    help: tp.Optional[str]
-    flags: tp.List[str]
-
-
-def partition(
-    pred, iterable: tp.Iterable[tp_utils.T]
-) -> tp.Tuple[tp.Iterable[tp_utils.T], tp.Iterable[tp_utils.T]]:
-    """Use a predicate to partition entries into false entries and true entries"""
-    # partition(is_odd, range(10)) --> 0 2 4 6 8   and  1 3 5 7 9
-    t1, t2 = tee(iterable)
-    return filter(pred, t1), filterfalse(pred, t2)
-
-
-def get_val(val, default):
-    return default if val == inspect.Parameter.empty else val
-
-
-def prepare_params(func):
-    docstr = parse_docstring(inspect.getdoc(func))
-
-    sign = inspect.signature(func)
-
-    args, kwargs = partition(
-        lambda x: x.default == inspect.Parameter.empty, sign.parameters.values()
-    )
-
-    def get_param(param: inspect.Parameter) -> Param:
-        annot = get_val(param.annotation, tp_utils.UNDEFINED)
-        if param.kind == inspect.Parameter.VAR_POSITIONAL:
-            annot = tp_utils.VarArg(annot)
-        elif param.kind == inspect.Parameter.VAR_KEYWORD:
-            annot = tp_utils.VarKw(annot)
-
-        name = param.name
-        doc = docstr.params.get(name)
-        return Param(name, annot, doc.doc if doc else None, doc.flags if doc else [])
-
-    return (
-        docstr,
-        [get_param(param) for param in args],
-        [(get_param(param), param.default) for param in kwargs],
-    )
+_EMPTY = inspect.Parameter.empty
 
 
 class FlagsGenerator:
@@ -117,7 +71,7 @@ class Argument:
 
     def update_type(self, typ: tp.Any):
         """Update type externally."""
-        if 'type' not in self.kwargs and typ is not tp_utils.UNDEFINED:
+        if 'type' not in self.kwargs and typ is not _EMPTY:
             self.kwargs['type'] = typ
 
 
@@ -149,7 +103,7 @@ class Option(Argument):
         self,
         name: str,
         typ: tp.Any,
-        default: tp.Any = tp_utils.UNDEFINED,
+        default: tp.Any = _EMPTY,
         option_generator: tp.Optional[FlagsGenerator] = None,
     ):
         self.kwargs.setdefault('dest', name)
@@ -157,67 +111,83 @@ class Option(Argument):
             self.flags = tuple(option_generator.generate(name))
         self.update_default(typ, default)
 
-    def update_default(self, typ: tp.Any, default: tp.Any = tp_utils.UNDEFINED):
+    def update_default(self, typ: tp.Any, default: tp.Any = _EMPTY):
         """Update type and default externally"""
-        if default is not tp_utils.UNDEFINED and 'default' not in self.kwargs:
+        if default is not _EMPTY and 'default' not in self.kwargs:
             self.kwargs["default"] = default
         else:
             default = self.kwargs["default"]
 
         if isinstance(default, bool):
             self.kwargs['action'] = "store_true" if default is False else "store_false"
-            typ = self.kwargs.pop('type', tp_utils.UNDEFINED)
-        elif default is not None and typ is tp_utils.UNDEFINED:
+            typ = self.kwargs.pop('type', _EMPTY)
+        elif default is not None and typ is _EMPTY:
             typ = type(default)
 
         self.update_type(typ)
 
 
-class ParsedFunc(tp.NamedTuple):
-    args: tp.Dict[str, Argument]
+class ParsedFunc:
     fn: tp.Optional[tp.Callable] = None
     description: str = ''
     epilog: str = ''
+    args: tp.Dict[str, Argument]
+
+    def __init__(self, func: tp.Optional[tp.Callable]):
+        """Parse 'func' and adds parser arguments from function signature."""
+        if func is None:
+            self.args = {}
+            return
+
+        docstr = parse_docstring(inspect.getdoc(func))
+
+        sign = inspect.signature(func)
+        self.fn = func
+        self.description = docstr.description
+        self.epilog = docstr.epilog
+
+        option_generator = FlagsGenerator()
+        self.args = OrderedDict()
+        for param in sign.parameters.values():
+            param_doc = docstr.params.get(param.name)
+            if param.default is param.empty:
+                # todo: handle VarArg
+                # if param.kind == inspect.Parameter.VAR_POSITIONAL:
+                #     annot = tp_utils.VarArg(annot)
+                # elif param.kind == inspect.Parameter.VAR_KEYWORD:
+                #     annot = tp_utils.VarKw(annot)
+                self.args[param.name] = create_argument(param, param_doc)
+            else:
+                self.args[param.name] = create_option(
+                    param, param_doc, option_generator
+                )
 
 
-def create_option(param: Param, default, option_generator: FlagsGenerator):
-    if isinstance(default, Option):
-        default.kwargs.setdefault('help', param.help)
-        default.set_flags(param.name, param.type, option_generator)
-        return default
+def create_option(
+    param: inspect.Parameter,
+    pdoc: tp.Optional[ParamDocTp],
+    option_generator: FlagsGenerator,
+):
+    hlp = pdoc.doc if pdoc else ""
+    if isinstance(param.default, Option):
+        param.default.kwargs.setdefault('help', hlp)
+        param.default.set_flags(param.name, param.annotation, option_generator)
+        return param.default
 
-    if isinstance(default, Argument):
-        default.kwargs.setdefault('help', param.help)
-        default.set_dest(param.name, param.type)
-        return default
+    if isinstance(param.default, Argument):
+        param.default.kwargs.setdefault('help', hlp)
+        param.default.set_dest(param.name, param.annotation)
+        return param.default
 
-    option = Option(help=param.help or "")
-    option.set_flags(param.name, param.type, default, option_generator)
+    option = Option(help=hlp)
+    option.set_flags(param.name, param.annotation, param.default, option_generator)
     return option
 
 
-def create_argument(param: Param) -> Argument:
-    arg = Argument(help=param.help or "")
-    arg.set_dest(param.name, param.type)
+def create_argument(param: inspect.Parameter, doc: tp.Optional[ParamDocTp]) -> Argument:
+    arg = Argument(help=doc.doc if doc else "")
+    arg.set_dest(param.name, param.annotation)
     return arg
-
-
-def parse_function(func: tp.Optional[tp.Callable]) -> ParsedFunc:
-    """Parse 'func' and adds parser arguments from function signature."""
-    if func is None:
-        return ParsedFunc({})
-
-    docstr, positional_params, kw_params = prepare_params(func)
-    option_generator = FlagsGenerator()
-
-    arguments: tp.Dict[str, Argument] = OrderedDict()
-    for param in positional_params:
-        arguments[param.name] = create_argument(param)
-
-    for param, default in kw_params:
-        arguments[param.name] = create_option(param, default, option_generator)
-
-    return ParsedFunc(arguments, func, docstr.description, docstr.epilog)
 
 
 def get_nargs(typ: Any) -> Tuple[Any, Union[int, str]]:
@@ -238,9 +208,9 @@ class TypeAction(argparse.Action):
     """After the parse update the type of value"""
 
     def __init__(self, *args, **kwargs):
-        typ = kwargs.pop("type", tp_utils.UNDEFINED)
+        typ = kwargs.pop("type", _EMPTY)
         self.orig_type = typ
-        if typ is not tp_utils.UNDEFINED:
+        if typ is not _EMPTY:
             origin = tp_utils.get_origin(typ)
             if tp_utils.is_iterable(origin):
                 origin, kwargs["nargs"] = get_nargs(typ)
@@ -252,6 +222,13 @@ class TypeAction(argparse.Action):
             kwargs["type"] = origin
         super().__init__(*args, **kwargs)
 
+    def set_attr(self, namespace, vals):
+        if self.orig_type is _EMPTY:
+            val = vals
+        else:
+            val = tp_utils.cast(self.orig_type, vals)
+        setattr(namespace, self.dest, val)
+
     def __call__(self, parser, namespace, values, option_string=None):
         if tp_utils.is_iterable(self.orig_type):
             items = getattr(namespace, self.dest, ()) or ()
@@ -260,4 +237,4 @@ class TypeAction(argparse.Action):
             vals = items
         else:
             vals = values
-        setattr(namespace, self.dest, tp_utils.cast(self.orig_type, vals))
+        self.set_attr(namespace, vals)

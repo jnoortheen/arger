@@ -5,7 +5,7 @@ import typing as tp
 
 class ParamDocTp(tp.NamedTuple):
     type_hint: tp.Any
-    flags: tp.List[str]
+    flags: tp.Tuple[str, ...]
     doc: str
 
     @classmethod
@@ -24,7 +24,7 @@ class ParamDocTp(tp.NamedTuple):
             else:
                 doc_parts.append(part)
 
-        return cls(type_hint, flags=flags, doc=" ".join(doc_parts))
+        return cls(type_hint, flags=tuple(flags), doc=" ".join(doc_parts))
 
 
 class DocstringTp(tp.NamedTuple):
@@ -73,7 +73,7 @@ class NumpyDocParser(DocstringParser):
             if match:
                 result = match.groupdict()
                 doc = result.get('doc', '')
-                docs.append((result['param'], result['type'], doc))
+                docs.append([result['param'], result['type'], doc])
             elif docs:
                 docs[-1][-1] += line
 
