@@ -1,17 +1,4 @@
-from typing import Any, Callable, TypeVar
-
-F = TypeVar("F", bound=Callable[..., Any])  # decorator
-T = TypeVar('T')
-
-
-class _Undefined:
-    """sometimes the value could be None. we need this to distinguish such values."""
-
-    def __repr__(self):
-        return 'UNDEFINED'
-
-
-UNDEFINED = _Undefined()  # singleton
+from typing import Any
 
 
 class VarArg:

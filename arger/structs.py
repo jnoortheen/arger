@@ -4,7 +4,8 @@ from typing import Any, Dict, Optional
 
 from .parser import parse_function
 from .parser.funcs import ParsedFunc
-from .types import F, VarArg
+from .types import VarArg
+from .typing_utils import F
 
 
 class Command:

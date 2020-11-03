@@ -1,8 +1,9 @@
 import argparse
 from typing import Any, Tuple, Union
 
-from ..types import UNDEFINED, VarArg, VarKw
+from ..types import VarArg, VarKw
 from ..typing_utils import (
+    UNDEFINED,
     cast,
     get_inner_args,
     get_origin,

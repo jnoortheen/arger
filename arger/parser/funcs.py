@@ -5,7 +5,8 @@ from typing import Dict, Iterable, List, NamedTuple, Optional, Tuple
 
 from arger.parser.docstring import parse_docstring
 
-from ..types import UNDEFINED, F, T, VarArg, VarKw
+from ..types import VarArg, VarKw
+from ..typing_utils import UNDEFINED, F, T
 from .classes import Argument, Option
 from .utils import FlagsGenerator
 

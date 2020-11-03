@@ -6,7 +6,7 @@ from arger import Arger
 from arger.parser.classes import Option
 from arger.parser.funcs import Param, create_option
 from arger.parser.utils import FlagsGenerator
-from arger.types import UNDEFINED
+from arger.typing_utils import UNDEFINED
 
 
 @pytest.fixture

@@ -4,7 +4,7 @@ from typing import Any, Optional, Tuple
 
 from arger.parser.utils import FlagsGenerator
 
-from ..types import UNDEFINED
+from ..typing_utils import UNDEFINED
 from .actions import TypeAction
 
 

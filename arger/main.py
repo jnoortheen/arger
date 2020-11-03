@@ -6,7 +6,7 @@ import sys
 import typing as tp
 
 from .structs import Command
-from .types import F
+from .typing_utils import F
 
 CMD_TITLE = "commands"
 LEVEL = '__level__'
