@@ -19,8 +19,9 @@ container = []
 def cmd1(
     an_int: int,
     an_str: str,
-    a_tuple: Tuple[str, str, str],  # nargs: 3
-    a_var_tuple: Tuple[str, ...],  # nargs: + - one or more
+    a_tuple: Tuple[str, str, str],  # nargs: 3 -> consume 3
+    a_var_tuple: Tuple[str, ...],  # nargs: +  -> consume one or more
+    a_list: List[str] = None,  # action='append': -> use --flag multiple times
     an_enum=Choice.one,
     optional_str='',
     optional_int=0,
@@ -32,7 +33,10 @@ def cmd1(
 
 @arger.add_cmd
 def cmd2(
-    a_list: List[int], m_opt=False, y_opt=False, my=False,
+    a_list: List[int],
+    m_opt=False,
+    y_opt=False,
+    my=False,
 ):
     """A script with three optional values.
 

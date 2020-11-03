@@ -34,7 +34,8 @@ class Argument:
             action (Union[str, Type[Action]]): The basic type of action to be taken
                 when this argument is encountered at the command line.
         """
-        kwargs.setdefault('action', TypeAction)  # can be overridden by user
+        if "action" not in kwargs:
+            kwargs['action'] = TypeAction
         self.kwargs = kwargs
 
     def add(self, parser: ArgumentParser) -> Action:
@@ -60,9 +61,10 @@ class Option(Argument):
 
         Args:
             *flags: The option's flags
+            **kwargs: they are passed to `Argument`.
             default (Any): The value produced if the argument is absent from the command line.
                 * The default value assigned to a keyword argument helps determine
-                    the type of option and action.
+                    the type of option and action if it is not type annotated.
                 * The default value is assigned directly to the parser's default for that option.
 
                 * In addition, it determines the ArgumentParser action

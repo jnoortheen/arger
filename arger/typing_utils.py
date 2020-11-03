@@ -1,4 +1,5 @@
 # pylint: disable = W0212
+import functools
 import sys
 from enum import Enum
 from inspect import isclass
@@ -16,6 +17,7 @@ def _get_origin(tp):
     return tp
 
 
+@functools.lru_cache(None)
 def define_old_types():
     origins = {}
     if not NEW_TYPING:
@@ -30,13 +32,13 @@ def define_old_types():
     return origins
 
 
-OLD_TYPE_ORIGINS = define_old_types()
-
-
 def get_origin(tp):
     origin = _get_origin(tp)
-    if not NEW_TYPING and hasattr(tp, '__name__') and tp.__name__ in OLD_TYPE_ORIGINS:
-        return OLD_TYPE_ORIGINS[tp.__name__]
+
+    if not NEW_TYPING and hasattr(tp, '__name__'):
+        old_type_origins = define_old_types()
+        if tp.__name__ in old_type_origins:
+            return old_type_origins[tp.__name__]
     return origin
 
 
