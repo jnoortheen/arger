@@ -4,8 +4,6 @@ from typing import List, Tuple
 
 import pytest
 
-from arger.typing_utils import VarArg
-
 
 @pytest.fixture
 def parser(add_arger, argument):
@@ -29,7 +27,6 @@ class Num(Enum):
         ('enum', Num, 'one', Num.one),
         ('enum', Num, 'two', Num.two),
         # container types
-        ('vargs', VarArg, '1 2 3', ('1', '2', '3')),
         ('a_tuple', tuple, '1 2 3', ('1', '2', '3')),
         ('a_tuple', Tuple[int, ...], '1 2 3', (1, 2, 3)),
         ('a_tuple', Tuple[str, ...], '1 2 3', ('1', '2', '3')),

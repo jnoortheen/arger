@@ -151,16 +151,28 @@ class ParsedFunc:
         for param in sign.parameters.values():
             param_doc = docstr.params.get(param.name)
             if param.default is param.empty:
-                # todo: handle VarArg
-                # if param.kind == inspect.Parameter.VAR_POSITIONAL:
-                #     annot = tp_utils.VarArg(annot)
-                # elif param.kind == inspect.Parameter.VAR_KEYWORD:
-                #     annot = tp_utils.VarKw(annot)
                 self.args[param.name] = create_argument(param, param_doc)
             else:
                 self.args[param.name] = create_option(
                     param, param_doc, option_generator
                 )
+
+    def dispatch(self, ns: argparse.Namespace) -> tp.Any:
+        if self.fn:
+            kwargs = {}
+            args = []
+            sign = inspect.signature(self.fn)
+            for arg_name in self.args:
+                val = getattr(ns, arg_name)
+                param = sign.parameters[arg_name]
+                if param.kind == param.POSITIONAL_ONLY:
+                    args.append(val)
+                elif param.kind == param.VAR_POSITIONAL:
+                    args.extend(val)
+                else:
+                    kwargs[arg_name] = val
+            return self.fn(*args, **kwargs)
+        return None
 
 
 def create_option(
@@ -185,19 +197,19 @@ def create_option(
 
 
 def create_argument(param: inspect.Parameter, doc: tp.Optional[ParamDocTp]) -> Argument:
-    arg = Argument(help=doc.doc if doc else "")
+    kwargs = dict(help=doc.doc if doc else "")
+    if param.kind == inspect.Parameter.VAR_POSITIONAL:
+        kwargs.setdefault("nargs", "*")
+        if param.annotation is not _EMPTY:
+            kwargs.setdefault("type", param.annotation)
+    arg = Argument(**kwargs)
     arg.set_dest(param.name, param.annotation)
     return arg
 
 
 def get_nargs(typ: Any) -> Tuple[Any, Union[int, str]]:
     inner = tp_utils.unpack_type(typ)
-    if (
-        tp_utils.is_tuple(typ)
-        and typ != tuple
-        and not isinstance(typ, (tp_utils.VarKw, tp_utils.VarArg))
-        and tp_utils.get_inner_args(typ)
-    ):
+    if tp_utils.is_tuple(typ) and typ != tuple and tp_utils.get_inner_args(typ):
         args = tp_utils.get_inner_args(typ)
         inner = inner if len(set(args)) == 1 else str
         return inner, '+' if (... in args) else len(args)
@@ -210,31 +222,32 @@ class TypeAction(argparse.Action):
     def __init__(self, *args, **kwargs):
         typ = kwargs.pop("type", _EMPTY)
         self.orig_type = typ
+        self.is_iterable = tp_utils.is_seq_container(typ)
+        self.is_enum = False
         if typ is not _EMPTY:
             origin = tp_utils.get_origin(typ)
-            if tp_utils.is_iterable(origin):
+            if self.is_iterable:
                 origin, kwargs["nargs"] = get_nargs(typ)
 
             if tp_utils.is_enum(origin):
                 kwargs.setdefault("choices", [e.name for e in origin])
                 origin = str
+                self.is_enum = True
 
             kwargs["type"] = origin
         super().__init__(*args, **kwargs)
 
-    def set_attr(self, namespace, vals):
-        if self.orig_type is _EMPTY:
-            val = vals
-        else:
-            val = tp_utils.cast(self.orig_type, vals)
-        setattr(namespace, self.dest, val)
+    def cast_value(self, vals):
+        if self.is_iterable or self.is_enum:
+            return tp_utils.cast(self.orig_type, vals)
+        return vals
 
     def __call__(self, parser, namespace, values, option_string=None):
-        if tp_utils.is_iterable(self.orig_type):
+        if self.is_iterable:
             items = getattr(namespace, self.dest, ()) or ()
             items = list(items)
             items.extend(values)
             vals = items
         else:
             vals = values
-        self.set_attr(namespace, vals)
+        setattr(namespace, self.dest, self.cast_value(vals))

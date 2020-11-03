@@ -1,3 +1,5 @@
+# pylint: disable = redefined-outer-name
+
 import inspect
 
 import pytest
@@ -13,12 +15,11 @@ def param_doc(hlp=''):
 
 
 @pytest.fixture
-def parameter(name, tp=_EMPTY, default=_EMPTY):
+def parameter(name, tp):
     return inspect.Parameter(
         name,
         inspect.Parameter.POSITIONAL_OR_KEYWORD,
         annotation=tp,
-        default=default,
     )
 
 

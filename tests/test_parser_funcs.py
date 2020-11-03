@@ -1,5 +1,4 @@
 from arger.funcs import ParsedFunc, TypeAction
-from arger.typing_utils import VarArg
 
 from .utils import _reprint
 
@@ -18,15 +17,15 @@ def test_parse_function():
     assert (
         docs.description == "Example function with types documented in the docstring."
     )
-    exp_args = ["param1", "param2", "args", "kw1", "kw2"]
+    exp_args = ["param1", "param2", "kw1", "kw2", "args"]
     assert list(docs.args) == exp_args
 
     exp_flags = [
         ("param1",),
         ("param2",),
-        ("args",),
         ("-k", "--kw1"),
         ("-w", "--kw2"),
+        ("args",),
     ]
     exp_kwargs = [
         {
@@ -39,7 +38,6 @@ def test_parse_function():
             "help": "The second parameter.",
             "type": str,
         },
-        {"action": TypeAction, "help": "", "type": VarArg(int)},
         {
             "action": TypeAction,
             "default": None,
@@ -52,6 +50,7 @@ def test_parse_function():
             "dest": "kw2",
             "help": "",
         },
+        {"action": TypeAction, "help": "", "type": int, "nargs": "*"},
     ]
 
     for idx, arg in enumerate(docs.args.values()):

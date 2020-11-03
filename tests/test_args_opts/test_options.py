@@ -1,6 +1,16 @@
+import inspect
 from decimal import Decimal
 
 import pytest
+
+
+@pytest.fixture
+def parameter(name, default):
+    return inspect.Parameter(
+        name,
+        inspect.Parameter.POSITIONAL_OR_KEYWORD,
+        default=default,
+    )
 
 
 @pytest.fixture

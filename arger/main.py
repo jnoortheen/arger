@@ -7,8 +7,6 @@ import typing as tp
 
 from arger.funcs import ParsedFunc
 
-from .typing_utils import VarArg
-
 CMD_TITLE = "commands"
 LEVEL = '__level__'
 FUNC_PREFIX = '__func_'
@@ -53,7 +51,7 @@ class Arger(ap.ArgumentParser):
         self._add_args(_level)
 
     def _add_args(self, level: int):
-        self.set_defaults(**{f'{FUNC_PREFIX}{level}': self.dispatch, LEVEL: level})
+        self.set_defaults(**{f'{FUNC_PREFIX}{level}': self.func.dispatch, LEVEL: level})
 
         for arg_name, arg in self.func.args.items():
             if arg_name.startswith(
@@ -61,20 +59,6 @@ class Arger(ap.ArgumentParser):
             ):  # useful only when `_namespace_` is requested or it is a kwarg
                 continue
             arg.add(self)
-
-    def dispatch(self, ns: ap.Namespace) -> tp.Any:
-        if self.func.fn:
-            kwargs = {}
-            args = []
-            for arg_name, arg_type in self.func.args.items():
-                val = getattr(ns, arg_name)
-                if isinstance(arg_type.kwargs.get('type'), VarArg):
-                    args = val
-                else:
-                    kwargs[arg_name] = val
-            # todo: use inspect.signature.bind to bind kwargs and args to respective names
-            return self.func.fn(*args, **kwargs)
-        return None
 
     def run(self, *args: str, capture_sys=True) -> ap.Namespace:
         """Parse cli and dispatch functions.

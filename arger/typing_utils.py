@@ -33,6 +33,7 @@ def define_old_types():
 
 
 def get_origin(tp):
+    """Return the python class for the GenericAlias. Dict->dict, List->list..."""
     origin = _get_origin(tp)
 
     if not NEW_TYPING and hasattr(tp, '__name__'):
@@ -68,14 +69,14 @@ def unpack_type(tp, default=str) -> Any:
     Returns:
         type inside the container type
     """
-    if get_inner_args(tp):
-        inner_tp = getattr(tp, ARGS)
-        if inner_tp and str(inner_tp[0]) not in {'~T', 'typing.Any'}:
-            return inner_tp[0]
+    args = get_inner_args(tp)
+    if args:
+        if str(args[0]) not in {'~T', 'typing.Any'}:
+            return args[0]
     return default
 
 
-def is_iterable(tp):
+def is_seq_container(tp):
     origin = get_origin(tp)
     return origin in {list, tuple, set, frozenset}
 
@@ -94,7 +95,7 @@ def cast(tp, val) -> Any:
     if is_enum(origin):
         return origin[val]
 
-    if is_iterable(origin):
+    if is_seq_container(origin):
         val = origin(val)
         args = get_inner_args(tp)
         if (
@@ -112,30 +113,3 @@ def cast(tp, val) -> Any:
 
 
 T = TypeVar('T')
-
-
-class VarArg:
-    """Represent variadic arguent."""
-
-    __origin__: Any = tuple
-    __args__: Any = ()
-
-    def __init__(self, tp):
-        self.__args__ = (tp, ...)
-
-    def __repr__(self):
-        tp = self.__args__[0]
-        tp = getattr(tp, "__name__", tp)
-        return f"{self.__class__.__name__}[{tp}]"
-
-    def __eq__(self, other):
-        return repr(self) == repr(other)
-
-    def __hash__(self):
-        return hash(repr(self))
-
-
-class VarKw(VarArg):
-    """Represent variadic keyword argument."""
-
-    __original__ = dict
