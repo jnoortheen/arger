@@ -1,11 +1,13 @@
 # pylint: disable = W0221
-import argparse
-from typing import Any, Optional, Tuple
+from argparse import Action, ArgumentParser, FileType
+from typing import Any, Callable, Optional, Text, Tuple, Union
 
 from arger.parser.utils import FlagsGenerator
 
-from ..typing_utils import UNDEFINED
+from ..typing_utils import UNDEFINED, T
 from .actions import TypeAction
+
+ARG_TYPE = Union[Callable[[Text], T], Callable[[str], T], FileType]
 
 
 class Argument:
@@ -19,7 +21,7 @@ class Argument:
         Analogous to [ArgumentParser.add_argument](https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_argument)
 
         Args:
-            type (Any): The type to which the command-line argument should be converted. Got from annotation.
+            type (ARG_TYPE): The type to which the command-line argument should be converted. Got from annotation.
             help (str): A brief description of what the argument does. From docstring.
 
             metavar (str): A name for the argument in usage messages.
@@ -29,14 +31,14 @@ class Argument:
                 to be generated from the type-hint.
             dest (str): The name of the attribute to be added to the object returned by parse_args().
             const (Any): covered by type-hint and default value given
-            choices (List[str]): covered by enum type
-            action (Union[str, Type[argparse.Action]]): The basic type of action to be taken
+            choices (Iterable[str]): covered by enum type
+            action (Union[str, Type[Action]]): The basic type of action to be taken
                 when this argument is encountered at the command line.
         """
         kwargs.setdefault('action', TypeAction)  # can be overridden by user
         self.kwargs = kwargs
 
-    def add(self, parser: argparse.ArgumentParser):
+    def add(self, parser: ArgumentParser) -> Action:
         return parser.add_argument(*self.flags, **self.kwargs)
 
     def __repr__(self):
