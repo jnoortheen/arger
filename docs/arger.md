@@ -28,15 +28,31 @@ Args:
     variable_name: --verbose the help_text no short option
 ```
 
-## Arger
+## API Documentation
 
-::: arger.Arger
+### Arger
+
+- ::: arger.Arger
+    handler: python
+    selection:
+      members:
+        - init
+        - __init__
+        - add_cmd
+        - run
     
-## Argument
+### Argument
 
-::: arger.Argument
+- ::: arger.Argument
+    handler: python
+    selection:
+      members:
+        - __init__
+    
+### Option
 
-## Option
-
-::: arger.Option
-
+- ::: arger.Option
+    handler: python
+    selection:
+      members:
+        - __init__

@@ -46,9 +46,15 @@ def _add_parsers(parser: tp.Union["Arger", ap.ArgumentParser], cmd: Command):
 
 
 class Arger(ap.ArgumentParser):
-    """Contains one function (parser) or more functions (subparsers)."""
+    """Contains one (parser) or more commands (subparsers)."""
 
     def __init__(self, fn: tp.Optional[F] = None, **kwargs):
+        """
+
+        Args:
+            fn: A callable to parse root parser's arguments.
+            **kwargs: all the arguments that are supported by `ArgumentParser`
+        """
         kwargs.setdefault('formatter_class', ap.ArgumentDefaultsHelpFormatter)
         self._command = Command(fn)
         if self._command.docs.description:

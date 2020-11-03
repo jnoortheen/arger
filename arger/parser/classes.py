@@ -9,21 +9,16 @@ from .actions import TypeAction
 
 
 class Argument:
-    """Represent positional argument that are required.
-
-    Tries to be compatible to `ArgumentParser.add_argument
-    https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_argument`_.
-    """
-
     flags: Tuple[str, ...] = ()
 
     def __init__(
         self,
         **kwargs,
     ):
-        """Represent optional arguments to the command.
+        """Represent positional arguments to the command that are required by default.
+        Analogous to [ArgumentParser.add_argument](https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_argument)
 
-        Keyword Args:
+        Args:
             type (Any): The type to which the command-line argument should be converted. Got from annotation.
             help (str): A brief description of what the argument does. From docstring.
 
@@ -63,7 +58,7 @@ class Option(Argument):
         """Represent optional arguments that has flags.
 
         Args:
-            *flags: Either a name or a list of option strings, e.g. -f, --foo.
+            *flags: The option's flags
             default (Any): The value produced if the argument is absent from the command line.
                 * The default value assigned to a keyword argument helps determine
                     the type of option and action.
@@ -74,6 +69,9 @@ class Option(Argument):
                     * If the default value is a list, the action is append
                     (multiple instances of that option are permitted).
                     * Strings or None imply a store action.
+
+        Examples:
+            - Option('-f', '--foo', default="value")
         """
         super().__init__(**kwargs)
         self.flags = flags

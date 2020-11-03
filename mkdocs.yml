@@ -6,9 +6,11 @@ repo_url: https://github.com/jnoortheen/arger
 edit_uri: https://github.com/jnoortheen/arger/edit/master/docs
 site_url: https://jnoortheen.github.io/arger
 
+strict: false
 theme: material
 
 markdown_extensions:
+  - admonition
   - codehilite:
       linenums: true
   - pymdownx.snippets:
@@ -17,11 +19,14 @@ markdown_extensions:
 
 plugins:
   - search
+  - mknotebooks
   - mkdocstrings:
       default_handler: python
       handlers:
         python:
           rendering:
-            show_source: false
+            show_source: true
+            heading_level: 4
+            show_root_toc_entry: false
       watch:
         - arger

@@ -285,6 +285,28 @@ optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
+name = "gitdb"
+version = "4.0.5"
+description = "Git Object Database"
+category = "dev"
+optional = false
+python-versions = ">=3.4"
+
+[package.dependencies]
+smmap = ">=3.0.1,<4"
+
+[[package]]
+name = "gitpython"
+version = "3.1.11"
+description = "Python Git Library"
+category = "dev"
+optional = false
+python-versions = ">=3.4"
+
+[package.dependencies]
+gitdb = ">=4.0.1,<5"
+
+[[package]]
 name = "importlib-metadata"
 version = "2.0.0"
 description = "Read metadata from Python packages"
@@ -688,6 +710,21 @@ beautifulsoup4 = ">=4.8.2,<5.0.0"
 mkdocs = ">=1.1,<2.0"
 pymdown-extensions = ">=6.3,<8.0"
 pytkdocs = ">=0.2.0,<0.4.0"
+
+[[package]]
+name = "mknotebooks"
+version = "0.6.2.post0.dev5"
+description = "Plugin for mkdocs to generate markdown documents from jupyter notebooks."
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+gitpython = "*"
+jupyter-client = "*"
+markdown = ">=3.3.2"
+mkdocs = ">=1.1"
+nbconvert = ">=6.0.0"
 
 [[package]]
 name = "mypy"
@@ -1310,6 +1347,14 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
+name = "smmap"
+version = "3.0.4"
+description = "A pure Python implementation of a sliding window memory map manager"
+category = "dev"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+
+[[package]]
 name = "sniffer"
 version = "0.4.1"
 description = "An automatic test runner. Supports nose out of the box."
@@ -1536,7 +1581,7 @@ testing = ["pytest (>=3.5,!=3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "281fd27215d0fdbc6957945ccc38bebf4760021421cded2b29ed0afca1e6f27f"
+content-hash = "d8b8fdac2182d18e54e8ab7615de3815a19d632fb20d1c0c1e005886b15f9029"
 
 [metadata.files]
 altgraph = [
@@ -1726,6 +1771,14 @@ freezegun = [
 future = [
     {file = "future-0.18.2.tar.gz", hash = "sha256:b1bead90b70cf6ec3f0710ae53a525360fa360d306a86583adc6bf83a4db537d"},
 ]
+gitdb = [
+    {file = "gitdb-4.0.5-py3-none-any.whl", hash = "sha256:91f36bfb1ab7949b3b40e23736db18231bf7593edada2ba5c3a174a7b23657ac"},
+    {file = "gitdb-4.0.5.tar.gz", hash = "sha256:c9e1f2d0db7ddb9a704c2a0217be31214e91a4fe1dea1efad19ae42ba0c285c9"},
+]
+gitpython = [
+    {file = "GitPython-3.1.11-py3-none-any.whl", hash = "sha256:6eea89b655917b500437e9668e4a12eabdcf00229a0df1762aabd692ef9b746b"},
+    {file = "GitPython-3.1.11.tar.gz", hash = "sha256:befa4d101f91bad1b632df4308ec64555db684c360bd7d2130b4807d49ce86b8"},
+]
 importlib-metadata = [
     {file = "importlib_metadata-2.0.0-py2.py3-none-any.whl", hash = "sha256:cefa1a2f919b866c5beb7c9f7b0ebb4061f30a8a9bf16d609b000e2dfaceb9c3"},
     {file = "importlib_metadata-2.0.0.tar.gz", hash = "sha256:77a540690e24b0305878c37ffd421785a6f7e53c8b5720d211b211de8d0e95da"},
@@ -1894,6 +1947,9 @@ mkdocs-material-extensions = [
 mkdocstrings = [
     {file = "mkdocstrings-0.10.3-py3-none-any.whl", hash = "sha256:6a432b90703c343c445aa5bf59bf93ef0efa0f55395daee79c59ab57c732bf79"},
     {file = "mkdocstrings-0.10.3.tar.gz", hash = "sha256:13722641310562ad1ca6a225d65cfdad6554831b5e17dc1101ac66be35d0dbe5"},
+]
+mknotebooks = [
+    {file = "mknotebooks-0.6.2.post0.dev5-py3-none-any.whl", hash = "sha256:adf7eb4cfd99fca9587ee6d98805d1cf0cf070179f514b1fa74db5e18e314448"},
 ]
 mypy = [
     {file = "mypy-0.790-cp35-cp35m-macosx_10_6_x86_64.whl", hash = "sha256:bd03b3cf666bff8d710d633d1c56ab7facbdc204d567715cb3b9f85c6e94f669"},
@@ -2193,6 +2249,10 @@ send2trash = [
 six = [
     {file = "six-1.15.0-py2.py3-none-any.whl", hash = "sha256:8b74bedcbbbaca38ff6d7491d76f2b06b3592611af620f8426e82dddb04a5ced"},
     {file = "six-1.15.0.tar.gz", hash = "sha256:30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259"},
+]
+smmap = [
+    {file = "smmap-3.0.4-py2.py3-none-any.whl", hash = "sha256:54c44c197c819d5ef1991799a7e30b662d1e520f2ac75c9efbeb54a742214cf4"},
+    {file = "smmap-3.0.4.tar.gz", hash = "sha256:9c98bbd1f9786d22f14b3d4126894d56befb835ec90cef151af566c7e19b5d24"},
 ]
 sniffer = [
     {file = "sniffer-0.4.1-py2.py3-none-any.whl", hash = "sha256:f120843fe152d0e380402fc11313b151e2044c47fdd36895de2efedc8624dbb8"},
