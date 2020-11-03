@@ -20,6 +20,7 @@ class Arger(ap.ArgumentParser):
     def __init__(
         self,
         func: tp.Optional[tp.Callable] = None,
+        version: tp.Optional[str] = None,
         _parsed_fn: tp.Optional[ParsedFunc] = None,  # passed from subparser action
         _level=0,  # passed from subparser action
         **kwargs,
@@ -28,7 +29,13 @@ class Arger(ap.ArgumentParser):
 
         Args:
             func: A callable to parse root parser's arguments.
+            version: adds --version flag.
             **kwargs: all the arguments that are supported by `ArgumentParser`
+
+        Examples:
+            adding version flag
+                version = '%(prog)s 2.0'
+                Arger() equals to Arger().add_argument('--version', action='version', version=version)
         """
         kwargs.setdefault('formatter_class', ap.ArgumentDefaultsHelpFormatter)
 
@@ -40,6 +47,8 @@ class Arger(ap.ArgumentParser):
 
         super().__init__(**kwargs)
 
+        if version:
+            self.add_argument('--version', action='version', version=version)
         self._add_args(_level)
 
     def _add_args(self, level: int):
