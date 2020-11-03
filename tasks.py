@@ -45,7 +45,8 @@ def release(
 ):
     """Bump version, tag and push them.
 
-    :param type: one of patch, minor, major, prepatch, preminor, premajor, prerelease. as supported by poetry version
+    Args:
+        type: version bump as supported by `poetry version` command
     """
     prun('poetry', 'version', type)
     c = prun('poetry', 'version')
