@@ -1,13 +1,13 @@
 # pylint: disable = W0221
 from argparse import Action, ArgumentParser, FileType
-from typing import Any, Callable, Optional, Text, Tuple, Union
+from typing import Any, Callable, Optional, Tuple, Union
 
 from arger.parser.utils import FlagsGenerator
 
 from ..typing_utils import UNDEFINED, T
 from .actions import TypeAction
 
-ARG_TYPE = Union[Callable[[Text], T], Callable[[str], T], FileType]
+ARG_TYPE = Union[Callable[[str], T], FileType]
 
 
 class Argument:
@@ -29,7 +29,6 @@ class Argument:
 
             nargs (Union[int, str]): The number of command-line arguments that should be consumed.
                 to be generated from the type-hint.
-            dest (str): The name of the attribute to be added to the object returned by parse_args().
             const (Any): covered by type-hint and default value given
             choices (Iterable[str]): covered by enum type
             action (Union[str, Type[Action]]): The basic type of action to be taken

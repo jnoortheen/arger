@@ -2,7 +2,7 @@
 import sys
 from enum import Enum
 from inspect import isclass
-from typing import Any, Callable, FrozenSet, List, Set, Tuple, TypeVar
+from typing import Any, FrozenSet, List, Set, Tuple, TypeVar
 
 NEW_TYPING = sys.version_info[:3] >= (3, 7, 0)  # PEP 560
 
@@ -109,7 +109,6 @@ def cast(tp, val) -> Any:
     return origin(val)
 
 
-F = TypeVar("F", bound=Callable[..., Any])  # decorator
 T = TypeVar('T')
 
 

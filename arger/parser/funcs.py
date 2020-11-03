@@ -1,12 +1,12 @@
 import inspect
 from collections import OrderedDict
 from itertools import filterfalse, tee
-from typing import Dict, Iterable, List, NamedTuple, Optional, Tuple
+from typing import Callable, Dict, Iterable, List, NamedTuple, Optional, Tuple
 
 from arger.parser.docstring import parse_docstring
 
 from ..types import VarArg, VarKw
-from ..typing_utils import UNDEFINED, F, T
+from ..typing_utils import UNDEFINED, T
 from .classes import Argument, Option
 from .utils import FlagsGenerator
 
@@ -19,9 +19,10 @@ class Param(NamedTuple):
 
 
 class ParsedFunc(NamedTuple):
-    description: str
-    epilog: str
     args: Dict[str, Argument]
+    fn: Optional[Callable] = None
+    description: str = ''
+    epilog: str = ''
 
 
 def partition(pred, iterable: Iterable[T]) -> Tuple[Iterable[T], Iterable[T]]:
@@ -90,8 +91,10 @@ def create_argument(param: Param) -> Argument:
     return arg
 
 
-def parse_function(func: F) -> ParsedFunc:
+def parse_function(func: Optional[Callable]) -> ParsedFunc:
     """Parse 'func' and adds parser arguments from function signature."""
+    if func is None:
+        return ParsedFunc({})
 
     docstr, positional_params, kw_params = prepare_params(func)
     option_generator = FlagsGenerator()
@@ -103,4 +106,4 @@ def parse_function(func: F) -> ParsedFunc:
     for param, default in kw_params:
         arguments[param.name] = create_option(param, default, option_generator)
 
-    return ParsedFunc(docstr.description, docstr.epilog, arguments)
+    return ParsedFunc(arguments, func, docstr.description, docstr.epilog)
