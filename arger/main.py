@@ -6,7 +6,7 @@ import sys
 import typing as tp
 
 from .parser.funcs import ParsedFunc, parse_function
-from .types import VarArg
+from .typing_utils import VarArg
 
 CMD_TITLE = "commands"
 LEVEL = '__level__'

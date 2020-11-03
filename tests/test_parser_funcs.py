@@ -1,6 +1,6 @@
 from arger.parser import parse_function
 from arger.parser.actions import TypeAction
-from arger.types import VarArg
+from arger.typing_utils import VarArg
 
 from .utils import _reprint
 

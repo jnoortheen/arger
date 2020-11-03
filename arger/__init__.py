@@ -1,7 +1,7 @@
 from pkg_resources import DistributionNotFound, get_distribution
 
 from .main import Arger
-from .parser.classes import Argument, Option
+from .parser.funcs import Argument, Option
 
 try:
     __version__ = get_distribution("arger").version

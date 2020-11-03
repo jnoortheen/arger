@@ -4,10 +4,9 @@ from typing import List, Tuple
 
 import pytest
 
-from arger import Arger
-from arger.parser.classes import Argument
+from arger import Arger, Argument
 from arger.parser.funcs import Param, create_argument
-from arger.types import VarArg
+from arger.typing_utils import VarArg
 
 
 @pytest.fixture
