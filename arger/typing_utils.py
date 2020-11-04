@@ -90,6 +90,8 @@ def is_tuple(tp):
 
 
 def cast(tp, val) -> Any:
+    # https://github.com/contains-io/typingplus/blob/master/typingplus.py
+    # for advanced casting one should use pydantic
     origin = get_origin(tp)
 
     if is_enum(origin):

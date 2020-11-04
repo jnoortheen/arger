@@ -1,4 +1,4 @@
-# pylint: disable = W0212 ; protected member
+# pylint: disable = protected-access
 
 import argparse as ap
 import copy

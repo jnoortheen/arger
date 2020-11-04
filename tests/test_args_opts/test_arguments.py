@@ -5,11 +5,6 @@ from typing import List, Tuple
 import pytest
 
 
-@pytest.fixture
-def parser(add_arger, argument):
-    return add_arger(argument)
-
-
 class Num(Enum):
     one = '1. one'
     two = '2. two'

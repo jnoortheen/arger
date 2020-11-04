@@ -1,3 +1,5 @@
+# pylint: disable = protected-access
+
 import argparse
 import inspect
 import typing as tp
@@ -30,6 +32,7 @@ class FlagsGenerator:
 
 class Argument:
     flags: tp.Tuple[str, ...] = ()
+    kind: inspect._ParameterKind
 
     def __init__(
         self,
@@ -65,11 +68,23 @@ class Argument:
         """helps during tests"""
         return f"<{self.__class__.__name__}: {self.flags}, {repr(self.kwargs)}>"
 
-    def set_dest(self, name: str, typ: tp.Any):
-        self.flags = (name,)
-        self.update_type(typ)
+    def update(
+        self,
+        param: inspect.Parameter,
+        option_generator: tp.Optional[FlagsGenerator] = None,
+    ):
+        self.kind = param.kind
+        self._update(param, option_generator)
 
-    def update_type(self, typ: tp.Any):
+    def _update(
+        self,
+        param: inspect.Parameter,
+        _: tp.Optional[FlagsGenerator] = None,
+    ):
+        self.flags = (param.name,)
+        self._update_type(param.annotation)
+
+    def _update_type(self, typ: tp.Any):
         """Update type externally."""
         if 'type' not in self.kwargs and typ is not _EMPTY:
             self.kwargs['type'] = typ
@@ -99,17 +114,16 @@ class Option(Argument):
         super().__init__(**kwargs)
         self.flags = flags
 
-    def set_flags(
+    def _update(
         self,
-        name: str,
-        typ: tp.Any,
-        default: tp.Any = _EMPTY,
+        param: inspect.Parameter,
         option_generator: tp.Optional[FlagsGenerator] = None,
     ):
-        self.kwargs.setdefault('dest', name)
+        self.kind = param.kind
+        self.kwargs.setdefault('dest', param.name)
         if not self.flags and option_generator is not None:
-            self.flags = tuple(option_generator.generate(name))
-        self.update_default(typ, default)
+            self.flags = tuple(option_generator.generate(param.name))
+        self.update_default(param.annotation, param.default)
 
     def update_default(self, typ: tp.Any, default: tp.Any = _EMPTY):
         """Update type and default externally"""
@@ -124,7 +138,7 @@ class Option(Argument):
         elif default is not None and typ is _EMPTY:
             typ = type(default)
 
-        self.update_type(typ)
+        self._update_type(typ)
 
 
 class ParsedFunc:
@@ -150,12 +164,7 @@ class ParsedFunc:
         self.args = OrderedDict()
         for param in sign.parameters.values():
             param_doc = docstr.params.get(param.name)
-            if param.default is param.empty:
-                self.args[param.name] = create_argument(param, param_doc)
-            else:
-                self.args[param.name] = create_option(
-                    param, param_doc, option_generator
-                )
+            self.args[param.name] = create_argument(param, param_doc, option_generator)
 
     def dispatch(self, ns: argparse.Namespace) -> tp.Any:
         if self.fn:
@@ -175,35 +184,26 @@ class ParsedFunc:
         return None
 
 
-def create_option(
+def create_argument(
     param: inspect.Parameter,
     pdoc: tp.Optional[ParamDocTp],
     option_generator: FlagsGenerator,
-):
+) -> Argument:
     hlp = pdoc.doc if pdoc else ""
-    if isinstance(param.default, Option):
-        param.default.kwargs.setdefault('help', hlp)
-        param.default.set_flags(param.name, param.annotation, option_generator)
-        return param.default
 
-    if isinstance(param.default, Argument):
-        param.default.kwargs.setdefault('help', hlp)
-        param.default.set_dest(param.name, param.annotation)
-        return param.default
+    if isinstance(param.default, (Argument, Option)):
+        arg = param.default
+    elif param.default is _EMPTY:
+        arg = Argument()
+        if param.kind == inspect.Parameter.VAR_POSITIONAL:
+            arg.kwargs.setdefault("nargs", "*")
+            if param.annotation is not _EMPTY:
+                arg.kwargs.setdefault("type", param.annotation)
+    else:
+        arg = Option()
 
-    option = Option(help=hlp)
-    option.set_flags(param.name, param.annotation, param.default, option_generator)
-    return option
-
-
-def create_argument(param: inspect.Parameter, doc: tp.Optional[ParamDocTp]) -> Argument:
-    kwargs = dict(help=doc.doc if doc else "")
-    if param.kind == inspect.Parameter.VAR_POSITIONAL:
-        kwargs.setdefault("nargs", "*")
-        if param.annotation is not _EMPTY:
-            kwargs.setdefault("type", param.annotation)
-    arg = Argument(**kwargs)
-    arg.set_dest(param.name, param.annotation)
+    arg.kwargs.setdefault('help', hlp)
+    arg.update(param, option_generator)
     return arg
 
 

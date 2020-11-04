@@ -13,11 +13,6 @@ def parameter(name, default):
     )
 
 
-@pytest.fixture
-def parser(add_arger, option):
-    return add_arger(option)
-
-
 @pytest.mark.parametrize(
     'name, default, input, expected',
     [
@@ -34,11 +29,11 @@ def parser(add_arger, option):
         ('a_list', [], '1 2 3', ['1', '2', '3']),
     ],
 )
-def test_options(parser, option, name, default, input, expected):
+def test_options(parser, argument, name, default, input, expected):
     # parse defaults
     ns = parser.parse_args([])
     assert getattr(ns, name) == default
 
     # parses input
-    ns = parser.parse_args([option.flags[0]] + input.split())
+    ns = parser.parse_args([argument.flags[0]] + input.split())
     assert getattr(ns, name) == expected
