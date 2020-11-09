@@ -1,5 +1,3 @@
-import inspect
-
 import pytest
 
 from arger.docstring import ParamDocTp, parse_docstring
@@ -67,7 +65,7 @@ def func_rst():
     ],
 )
 def test_docstring_parser(fn):
-    result = parse_docstring(inspect.getdoc(fn))
+    result = parse_docstring(fn)
     assert result.description == "Summary line.\n\nExtended description of function."
     assert list(result.params) == ['arg1', 'arg2', 'arg3']
     assert list(result.params.values()) == [

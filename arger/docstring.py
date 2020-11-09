@@ -1,4 +1,5 @@
 import functools
+import inspect
 import re
 import typing as tp
 
@@ -142,9 +143,11 @@ def get_parsers():
     return [NumpyDocParser(), GoogleDocParser(), RstDocParser()]
 
 
-def parse_docstring(doc: tp.Optional[str]) -> DocstringTp:
-    if doc:
+def parse_docstring(func: tp.Optional[tp.Callable]) -> DocstringTp:
+    doc = ''
+    if func:
+        doc = inspect.getdoc(func)
         for parser in get_parsers():
             if parser.matches(doc):
                 return parser.parse(doc)
-    return DocstringTp(description=doc or '', epilog='', params={})
+    return DocstringTp(description=doc, epilog='', params={})

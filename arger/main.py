@@ -2,10 +2,13 @@
 
 import argparse as ap
 import copy
+import inspect
 import sys
 import typing as tp
+from collections import OrderedDict
 
-from arger.funcs import ParsedFunc
+from arger.docstring import DocstringTp, parse_docstring
+from arger.funcs import Argument, FlagsGenerator, create_argument
 
 CMD_TITLE = "commands"
 LEVEL = '__level__'
@@ -20,7 +23,7 @@ class Arger(ap.ArgumentParser):
         self,
         func: tp.Optional[tp.Callable] = None,
         version: tp.Optional[str] = None,
-        _parsed_fn: tp.Optional[ParsedFunc] = None,  # passed from subparser action
+        _doc_str: tp.Optional[DocstringTp] = None,  # passed from subparser action
         _level=0,  # passed from subparser action
         **kwargs,
     ):
@@ -39,26 +42,40 @@ class Arger(ap.ArgumentParser):
         kwargs.setdefault('formatter_class', ap.ArgumentDefaultsHelpFormatter)
 
         self.sub_parser_action: tp.Optional[ap._SubParsersAction] = None
-        self.func = ParsedFunc(func) if _parsed_fn is None else _parsed_fn
 
-        if self.func.description:
-            kwargs.setdefault("description", self.func.description)
+        self.args: tp.Dict[str, Argument] = OrderedDict()
+        docstr = parse_docstring(func) if _doc_str is None else _doc_str
+        kwargs.setdefault("description", docstr.description)
+        kwargs.setdefault("epilog", docstr.epilog)
 
         super().__init__(**kwargs)
 
+        self.set_defaults(**{LEVEL: _level})
+        if func:
+            self._add_arguments(func, docstr, _level)
+
         if version:
             self.add_argument('--version', action='version', version=version)
-        self._add_args(_level)
 
-    def _add_args(self, level: int):
-        self.set_defaults(**{f'{FUNC_PREFIX}{level}': self.func.dispatch, LEVEL: level})
+    def _add_arguments(self, func: tp.Callable, docstr: DocstringTp, level: int):
+        option_generator = FlagsGenerator()
+        sign = inspect.signature(func)
 
-        for arg_name, arg in self.func.args.items():
-            if arg_name.startswith(
-                '_'
-            ):  # useful only when `_namespace_` is requested or it is a kwarg
+        for param in sign.parameters.values():
+            param_doc = docstr.params.get(param.name)
+            self.args[param.name] = create_argument(param, param_doc, option_generator)
+
+        # parser level defaults
+        self.set_defaults(**{f'{FUNC_PREFIX}{level}': self.dispatch(func)})
+
+        for arg_name, arg in self.args.items():
+            # useful only when `_namespace_` is requested or it is a kwarg
+            if arg_name.startswith('_'):
                 continue
-            arg.add(self)
+            self._add_arg(arg)
+
+    def _add_arg(self, arg: Argument):
+        self.add_argument(*arg.flags, **arg.kwargs)
 
     def run(self, *args: str, capture_sys=True) -> ap.Namespace:
         """Parse cli and dispatch functions.
@@ -99,15 +116,31 @@ class Arger(ap.ArgumentParser):
             func: function
         """
         if not self.sub_parser_action:
-            self.sub_parser_action = self.add_subparsers(
-                # action=CommandAction,
-                title=CMD_TITLE,
-            )
+            self.sub_parser_action = self.add_subparsers(title=CMD_TITLE)
 
-        parsed_fn = ParsedFunc(func)
+        docstr = parse_docstring(func)
         return self.sub_parser_action.add_parser(
             name=func.__name__,
-            help=parsed_fn.description,
-            _parsed_fn=parsed_fn,
+            help=docstr.description,
+            func=func,
+            _doc_str=docstr,
             _level=self.get_default(LEVEL) + 1,
         )
+
+    def dispatch(self, fn: tp.Callable) -> tp.Any:
+        """Calls the given function with args parsed from CLI"""
+
+        def _dispatch(ns: ap.Namespace):
+            kwargs = {}
+            args = []
+            for arg_name, arg in self.args.items():
+                val = getattr(ns, arg_name)
+                if arg.kind == inspect.Parameter.POSITIONAL_ONLY:
+                    args.append(val)
+                elif arg.kind == inspect.Parameter.VAR_POSITIONAL:
+                    args.extend(val)
+                else:
+                    kwargs[arg_name] = val
+            return fn(*args, **kwargs)
+
+        return _dispatch

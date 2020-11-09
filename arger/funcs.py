@@ -3,12 +3,10 @@
 import argparse
 import inspect
 import typing as tp
-from argparse import Action, ArgumentParser
-from collections import OrderedDict
 from typing import Any, Tuple, Union
 
 from arger import typing_utils as tp_utils
-from arger.docstring import ParamDocTp, parse_docstring
+from arger.docstring import ParamDocTp
 
 _EMPTY = inspect.Parameter.empty
 
@@ -60,9 +58,6 @@ class Argument:
         if "action" not in kwargs:
             kwargs['action'] = TypeAction
         self.kwargs = kwargs
-
-    def add(self, parser: ArgumentParser) -> Action:
-        return parser.add_argument(*self.flags, **self.kwargs)
 
     def __repr__(self):
         """helps during tests"""
@@ -139,49 +134,6 @@ class Option(Argument):
             typ = type(default)
 
         self._update_type(typ)
-
-
-class ParsedFunc:
-    fn: tp.Optional[tp.Callable] = None
-    description: str = ''
-    epilog: str = ''
-    args: tp.Dict[str, Argument]
-
-    def __init__(self, func: tp.Optional[tp.Callable]):
-        """Parse 'func' and adds parser arguments from function signature."""
-        if func is None:
-            self.args = {}
-            return
-
-        docstr = parse_docstring(inspect.getdoc(func))
-
-        sign = inspect.signature(func)
-        self.fn = func
-        self.description = docstr.description
-        self.epilog = docstr.epilog
-
-        option_generator = FlagsGenerator()
-        self.args = OrderedDict()
-        for param in sign.parameters.values():
-            param_doc = docstr.params.get(param.name)
-            self.args[param.name] = create_argument(param, param_doc, option_generator)
-
-    def dispatch(self, ns: argparse.Namespace) -> tp.Any:
-        if self.fn:
-            kwargs = {}
-            args = []
-            sign = inspect.signature(self.fn)
-            for arg_name in self.args:
-                val = getattr(ns, arg_name)
-                param = sign.parameters[arg_name]
-                if param.kind == param.POSITIONAL_ONLY:
-                    args.append(val)
-                elif param.kind == param.VAR_POSITIONAL:
-                    args.extend(val)
-                else:
-                    kwargs[arg_name] = val
-            return self.fn(*args, **kwargs)
-        return None
 
 
 def create_argument(

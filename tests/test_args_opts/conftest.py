@@ -1,4 +1,4 @@
-# pylint: disable = redefined-outer-name
+# pylint: disable = redefined-outer-name, protected-access
 
 import inspect
 
@@ -18,7 +18,7 @@ def param_doc(hlp=''):
 def add_arger():
     def _add(argument):
         par = Arger()
-        argument.add(par)
+        par._add_arg(argument)
         return par
 
     return _add

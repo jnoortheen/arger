@@ -9,6 +9,4 @@ try:
 except DistributionNotFound:
     __version__ = "(local)"
 
-__all__ = [
-    "Arger",
-]
+__all__ = ["Arger", "Argument", "Option"]
