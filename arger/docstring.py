@@ -144,9 +144,8 @@ def get_parsers():
 
 
 def parse_docstring(func: tp.Optional[tp.Callable]) -> DocstringTp:
-    doc = ''
-    if func:
-        doc = inspect.getdoc(func)
+    doc = (inspect.getdoc(func) or '') if func else ''
+    if doc:
         for parser in get_parsers():
             if parser.matches(doc):
                 return parser.parse(doc)

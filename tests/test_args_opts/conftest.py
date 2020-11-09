@@ -6,7 +6,7 @@ import pytest
 
 from arger import Arger
 from arger.docstring import ParamDocTp
-from arger.funcs import FlagsGenerator, create_argument
+from arger.main import FlagsGenerator, create_argument
 
 
 @pytest.fixture

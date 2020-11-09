@@ -1,5 +1,4 @@
-from arger.funcs import TypeAction
-from arger.main import Arger
+from arger.main import Arger, TypeAction
 
 from .utils import _reprint
 
