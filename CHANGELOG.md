@@ -1,3 +1,24 @@
+## v1.0.7 (2020-11-09)
+
+### Refactor
+
+- merge funcs and maian modules
+- remove ParsedFunc type
+- merge classes that handle Argument and Option creation
+- update TypeAction handling VarArg
+- replace namedtuple Param with inspect.Parameter
+- merge into single module parsers
+- update Argument update funcs
+- reduce number of modules
+- update usage of types inside docstrings
+- move code from types to typing_utils
+
+### Feat
+
+- add version flag/action by passing version string to Arger
+- create subcommands as soon as Arger initiated
+- publish docs to github-pages
+
 ## v1.0.6 (2020-11-02)
 
 ### Feat
