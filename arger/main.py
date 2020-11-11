@@ -8,7 +8,7 @@ from collections import OrderedDict
 from typing import Any, Tuple, Union
 
 from arger import typing_utils as tp_utils
-from arger.docstring import DocstringTp, ParamDocTp, parse_docstring
+from arger.docstring import DocstringParser, DocstringTp, ParamDocTp
 
 CMD_TITLE = "commands"
 LEVEL = '__level__'
@@ -170,7 +170,7 @@ class Arger(ap.ArgumentParser):
         self.sub_parser_action: tp.Optional[ap._SubParsersAction] = None
 
         self.args: tp.Dict[str, Argument] = OrderedDict()
-        docstr = parse_docstring(func) if _doc_str is None else _doc_str
+        docstr = DocstringParser.parse(func) if _doc_str is None else _doc_str
         kwargs.setdefault("description", docstr.description)
         kwargs.setdefault("epilog", docstr.epilog)
 
@@ -201,7 +201,7 @@ class Arger(ap.ArgumentParser):
             self._add_arg(arg)
 
     def _add_arg(self, arg: Argument):
-        self.add_argument(*arg.flags, **arg.kwargs)
+        return self.add_argument(*arg.flags, **arg.kwargs)
 
     def run(self, *args: str, capture_sys=True) -> ap.Namespace:
         """Parse cli and dispatch functions.
@@ -244,7 +244,7 @@ class Arger(ap.ArgumentParser):
         if not self.sub_parser_action:
             self.sub_parser_action = self.add_subparsers(title=CMD_TITLE)
 
-        docstr = parse_docstring(func)
+        docstr = DocstringParser.parse(func)
         return self.sub_parser_action.add_parser(
             name=func.__name__,
             help=docstr.description,

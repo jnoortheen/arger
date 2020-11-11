@@ -1,6 +1,6 @@
 import pytest
 
-from arger.docstring import ParamDocTp, parse_docstring
+from arger.docstring import DocstringParser, ParamDocTp
 
 
 def func_numpy():
@@ -69,7 +69,7 @@ def func_rst():
     ],
 )
 def test_docstring_parser(fn):
-    result = parse_docstring(fn)
+    result = DocstringParser.parse(fn)
     assert result.description == "Summary line.\n\nExtended description of function."
     assert list(result.params) == ['arg1', 'arg2', 'arg3', 'arg4']
     assert list(result.params.values()) == [

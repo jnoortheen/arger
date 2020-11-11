@@ -1,4 +1,3 @@
-import functools
 import inspect
 import re
 import typing as tp
@@ -41,7 +40,22 @@ class DocstringParser:
     section_ptrn: tp.Pattern
     param_ptrn: tp.Pattern
 
-    def parse(self, doc: str) -> DocstringTp:
+    _parsers: tp.List['DocstringParser'] = []
+
+    def __init_subclass__(cls, **_):
+        # Cache costly init phase per session.
+        cls._parsers.append(cls())
+
+    @classmethod
+    def parse(cls, func: tp.Optional[tp.Callable]) -> DocstringTp:
+        doc = (inspect.getdoc(func) or '') if func else ''
+        if doc:
+            for parser in cls._parsers:
+                if parser.matches(doc):
+                    return parser._parse(doc)
+        return DocstringTp(description=doc, epilog='', params={})
+
+    def _parse(self, doc: str) -> DocstringTp:
         raise NotImplementedError
 
     def matches(self, doc: str) -> bool:
@@ -81,7 +95,7 @@ class NumpyDocParser(DocstringParser):
             for param, tphint, doc in docs
         }
 
-    def parse(self, doc: str) -> DocstringTp:
+    def _parse(self, doc: str) -> DocstringTp:
         desc, _, params = self.pattern.split(doc, maxsplit=1)
         other_sect, params = self.get_rest_of_section(params)
         return DocstringTp(desc.strip(), other_sect, params=self.parse_params(params))
@@ -121,7 +135,7 @@ class RstDocParser(DocstringParser):
                 type_hint = parts[0].strip()
             params[param] = ParamDocTp.init(type_hint, doc)
 
-    def parse(self, doc: str) -> DocstringTp:
+    def _parse(self, doc: str) -> DocstringTp:
         lines = self.pattern.split(doc)
         long_desc = lines.pop(0)
         epilog = ''
@@ -133,18 +147,3 @@ class RstDocParser(DocstringParser):
             self.parse_doc(sections[0], params)
 
         return DocstringTp(long_desc.strip(), epilog, params)
-
-
-@functools.lru_cache(None)
-def _docstring_parsers():
-    """Cache costly init phase per session."""
-    return [NumpyDocParser(), GoogleDocParser(), RstDocParser()]
-
-
-def parse_docstring(func: tp.Optional[tp.Callable]) -> DocstringTp:
-    doc = (inspect.getdoc(func) or '') if func else ''
-    if doc:
-        for parser in _docstring_parsers():
-            if parser.matches(doc):
-                return parser.parse(doc)
-    return DocstringTp(description=doc, epilog='', params={})
