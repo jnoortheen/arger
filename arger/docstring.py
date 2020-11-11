@@ -56,9 +56,7 @@ class NumpyDocParser(DocstringParser):
     def __init__(self):
         self.pattern = re.compile(r'(Parameters\n[-]+)')
         self.section_ptrn = re.compile(r'\n\s*(?P<section>\w+)\n\s*[-]+\n+')
-        self.param_ptrn = re.compile(
-            r'^(?P<param>\w+)[ \t]*:[ \t]*(?P<type>\w+)?'
-        )  # matches parameter_name e.g. param1: or param2 (int):
+        self.param_ptrn = re.compile(r'^(?P<param>\w+)[ \t]*:?[ \t]*(?P<type>\w+)?')
 
     def get_rest_of_section(self, params: str) -> tp.Tuple[str, str]:
         other_sect = self.section_ptrn.search(params)
@@ -138,7 +136,7 @@ class RstDocParser(DocstringParser):
 
 
 @functools.lru_cache(None)
-def get_parsers():
+def _docstring_parsers():
     """Cache costly init phase per session."""
     return [NumpyDocParser(), GoogleDocParser(), RstDocParser()]
 
@@ -146,7 +144,7 @@ def get_parsers():
 def parse_docstring(func: tp.Optional[tp.Callable]) -> DocstringTp:
     doc = (inspect.getdoc(func) or '') if func else ''
     if doc:
-        for parser in get_parsers():
+        for parser in _docstring_parsers():
             if parser.matches(doc):
                 return parser.parse(doc)
     return DocstringTp(description=doc, epilog='', params={})

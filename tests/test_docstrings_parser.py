@@ -17,6 +17,8 @@ def func_numpy():
         a line that extends to next line
     arg3 :
         arg3 without any type
+    arg4
+        arg4 help content
 
     Returns
     -------
@@ -35,6 +37,7 @@ def func_google():
         arg2 (str): Description of arg2
             a line that extends to next line
         arg3 : arg3 without any type
+        arg4: arg4 help content
 
     Returns:
         bool: Description of return value
@@ -51,6 +54,7 @@ def func_rst():
     :param str arg2: Description of arg2
         a line that extends to next line
     :param arg3 : arg3 without any type
+    :param arg4: arg4 help content
     :return: Description of return value
     :rtype: bool
     """
@@ -67,7 +71,7 @@ def func_rst():
 def test_docstring_parser(fn):
     result = parse_docstring(fn)
     assert result.description == "Summary line.\n\nExtended description of function."
-    assert list(result.params) == ['arg1', 'arg2', 'arg3']
+    assert list(result.params) == ['arg1', 'arg2', 'arg3', 'arg4']
     assert list(result.params.values()) == [
         ParamDocTp.init(
             type_hint='int',
@@ -80,6 +84,10 @@ def test_docstring_parser(fn):
         ParamDocTp.init(
             type_hint=None,
             doc='arg3 without any type',
+        ),
+        ParamDocTp.init(
+            type_hint=None,
+            doc='arg4 help content',
         ),
     ]
     assert 'Description of return value' in result.epilog
