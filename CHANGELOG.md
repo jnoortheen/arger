@@ -1,3 +1,9 @@
+## v1.0.8 (2020-11-11)
+
+### Fix
+
+- update numpy docstring parser
+
 ## v1.0.7 (2020-11-09)
 
 ### Refactor
