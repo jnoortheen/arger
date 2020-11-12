@@ -100,7 +100,7 @@ python test.py 100 param2
 
 # Recommended Alternatives
 
-    Projects that I didn't know while creating this project. I highly recommend you to checkout them.
+Projects that I highly recommend you to checkout.
 
 1.  [clize](https://github.com/epsy/clize)
 2.  [nuclear](https://github.com/igrek51/nuclear)
