@@ -6,7 +6,7 @@ A wrapper around argparser to help build CLIs from functions. Uses type-hints ex
 [![Python Version](https://img.shields.io/pypi/pyversions/arger.svg)](https://pypi.org/project/arger/)
 ![](https://github.com/jnoortheen/arger/workflows/test-and-publish/badge.svg)
 ![](https://github.com/jnoortheen/arger/workflows/codeql-analysis/badge.svg)
-![](https://byob.yarr.is/jnoortheen/arger/coverage)
+![](https://img.shields.io/badge/dynamic/json?label=coverage&query=%24.coverage.status&url=https%3A%2F%2Fraw.githubusercontent.com%2Fjnoortheen%2Farger%2Fshields%2Fshields.json)
 [![PyPI License](https://img.shields.io/pypi/l/arger.svg)](https://pypi.org/project/arger)
 
 # Setup
