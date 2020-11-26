@@ -27,16 +27,16 @@ jobs:
       run: poetry install
     - name: Test with pytest
       run: make test
-    - id: coverage
+    - id: Coverage
       if: matrix.python-version == 3.8
-      run: poetry run python tasks.py show_coverage
+      run: echo "##[set-output name=data;]$(poetry run python tasks.py show_coverage)"
     - name: coverage badge
       uses: RubbaBoy/BYOB@v1.1.0
       if: matrix.python-version == 3.8
       with:
         NAME: coverage
         LABEL: 'Coverage'
-        STATUS: ${{ steps.coverage.outputs.data }}
+        STATUS: ${{ steps.Coverage.outputs.data }}
         COLOR: 42a7f5
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - if: matrix.python-version == 3.8
