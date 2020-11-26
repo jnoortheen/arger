@@ -28,7 +28,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install tox-gh-actions
     - name: Test with tox
-      run: make tox
+      run: tox
     - id: coverage
       run: python tasks.py show_coverage
     - name: coverage badge
