@@ -1,5 +1,5 @@
 from delegator import run
-
+from subprocess import check_output
 from arger import Arger, Option
 
 arger = Arger(description="Common set of tasks to run")
@@ -71,6 +71,14 @@ def release(
 # @arger.add_cmd
 # def test():
 #     print('run tests')
+
+
+@arger.add_cmd
+def show_coverage():
+    out = check_output(["coverage", "report"])
+    total = out.decode().splitlines()[-1]
+    assert "total" in total.lower()
+    print(total.split()[-1])
 
 
 if __name__ == '__main__':

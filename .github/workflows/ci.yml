@@ -28,14 +28,18 @@ jobs:
         python -m pip install --upgrade pip
         pip install tox-gh-actions
     - name: Test with tox
-      run: tox
-
-    # upload test report
-    - uses: actions/upload-artifact@v2
+      run: make tox
+    - id: coverage
+      run: python tasks.py show_coverage
+    - name: coverage badge
+      uses: RubbaBoy/BYOB@v1.1.0
       if: startsWith("${{matrix.python-version}}", "3.8")
       with:
-        name: test-result
-        path: htmlcov/
+        NAME: coverage
+        LABEL: 'Coverage'
+        STATUS: ${{ steps.coverage.outputs.data }}
+        COLOR: 42a7f5
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   lint:
     runs-on: ubuntu-latest
