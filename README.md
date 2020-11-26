@@ -42,13 +42,15 @@ if __name__ == '__main__':
     Arger(main).run()
 ```
 
+* Here Arger is just a subclass of `ArgumentParser`. It will not conceal you from using other `argparse` libraries.
+
 * run this normally with
 
 ``` sh
 python test.py 100 param2
 ```
 
-* Checkout [examples](docs/examples) folder and documentation to see more of `arger` in action.
+* Checkout [examples](docs/examples) folder and documentation to see more of `arger` in action. It supports any level of sub-commands.
 
 # Features
 
