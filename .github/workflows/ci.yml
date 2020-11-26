@@ -32,7 +32,7 @@ jobs:
 
     # upload test report
     - uses: actions/upload-artifact@v2
-      if: startsWith(matrix.python-version, "3.8")
+      if: startsWith("${{matrix.python-version}}", "3.8")
       with:
         name: test-result
         path: htmlcov/
