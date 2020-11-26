@@ -30,18 +30,18 @@ jobs:
     - name: Test with pytest
       run: make test
     - id: coverage
-      if: matrix.python-version == "3.8"
+      if: matrix.python-version == 3.8
       run: poetry run python tasks.py show_coverage
     - name: coverage badge
       uses: RubbaBoy/BYOB@v1.1.0
-      if: matrix.python-version == "3.8"
+      if: matrix.python-version == 3.8
       with:
         NAME: coverage
         LABEL: 'Coverage'
         STATUS: ${{ steps.coverage.outputs.data }}
         COLOR: 42a7f5
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - if: matrix.python-version == "3.8"
+    - if: matrix.python-version == 3.8
       name: Lint source files
       run: make check
 
