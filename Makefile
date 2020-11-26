@@ -109,10 +109,6 @@ test-all: install
 tox: install
 	poetry run tox
 
-.PHONY: read-coverage
-read-coverage:
-	bin/open htmlcov/index.html
-
 # DOCUMENTATION ###############################################################
 
 MKDOCS_INDEX := site/index.html

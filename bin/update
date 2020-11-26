@@ -62,7 +62,6 @@ def copy():
         'CONTRIBUTING.md',
         'Makefile',
         os.path.join('bin', 'checksum'),
-        os.path.join('bin', 'open'),
         os.path.join('bin', 'update'),
         os.path.join('bin', 'verchew'),
         'pytest.ini',
