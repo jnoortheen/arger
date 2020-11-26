@@ -1,3 +1,4 @@
+# pylint: disable = protected-access
 import inspect
 import re
 import typing as tp
