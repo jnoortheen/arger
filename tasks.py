@@ -1,5 +1,5 @@
 from delegator import run
-from subprocess import check_output
+
 from arger import Arger, Option
 
 arger = Arger(description="Common set of tasks to run")
@@ -73,12 +73,38 @@ def release(
 #     print('run tests')
 
 
+class Devnull(object):
+    """
+    A file like object that does nothing.
+    """
+
+    def write(self, *args, **kwargs):
+        pass
+
+
 @arger.add_cmd
 def show_coverage():
-    out = check_output(["coverage", "report"])
-    total = out.decode().splitlines()[-1]
-    assert "total" in total.lower()
-    print(total.split()[-1])
+    import coverage
+
+    class Precision(coverage.results.Numbers):
+        """
+        A class for using the percentage rounding of the main coverage package,
+        with any percentage.
+        To get the string format of the percentage, use the ``pc_covered_str``
+        property.
+        """
+
+        def __init__(self, percent):
+            self.percent = percent
+
+        @property
+        def pc_covered(self):
+            return self.percent
+
+    cov = coverage.Coverage()
+    cov.load()
+    total = cov.report(file=Devnull())
+    print(Precision(total).pc_covered_str)
 
 
 if __name__ == '__main__':
