@@ -26,7 +26,7 @@ def add_arger():
 
 @pytest.fixture
 def gen_options():
-    return FlagsGenerator()
+    return FlagsGenerator('-')
 
 
 @pytest.fixture

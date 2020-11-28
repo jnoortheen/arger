@@ -5,7 +5,6 @@ import inspect
 import sys
 import typing as tp
 from collections import OrderedDict
-from typing import Any, Tuple, Union
 
 from arger import typing_utils as tp_utils
 from arger.docstring import DocstringParser, DocstringTp, ParamDocTp
@@ -20,15 +19,16 @@ _EMPTY = inspect.Parameter.empty
 class FlagsGenerator:
     """To identify short options that haven't been used yet based on the parameter name."""
 
-    def __init__(self):
+    def __init__(self, prefix: str):
+        self.prefix = prefix
         self.used_short_options: tp.Set[str] = set()
 
     def generate(self, param_name: str) -> tp.Iterator[str]:
-        long_flag = "--" + param_name.replace('_', '-')
+        long_flag = (self.prefix * 2) + param_name.replace('_', '-')
         for letter in param_name:
             if letter not in self.used_short_options:
                 self.used_short_options.add(letter)
-                yield "-" + letter
+                yield self.prefix + letter
                 break
 
         yield long_flag
@@ -184,7 +184,7 @@ class Arger(ap.ArgumentParser):
             self.add_argument('--version', action='version', version=version)
 
     def _add_arguments(self, func: tp.Callable, docstr: DocstringTp, level: int):
-        option_generator = FlagsGenerator()
+        option_generator = FlagsGenerator(self.prefix_chars)
         sign = inspect.signature(func)
 
         for param in sign.parameters.values():
@@ -295,7 +295,7 @@ def create_argument(
     return arg
 
 
-def get_nargs(typ: Any) -> Tuple[Any, Union[int, str]]:
+def get_nargs(typ: tp.Any) -> tp.Tuple[tp.Any, tp.Union[int, str]]:
     inner = tp_utils.unpack_type(typ)
     if tp_utils.is_tuple(typ) and typ != tuple and tp_utils.get_inner_args(typ):
         args = tp_utils.get_inner_args(typ)
