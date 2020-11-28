@@ -1,3 +1,13 @@
+## v1.0.9 (2020-11-28)
+
+### Feat
+
+- use prefix_chars settings to generate flags
+
+### Refactor
+
+- use _init_subclass to register docstring parsers
+
 ## v1.0.8 (2020-11-11)
 
 ### Fix
