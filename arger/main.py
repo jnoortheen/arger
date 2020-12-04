@@ -261,7 +261,10 @@ class Arger(ap.ArgumentParser):
             args = []
             for arg_name, arg in self.args.items():
                 val = getattr(ns, arg_name)
-                if arg.kind == inspect.Parameter.POSITIONAL_ONLY:
+                if arg.kind in {
+                    inspect.Parameter.POSITIONAL_ONLY,
+                    inspect.Parameter.POSITIONAL_OR_KEYWORD,
+                }:
                     args.append(val)
                 elif arg.kind == inspect.Parameter.VAR_POSITIONAL:
                     args.extend(val)
