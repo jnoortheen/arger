@@ -1,3 +1,9 @@
+## v1.0.11 (2020-12-04)
+
+### Fix
+
+- when *varargs used, it caused incorrect function dispatch
+
 ## v1.0.10 (2020-11-28)
 
 ## v1.0.9 (2020-11-28)
