@@ -1,3 +1,13 @@
+## v1.1.0 (2020-12-06)
+
+### Feat
+
+- option to customize sub-commands title
+
+### Refactor
+
+- removed arger.Option (use arger.Argument instead)
+
 ## v1.0.11 (2020-12-04)
 
 ### Fix
