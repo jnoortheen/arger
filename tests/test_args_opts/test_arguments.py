@@ -10,6 +10,9 @@ class Num(Enum):
     two = '2. two'
 
 
+Num2 = Enum("Num2", "one two")
+
+
 @pytest.mark.parametrize(
     'name, tp, input, expected',
     [
@@ -21,6 +24,8 @@ class Num(Enum):
         ('a_str', str, 'new-str', 'new-str'),
         ('enum', Num, 'one', Num.one),
         ('enum', Num, 'two', Num.two),
+        ('enum', Num2, 'one', Num2.one),
+        ('enum', Num2, 'one', Num2.one),
         # container types
         ('a_tuple', tuple, '1 2 3', ('1', '2', '3')),
         ('a_tuple', Tuple[int, ...], '1 2 3', (1, 2, 3)),

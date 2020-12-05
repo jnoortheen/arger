@@ -1,4 +1,4 @@
-# pylint: disable = protected-access
+# pylint: disable = protected-access,unused-argument,redefined-builtin
 import argparse as ap
 import copy
 import inspect
@@ -9,10 +9,9 @@ from collections import OrderedDict
 from arger import typing_utils as tp_utils
 from arger.docstring import DocstringParser, DocstringTp, ParamDocTp
 
-CMD_TITLE = "commands"
-LEVEL = '__level__'
-FUNC_PREFIX = '__func_'
-NS_PREFIX = '_namespace_'
+LEVEL = "__level__"
+FUNC_PREFIX = "__func_"
+NS_PREFIX = "_namespace_"
 _EMPTY = inspect.Parameter.empty
 
 
@@ -24,7 +23,7 @@ class FlagsGenerator:
         self.used_short_options: tp.Set[str] = set()
 
     def generate(self, param_name: str) -> tp.Iterator[str]:
-        long_flag = (self.prefix * 2) + param_name.replace('_', '-')
+        long_flag = (self.prefix * 2) + param_name.replace("_", "-")
         for letter in param_name:
             if letter not in self.used_short_options:
                 self.used_short_options.add(letter)
@@ -91,11 +90,20 @@ class Argument:
 
             kwargs: it is delegated to `ArgumentParser.add_argument` method.
         """
-        for var_name, value in locals().items():
+        for var_name in (
+            "type",
+            "metavar",
+            "required",
+            "nargs",
+            "const",
+            "choices",
+            "action",
+        ):
+            value = locals()[var_name]
             if value is not None:
                 kwargs[var_name] = value
         if "action" not in kwargs:
-            kwargs['action'] = TypeAction
+            kwargs["action"] = TypeAction
         self.flags = flags
         self.kwargs = kwargs
 
@@ -109,7 +117,7 @@ class Argument:
         param: inspect.Parameter,
         pdoc: tp.Optional[ParamDocTp],
         option_generator: FlagsGenerator,
-    ) -> 'Argument':
+    ) -> "Argument":
         hlp = pdoc.doc if pdoc else ""
 
         if isinstance(param.annotation, Argument):
@@ -117,14 +125,14 @@ class Argument:
         else:
             arg = Argument()
 
-        arg.kwargs.setdefault('help', hlp)
+        arg.kwargs.setdefault("help", hlp)
         arg.update(param, option_generator)
         return arg
 
     def update(
         self,
         param: inspect.Parameter,
-        option_generator: tp.Optional[FlagsGenerator] = None,
+        option_generator: FlagsGenerator,
     ):
         self.kind = param.kind
         if param.kind == inspect.Parameter.VAR_POSITIONAL:
@@ -140,26 +148,30 @@ class Argument:
         if param.default is _EMPTY:  # it will become a positional argument
             self.flags = (param.name,)
         else:  # it will become a flat
-            self.kwargs.setdefault('dest', param.name)
+            self.kwargs.setdefault("dest", param.name)
             if not self.flags:
                 self.flags = tuple(option_generator.generate(param.name))
             self._update_default(param.annotation, param.default)
 
     def _update_type(self, typ: tp.Any):
         """Update type from annotation."""
-        if typ is not _EMPTY:
-            self.kwargs.setdefault('type', typ)
+        if (
+            (typ is not _EMPTY)
+            and (not isinstance(typ, Argument))
+            and ("type" not in self.kwargs)
+        ):
+            self.kwargs.setdefault("type", typ)
 
     def _update_default(self, typ: tp.Any, default: tp.Any):
         """Update type and default externally"""
-        if 'default' not in self.kwargs:
+        if "default" not in self.kwargs:
             self.kwargs["default"] = default
         else:
             default = self.kwargs["default"]
 
         if isinstance(default, bool):
-            self.kwargs['action'] = "store_true" if default is False else "store_false"
-            typ = self.kwargs.pop('type', _EMPTY)
+            self.kwargs["action"] = "store_true" if default is False else "store_false"
+            typ = self.kwargs.pop("type", _EMPTY)
         elif default is not None and typ is _EMPTY:
             typ = type(default)
 
@@ -172,11 +184,11 @@ class Argument:
 class Arger(ap.ArgumentParser):
     """Contains one (parser) or more commands (subparsers)."""
 
-    # @functools.wraps(ap.ArgumentParser.__init__)
     def __init__(
         self,
         func: tp.Optional[tp.Callable] = None,
         version: tp.Optional[str] = None,
+        sub_commands_title="commands",
         _doc_str: tp.Optional[DocstringTp] = None,  # passed from subparser action
         _level=0,  # passed from subparser action
         **kwargs,
@@ -193,8 +205,9 @@ class Arger(ap.ArgumentParser):
                 version = '%(prog)s 2.0'
                 Arger() equals to Arger().add_argument('--version', action='version', version=version)
         """
-        kwargs.setdefault('formatter_class', ap.ArgumentDefaultsHelpFormatter)
+        kwargs.setdefault("formatter_class", ap.ArgumentDefaultsHelpFormatter)
 
+        self.sub_commands_title = sub_commands_title
         self.sub_parser_action: tp.Optional[ap._SubParsersAction] = None
 
         self.args: tp.Dict[str, Argument] = OrderedDict()
@@ -209,7 +222,7 @@ class Arger(ap.ArgumentParser):
             self._add_arguments(func, docstr, _level)
 
         if version:
-            self.add_argument('--version', action='version', version=version)
+            self.add_argument("--version", action="version", version=version)
 
     def _add_arguments(self, func: tp.Callable, docstr: DocstringTp, level: int):
         option_generator = FlagsGenerator(self.prefix_chars)
@@ -220,11 +233,11 @@ class Arger(ap.ArgumentParser):
             self.args[param.name] = Argument.create(param, param_doc, option_generator)
 
         # parser level defaults
-        self.set_defaults(**{f'{FUNC_PREFIX}{level}': self.dispatch(func)})
+        self.set_defaults(**{f"{FUNC_PREFIX}{level}": self.dispatch(func)})
 
         for arg_name, arg in self.args.items():
             # useful only when `_namespace_` is requested or it is a kwarg
-            if arg_name.startswith('_'):
+            if arg_name.startswith("_"):
                 continue
             arg.add_to(self)
 
@@ -239,11 +252,12 @@ class Arger(ap.ArgumentParser):
         namespace = self.parse_args(args)
         kwargs = vars(namespace)
         kwargs[NS_PREFIX] = copy.copy(namespace)
+        kwargs["_arger_"] = self
         # dispatch all functions as in hierarchy
         for level in range(kwargs.get(LEVEL, 0) + 1):
-            func_name = f'{FUNC_PREFIX}{level}'
+            func_name = f"{FUNC_PREFIX}{level}"
             if func_name in kwargs:
-                kwargs[func_name](namespace)
+                kwargs[func_name](kwargs)
 
         return namespace
 
@@ -267,7 +281,7 @@ class Arger(ap.ArgumentParser):
             func: function
         """
         if not self.sub_parser_action:
-            self.sub_parser_action = self.add_subparsers(title=CMD_TITLE)
+            self.sub_parser_action = self.add_subparsers(title=self.sub_commands_title)
 
         docstr = DocstringParser.parse(func)
         return self.sub_parser_action.add_parser(
@@ -281,11 +295,11 @@ class Arger(ap.ArgumentParser):
     def dispatch(self, fn: tp.Callable) -> tp.Any:
         """Calls the given function with args parsed from CLI"""
 
-        def _dispatch(ns: ap.Namespace):
+        def _dispatch(ns: tp.Dict[str, tp.Any]):
             kwargs = {}
             args = []
             for arg_name, arg in self.args.items():
-                val = getattr(ns, arg_name)
+                val = ns[arg_name]
                 if arg.kind in {
                     inspect.Parameter.POSITIONAL_ONLY,
                     inspect.Parameter.POSITIONAL_OR_KEYWORD,
@@ -305,7 +319,7 @@ def get_nargs(typ: tp.Any) -> tp.Tuple[tp.Any, tp.Union[int, str]]:
     if tp_utils.is_tuple(typ) and typ != tuple and tp_utils.get_inner_args(typ):
         args = tp_utils.get_inner_args(typ)
         inner = inner if len(set(args)) == 1 else str
-        return inner, '+' if (... in args) else len(args)
+        return inner, "+" if (... in args) else len(args)
     return inner, "*"
 
 

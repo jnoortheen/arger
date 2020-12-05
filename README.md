@@ -72,9 +72,10 @@ python test.py 100 param2
 - `*args` supported but no `**kwargs` support yet.
 - all optional arguments that start with underscore is not passed to `Parser`. 
   They are considered private to the function implementation.
-  One can use `_namespace_` to get the output from the `ArgumentParser.parse_args()`
+  Some parameter names with special meaning
+    - `_namespace_` -> to get the output from the `ArgumentParser.parse_args()`
+    - `_arger_` -> to get the parser instance
   
-
 # Similar Projects
 
 ## [argh](https://argh.readthedocs.io/en/latest/tutorial.html)
