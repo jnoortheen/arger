@@ -1,8 +1,10 @@
 from delegator import run
+import typing as tp
+from arger import Arger, Argument
 
-from arger import Arger, Option
-
-arger = Arger(description="Common set of tasks to run")
+arger = Arger(
+    description="Common set of tasks to run",
+)
 
 
 class Color:
@@ -29,19 +31,20 @@ def prun(*cmd, **kwargs):
 
 @arger.add_cmd
 def release(
-    type: str = Option(
-        choices=[
-            'patch',
-            'minor',
-            'major',
-            'prepatch',
-            'preminor',
-            'premajor',
-            'prerelease',
-        ],
-        default='patch',
-        action='store',
-    )
+    type: tp.cast(
+        str,
+        Argument(
+            choices=[
+                'patch',
+                'minor',
+                'major',
+                'prepatch',
+                'preminor',
+                'premajor',
+                'prerelease',
+            ],
+        ),
+    ) = 'patch'
 ):
     """Bump version, tag and push them.
 

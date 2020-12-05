@@ -35,70 +35,50 @@ class FlagsGenerator:
 
 
 class Argument:
-    flags: tp.Tuple[str, ...] = ()
     kind: inspect._ParameterKind
 
     def __init__(
         self,
-        **kwargs,
+        *,
+        type: tp.Union[tp.Callable[[str], tp_utils.T], ap.FileType] = None,
+        metavar: str = None,
+        required: bool = None,
+        nargs: tp.Union[int, str] = None,
+        const: tp.Any = None,
+        choices: tp.Iterable[str] = None,
+        action: tp.Union[str, tp.Type[ap.Action]] = None,
+        flags: tp.Sequence[str] = (),
+        **kwargs: tp.Any,
     ):
         """Represent positional arguments to the command that are required by default.
         Analogous to
         [ArgumentParser.add_argument](https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_argument)
 
         Args:
-            type (Union[Callable[[str], T], FileType]): The type to which the command-line argument should be converted.
+            type: The type to which the command-line argument should be converted.
                 Got from annotation.
-            help (str): A brief description of what the argument does. From docstring.
+                Use Argument class itself in case you want to pass variables to `Arger.add_argument`.
+                Ex: `typing.cast(int, Argument(type=int))`. If not passed then it is returned as str.
 
-            metavar (str): A name for the argument in usage messages.
-            required (bool): Whether or not the command-line option may be omitted (optionals only).
+            metavar: A name for the argument in usage messages.
 
-            nargs (Union[int, str]): The number of command-line arguments that should be consumed.
+            nargs: The number of command-line arguments that should be consumed.
                 to be generated from the type-hint.
-            const (Any): covered by type-hint and default value given
-            choices (Iterable[str]): covered by enum type
-            action (Union[str, Type[Action]]): The basic type of action to be taken
+                Ex: types and how they are converted to nargs
+                `Tuple[str, ...] -> nargs='+'`
+                `Tuple[str, str] -> nargs=2`
+                `List[str]|tuple|list -> nargs=*`
+                Note: even though Tuple[str,...] doesn't mean one or more, it is just to make `nargs=+` easier to add.
+
+            const: covered by type-hint and default value given
+            choices: Use `enum.Enum` as the typehint to generate choices automatically.
+            action: The basic type of action to be taken
                 when this argument is encountered at the command line.
-        """
-        if "action" not in kwargs:
-            kwargs['action'] = TypeAction
-        self.kwargs = kwargs
 
-    def __repr__(self):
-        """helps during tests"""
-        return f"<{self.__class__.__name__}: {self.flags}, {repr(self.kwargs)}>"
+            flags: It will be generated from the argument name.
+                In case one wants to override the generated flags, could be done by passing them.
 
-    def update(
-        self,
-        param: inspect.Parameter,
-        option_generator: tp.Optional[FlagsGenerator] = None,
-    ):
-        self.kind = param.kind
-        self._update(param, option_generator)
-
-    def _update(
-        self,
-        param: inspect.Parameter,
-        _: tp.Optional[FlagsGenerator] = None,
-    ):
-        self.flags = (param.name,)
-        self._update_type(param.annotation)
-
-    def _update_type(self, typ: tp.Any):
-        """Update type externally."""
-        if 'type' not in self.kwargs and typ is not _EMPTY:
-            self.kwargs['type'] = typ
-
-
-class Option(Argument):
-    def __init__(self, *flags: str, **kwargs):
-        """Represent optional arguments that has flags.
-
-        Args:
-            *flags: The option's flags
-            **kwargs: they are passed to `Argument`.
-            default (Any): The value produced if the argument is absent from the command line.
+            default: The value produced if the argument is absent from the command line.
                 * The default value assigned to a keyword argument helps determine
                     the type of option and action if it is not type annotated.
                 * The default value is assigned directly to the parser's default for that option.
@@ -109,26 +89,70 @@ class Option(Argument):
                     (multiple instances of that option are permitted).
                     * Strings or None imply a store action.
 
-        Examples:
-            - Option('-f', '--foo', default="value")
+            kwargs: it is delegated to `ArgumentParser.add_argument` method.
         """
-        super().__init__(**kwargs)
+        for var_name, value in locals().items():
+            if value is not None:
+                kwargs[var_name] = value
+        if "action" not in kwargs:
+            kwargs['action'] = TypeAction
         self.flags = flags
+        self.kwargs = kwargs
 
-    def _update(
+    def __repr__(self):
+        """helps during tests"""
+        return f"<{self.__class__.__name__}: {self.flags}, {repr(self.kwargs)}>"
+
+    @classmethod
+    def create(
+        cls,
+        param: inspect.Parameter,
+        pdoc: tp.Optional[ParamDocTp],
+        option_generator: FlagsGenerator,
+    ) -> 'Argument':
+        hlp = pdoc.doc if pdoc else ""
+
+        if isinstance(param.annotation, Argument):
+            arg = param.annotation
+        else:
+            arg = Argument()
+
+        arg.kwargs.setdefault('help', hlp)
+        arg.update(param, option_generator)
+        return arg
+
+    def update(
         self,
         param: inspect.Parameter,
         option_generator: tp.Optional[FlagsGenerator] = None,
     ):
         self.kind = param.kind
-        self.kwargs.setdefault('dest', param.name)
-        if not self.flags and option_generator is not None:
-            self.flags = tuple(option_generator.generate(param.name))
-        self.update_default(param.annotation, param.default)
+        if param.kind == inspect.Parameter.VAR_POSITIONAL:
+            self.kwargs.setdefault("nargs", "*")
+        self._update(param, option_generator)
+        self._update_type(param.annotation)
 
-    def update_default(self, typ: tp.Any, default: tp.Any = _EMPTY):
+    def _update(
+        self,
+        param: inspect.Parameter,
+        option_generator: FlagsGenerator,
+    ):
+        if param.default is _EMPTY:  # it will become a positional argument
+            self.flags = (param.name,)
+        else:  # it will become a flat
+            self.kwargs.setdefault('dest', param.name)
+            if not self.flags:
+                self.flags = tuple(option_generator.generate(param.name))
+            self._update_default(param.annotation, param.default)
+
+    def _update_type(self, typ: tp.Any):
+        """Update type from annotation."""
+        if typ is not _EMPTY:
+            self.kwargs.setdefault('type', typ)
+
+    def _update_default(self, typ: tp.Any, default: tp.Any):
         """Update type and default externally"""
-        if default is not _EMPTY and 'default' not in self.kwargs:
+        if 'default' not in self.kwargs:
             self.kwargs["default"] = default
         else:
             default = self.kwargs["default"]
@@ -141,10 +165,14 @@ class Option(Argument):
 
         self._update_type(typ)
 
+    def add_to(self, parser: "Arger"):
+        return parser.add_argument(*self.flags, **self.kwargs)
+
 
 class Arger(ap.ArgumentParser):
     """Contains one (parser) or more commands (subparsers)."""
 
+    # @functools.wraps(ap.ArgumentParser.__init__)
     def __init__(
         self,
         func: tp.Optional[tp.Callable] = None,
@@ -189,7 +217,7 @@ class Arger(ap.ArgumentParser):
 
         for param in sign.parameters.values():
             param_doc = docstr.params.get(param.name)
-            self.args[param.name] = create_argument(param, param_doc, option_generator)
+            self.args[param.name] = Argument.create(param, param_doc, option_generator)
 
         # parser level defaults
         self.set_defaults(**{f'{FUNC_PREFIX}{level}': self.dispatch(func)})
@@ -198,10 +226,7 @@ class Arger(ap.ArgumentParser):
             # useful only when `_namespace_` is requested or it is a kwarg
             if arg_name.startswith('_'):
                 continue
-            self._add_arg(arg)
-
-    def _add_arg(self, arg: Argument):
-        return self.add_argument(*arg.flags, **arg.kwargs)
+            arg.add_to(self)
 
     def run(self, *args: str, capture_sys=True) -> ap.Namespace:
         """Parse cli and dispatch functions.
@@ -273,29 +298,6 @@ class Arger(ap.ArgumentParser):
             return fn(*args, **kwargs)
 
         return _dispatch
-
-
-def create_argument(
-    param: inspect.Parameter,
-    pdoc: tp.Optional[ParamDocTp],
-    option_generator: FlagsGenerator,
-) -> Argument:
-    hlp = pdoc.doc if pdoc else ""
-
-    if isinstance(param.default, (Argument, Option)):
-        arg = param.default
-    elif param.default is _EMPTY:
-        arg = Argument()
-        if param.kind == inspect.Parameter.VAR_POSITIONAL:
-            arg.kwargs.setdefault("nargs", "*")
-            if param.annotation is not _EMPTY:
-                arg.kwargs.setdefault("type", param.annotation)
-    else:
-        arg = Option()
-
-    arg.kwargs.setdefault('help', hlp)
-    arg.update(param, option_generator)
-    return arg
 
 
 def get_nargs(typ: tp.Any) -> tp.Tuple[tp.Any, tp.Union[int, str]]:

@@ -4,9 +4,9 @@ import inspect
 
 import pytest
 
-from arger import Arger
+from arger import Arger, Argument
 from arger.docstring import ParamDocTp
-from arger.main import FlagsGenerator, create_argument
+from arger.main import FlagsGenerator
 
 
 @pytest.fixture
@@ -18,7 +18,7 @@ def param_doc(hlp=''):
 def add_arger():
     def _add(argument):
         par = Arger()
-        par._add_arg(argument)
+        argument.add_to(par)
         return par
 
     return _add
@@ -39,8 +39,8 @@ def parameter(name, tp):
 
 
 @pytest.fixture
-def argument(parameter, param_doc, gen_options):
-    return create_argument(parameter, param_doc, gen_options)
+def argument(parameter, param_doc, gen_options) -> Argument:
+    return Argument.create(parameter, param_doc, gen_options)
 
 
 @pytest.fixture

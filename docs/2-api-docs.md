@@ -19,10 +19,3 @@
       members:
         - __init__
     
-## Option
-
-::: arger.Option
-    handler: python
-    selection:
-      members:
-        - __init__

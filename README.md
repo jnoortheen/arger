@@ -62,13 +62,13 @@ python test.py 100 param2
     + [rst](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html)
 - Flags will be generated from parameter-name. 
   If needed you could declare it inside docstring like `:param arg1: -a --arg this is the document`.
-  Also one can use `def main(arg1:int=Option('-a', '--arg')): ...`
+  Also one can use `def main(arg1:int=Argument(flags=('-a', '--arg'), ...): ...`
 - The decorated functions can be composed to form nested sub-commands of any level.
 - No external lib dependency
 - Most of the Standard types [supported](./tests/test_args_opts/test_arguments.py). 
   Please see [examples](./docs/examples/4-supported-types/src.py) for more supported types with examples.
 - All argument to `ArgumentParser.add_argument` is supported. 
-  It can be updated with `arger.Argument` or `arger.Option` classes.
+  It can be updated with `arger.Argument` classes.
 - `*args` supported but no `**kwargs` support yet.
 - all optional arguments that start with underscore is not passed to `Parser`. 
   They are considered private to the function implementation.
