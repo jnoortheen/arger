@@ -8,21 +8,21 @@ arger = Arger(
 
 
 class Color:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+    HEADER = "\033[95m"
+    OKBLUE = "\033[94m"
+    OKGREEN = "\033[92m"
+    WARNING = "\033[93m"
+    FAIL = "\033[91m"
+    BOLD = "\033[1m"
+    UNDERLINE = "\033[4m"
 
     # reset
-    RESET = '\033[0m'
+    RESET = "\033[0m"
 
 
 def prun(*cmd, **kwargs):
     cmd = " ".join(cmd)
-    print(f'{Color.OKGREEN} $ {cmd}{Color.RESET}')
+    print(f"{Color.OKGREEN} $ {cmd}{Color.RESET}")
     c = run(cmd, **kwargs)
     print(c.out)
     print(c.err)
@@ -35,39 +35,46 @@ def release(
         str,
         Argument(
             choices=[
-                'patch',
-                'minor',
-                'major',
-                'prepatch',
-                'preminor',
-                'premajor',
-                'prerelease',
+                "patch",
+                "minor",
+                "major",
+                "prepatch",
+                "preminor",
+                "premajor",
+                "prerelease",
             ],
         ),
-    ) = 'patch'
+    ) = "patch"
 ):
     """Bump version, tag and push them.
 
     Args:
         type: version bump as supported by `poetry version` command
     """
-    prun('poetry', 'version', type)
-    c = prun('poetry', 'version')
+    prun("poetry", "version", type)
+    c = prun("poetry", "version")
     _, version = c.out.split()
 
     version_num = f"v{version}"
-    prun('cz', 'changelog', '--unreleased-version', version_num)
-    prun('git status')
-    msg = 'chore: bump version'
 
-    answer = input(f'{msg}\nAdd to commit: [Y/n]?')
-    if answer.lower() in {'no', 'n'}:
+    # tagging the current commit in order to place the name correct in the changelog
+    prun(f"git tag {version_num}")
+
+    prun("git-changelog", ".", "-s", "angular", "-o", "CHANGELOG.md")
+    prun("git status")
+    msg = f"chore: bump version to {version_num}"
+
+    answer = input(f"{msg}\nAdd to commit: [Y/n]?")
+    if answer.lower() in {"no", "n"}:
         return
-    prun('git add .')
+    prun("git add .")
     prun(f'git commit -m "{msg}"')
-    prun(f'git tag {version_num}')
-    prun('git push')
-    prun('git push --tags')
+
+    # using force to move the tag to the latest commit.
+    prun(f"git tag {version_num} --force")
+
+    prun("git push")
+    prun("git push --tags")
 
 
 # @arger.add_cmd
@@ -109,5 +116,5 @@ def show_coverage():
     print(Precision(total).pc_covered_str)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     arger.run()
