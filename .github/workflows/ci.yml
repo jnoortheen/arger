@@ -93,6 +93,6 @@ jobs:
           git remote add origin "${remote_repo}"
           ls -alh
           pwd
-          poetry run mkdocs gh-deploy
+          poetry run mkdocs gh-deploy --verbose
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
