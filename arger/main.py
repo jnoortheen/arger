@@ -55,18 +55,23 @@ class Argument:
 
         Args:
             type: The type to which the command-line argument should be converted.
+
                 Got from annotation.
                 Use Argument class itself in case you want to pass variables to `Arger.add_argument`.
+
                 Ex: `typing.cast(int, Argument(type=int))`. If not passed then it is returned as str.
 
             metavar: A name for the argument in usage messages.
 
             nargs: The number of command-line arguments that should be consumed.
                 to be generated from the type-hint.
+
                 Ex: types and how they are converted to nargs
-                `Tuple[str, ...] -> nargs='+'`
-                `Tuple[str, str] -> nargs=2`
-                `List[str]|tuple|list -> nargs=*`
+
+                * `Tuple[str, ...] -> nargs='+'`
+                * `Tuple[str, str] -> nargs=2`
+                * `List[str]|tuple|list -> nargs=*`
+
                 Note: even though Tuple[str,...] doesn't mean one or more, it is just to make `nargs=+` easier to add.
 
             const: covered by type-hint and default value given
@@ -77,11 +82,11 @@ class Argument:
             flags: It will be generated from the argument name.
                 In case one wants to override the generated flags, could be done by passing them.
 
-            default: The value produced if the argument is absent from the command line.
+            default (tp.Any): The value produced if the argument is absent from the command line.
+
                 * The default value assigned to a keyword argument helps determine
                     the type of option and action if it is not type annotated.
                 * The default value is assigned directly to the parser's default for that option.
-
                 * In addition, it determines the ArgumentParser action
                     * a default value of False implies store_true, while True implies store_false.
                     * If the default value is a list, the action is append
@@ -188,7 +193,7 @@ class Arger(ap.ArgumentParser):
         self,
         func: tp.Optional[tp.Callable] = None,
         version: tp.Optional[str] = None,
-        sub_commands_title="commands",
+        sub_parser_title="commands",
         _doc_str: tp.Optional[DocstringTp] = None,  # passed from subparser action
         _level=0,  # passed from subparser action
         **kwargs,
@@ -198,6 +203,8 @@ class Arger(ap.ArgumentParser):
         Args:
             func: A callable to parse root parser's arguments.
             version: adds --version flag.
+            sub_parser_title: sub-parser title to pass.
+
             **kwargs: all the arguments that are supported by `ArgumentParser`
 
         Examples:
@@ -207,7 +214,7 @@ class Arger(ap.ArgumentParser):
         """
         kwargs.setdefault("formatter_class", ap.ArgumentDefaultsHelpFormatter)
 
-        self.sub_commands_title = sub_commands_title
+        self.sub_parser_title = sub_parser_title
         self.sub_parser_action: tp.Optional[ap._SubParsersAction] = None
 
         self.args: tp.Dict[str, Argument] = OrderedDict()
@@ -245,7 +252,8 @@ class Arger(ap.ArgumentParser):
         """Parse cli and dispatch functions.
 
         Args:
-            *args: The arguments will be passed onto self.parse_args
+            capture_sys: whether to capture `sys.argv` if `args` not passed. Useful during testing.
+            *args: The arguments will be passed onto as `self.parse_args(args)`.
         """
         if not args and capture_sys:
             args = tuple(sys.argv[1:])
@@ -265,8 +273,8 @@ class Arger(ap.ArgumentParser):
     def init(cls, **kwargs) -> tp.Callable[[tp.Callable], "Arger"]:
         """Create parser from function as a decorator.
 
-        Args:
-            func: main function that has description and has sub-command level arguments
+        Keyword Args:
+            **kwargs: will be passed to `Arger()` initialisation.
         """
 
         def _wrapper(fn: tp.Callable):
@@ -274,14 +282,18 @@ class Arger(ap.ArgumentParser):
 
         return _wrapper
 
-    def add_cmd(self, func: tp.Callable) -> ap.ArgumentParser:
-        """Decorate the function as a sub-command.
+    def add_cmd(self, func: tp.Callable) -> "Arger":
+        """Create a sub-command from the function.
+        All its parameters will be converted to CLI args wrt their types.
 
         Args:
-            func: function
+            func: function to create sub-command from.
+
+        Returns
+            Arger: A new parser from the function is returned.
         """
         if not self.sub_parser_action:
-            self.sub_parser_action = self.add_subparsers(title=self.sub_commands_title)
+            self.sub_parser_action = self.add_subparsers(title=self.sub_parser_title)
 
         docstr = DocstringParser.parse(func)
         return self.sub_parser_action.add_parser(
