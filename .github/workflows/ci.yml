@@ -91,6 +91,6 @@ jobs:
           remote_repo="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git remote rm origin
           git remote add origin "${remote_repo}"
-          poetry run mkdocs gh-deploy --verbose
+          poetry run mkdocs gh-deploy --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
