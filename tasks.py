@@ -73,8 +73,7 @@ def release(
     # using force to move the tag to the latest commit.
     prun(f"git tag {version_num} --force")
 
-    prun("git push")
-    prun("git push --tags")
+    prun("git push --follow-tags")
 
 
 # @arger.add_cmd
