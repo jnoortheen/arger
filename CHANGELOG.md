@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [v1.2.2](https://github.com/jnoortheen/arger/releases/tag/v1.2.2) - 2020-12-07
+
+<small>[Compare with v1.2.0](https://github.com/jnoortheen/arger/compare/v1.2.0...v1.2.2)</small>
+
+### Features
+- Support add arger.add_commands method ([a9cb3fa](https://github.com/jnoortheen/arger/commit/a9cb3faa34b1900c7bdb5093e04acb0ee07ea835) by Noortheen Raja).
+
+
 ## [v1.2.0](https://github.com/jnoortheen/arger/releases/tag/v1.2.0) - 2020-12-06
 
 <small>[Compare with v1.1.0](https://github.com/jnoortheen/arger/compare/v1.1.0...v1.2.0)</small>
