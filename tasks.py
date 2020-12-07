@@ -56,13 +56,13 @@ def release(
     _, version = c.out.split()
 
     version_num = f"v{version}"
+    msg = f"chore: bump version to {version_num}"
 
     # tagging the current commit in order to place the name correct in the changelog
-    prun(f"git tag {version_num}")
+    prun(f"git tag -a {version_num} -m {msg}")
 
     prun("git-changelog", ".", "-s", "angular", "-o", "CHANGELOG.md")
     prun("git status")
-    msg = f"chore: bump version to {version_num}"
 
     answer = input(f"{msg}\nAdd to commit: [Y/n]?")
     if answer.lower() in {"no", "n"}:
