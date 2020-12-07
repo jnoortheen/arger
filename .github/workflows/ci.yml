@@ -77,7 +77,7 @@ jobs:
       - uses: Gr1N/setup-poetry@v4
       - name: Publish
         run: |
-          poetry install --no-dev
+          poetry install
           poetry config pypi-token.pypi $PYPI_TOKEN
           poetry publish --build
         env:
@@ -91,8 +91,6 @@ jobs:
           remote_repo="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git remote rm origin
           git remote add origin "${remote_repo}"
-          ls -alh
-          pwd
           poetry run mkdocs gh-deploy --verbose
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
