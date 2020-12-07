@@ -194,8 +194,10 @@ class Arger(ap.ArgumentParser):
         func: tp.Optional[tp.Callable] = None,
         version: tp.Optional[str] = None,
         sub_parser_title="commands",
-        _doc_str: tp.Optional[DocstringTp] = None,  # passed from subparser action
-        _level=0,  # passed from subparser action
+        formatter_class=ap.ArgumentDefaultsHelpFormatter,
+        exceptions_to_catch: tp.Sequence[tp.Type[Exception]] = (),
+        _doc_str: tp.Optional[DocstringTp] = None,
+        _level=0,
         **kwargs,
     ):
         """
@@ -204,18 +206,24 @@ class Arger(ap.ArgumentParser):
             func: A callable to parse root parser's arguments.
             version: adds --version flag.
             sub_parser_title: sub-parser title to pass.
+            exceptions_to_catch: exceptions to catch and print its message.
+                Will exit with 1 and will hide traceback.
 
-            **kwargs: all the arguments that are supported by `ArgumentParser`
+            _doc_str: internally passed from arger.add_cmd
+            _level: internal
+
+            **kwargs: all the arguments that are supported by
+                    [ArgumentParser](https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser)
 
         Examples:
             adding version flag
                 version = '%(prog)s 2.0'
                 Arger() equals to Arger().add_argument('--version', action='version', version=version)
         """
-        kwargs.setdefault("formatter_class", ap.ArgumentDefaultsHelpFormatter)
+        kwargs.setdefault("formatter_class", formatter_class)
 
         self.sub_parser_title = sub_parser_title
-        self.sub_parser_action: tp.Optional[ap._SubParsersAction] = None
+        self.sub_parser: tp.Optional[ap._SubParsersAction] = None
 
         self.args: tp.Dict[str, Argument] = OrderedDict()
         docstr = DocstringParser.parse(func) if _doc_str is None else _doc_str
@@ -225,22 +233,25 @@ class Arger(ap.ArgumentParser):
         super().__init__(**kwargs)
 
         self.set_defaults(**{LEVEL: _level})
-        if func:
-            self._add_arguments(func, docstr, _level)
+        self.func = func
+        self.exceptions_to_catch = exceptions_to_catch
+        self._add_arguments(docstr, _level)
 
         if version:
             self.add_argument("--version", action="version", version=version)
 
-    def _add_arguments(self, func: tp.Callable, docstr: DocstringTp, level: int):
+    def _add_arguments(self, docstr: DocstringTp, level: int):
+        if not self.func:
+            return
         option_generator = FlagsGenerator(self.prefix_chars)
-        sign = inspect.signature(func)
+        sign = inspect.signature(self.func)
 
         for param in sign.parameters.values():
             param_doc = docstr.params.get(param.name)
             self.args[param.name] = Argument.create(param, param_doc, option_generator)
 
         # parser level defaults
-        self.set_defaults(**{f"{FUNC_PREFIX}{level}": self.dispatch(func)})
+        self.set_defaults(**{f"{FUNC_PREFIX}{level}": self._dispatch})
 
         for arg_name, arg in self.args.items():
             # useful only when `_namespace_` is requested or it is a kwarg
@@ -248,16 +259,17 @@ class Arger(ap.ArgumentParser):
                 continue
             arg.add_to(self)
 
-    def run(self, *args: str, capture_sys=True) -> ap.Namespace:
+    def run(self, *args: str, capture_sys=True, **kwargs) -> ap.Namespace:
         """Parse cli and dispatch functions.
 
         Args:
             capture_sys: whether to capture `sys.argv` if `args` not passed. Useful during testing.
             *args: The arguments will be passed onto as `self.parse_args(args)`.
+            **kwargs: will get passed to `parse_args` method
         """
         if not args and capture_sys:
             args = tuple(sys.argv[1:])
-        namespace = self.parse_args(args)
+        namespace = self.parse_args(args, **kwargs)
         kwargs = vars(namespace)
         kwargs[NS_PREFIX] = copy.copy(namespace)
         kwargs["_arger_"] = self
@@ -265,7 +277,7 @@ class Arger(ap.ArgumentParser):
         for level in range(kwargs.get(LEVEL, 0) + 1):
             func_name = f"{FUNC_PREFIX}{level}"
             if func_name in kwargs:
-                kwargs[func_name](kwargs)
+                kwargs[func_name](**kwargs)
 
         return namespace
 
@@ -273,8 +285,8 @@ class Arger(ap.ArgumentParser):
     def init(cls, **kwargs) -> tp.Callable[[tp.Callable], "Arger"]:
         """Create parser from function as a decorator.
 
-        Keyword Args:
-            **kwargs: will be passed to `Arger()` initialisation.
+        Args:
+            **kwargs: will be passed to arger.Arger initialisation.
         """
 
         def _wrapper(fn: tp.Callable):
@@ -282,48 +294,69 @@ class Arger(ap.ArgumentParser):
 
         return _wrapper
 
+    @tp.overload
     def add_cmd(self, func: tp.Callable) -> "Arger":
+        ...
+
+    @tp.overload
+    def add_cmd(self, func: None, **kwargs) -> tp.Callable[[tp.Callable], "Arger"]:
+        ...
+
+    def add_cmd(self, func=None, **kwargs):
         """Create a sub-command from the function.
         All its parameters will be converted to CLI args wrt their types.
 
         Args:
             func: function to create sub-command from.
+            **kwargs: will get passed to `subparser.add_parser` method
 
         Returns
             Arger: A new parser from the function is returned.
         """
-        if not self.sub_parser_action:
-            self.sub_parser_action = self.add_subparsers(title=self.sub_parser_title)
+        if not self.sub_parser:
+            self.sub_parser = self.add_subparsers(title=self.sub_parser_title)
 
-        docstr = DocstringParser.parse(func)
-        return self.sub_parser_action.add_parser(
-            name=func.__name__,
-            help=docstr.description,
-            func=func,
-            _doc_str=docstr,
-            _level=self.get_default(LEVEL) + 1,
-        )
+        def _wrapper(fn: tp.Callable) -> "Arger":
+            docstr = DocstringParser.parse(fn)
+            arger = self.sub_parser.add_parser(  # type: ignore
+                name=kwargs.pop("name", fn.__name__),
+                help=kwargs.pop("help", docstr.description),
+                func=fn,
+                _doc_str=docstr,
+                _level=self.get_default(LEVEL) + 1,
+                **kwargs,
+            )
+            return tp.cast(Arger, arger)
 
-    def dispatch(self, fn: tp.Callable) -> tp.Any:
-        """Calls the given function with args parsed from CLI"""
+        if func is None:
+            return _wrapper
+        return _wrapper(func)
 
-        def _dispatch(ns: tp.Dict[str, tp.Any]):
-            kwargs = {}
-            args = []
-            for arg_name, arg in self.args.items():
-                val = ns[arg_name]
-                if arg.kind in {
-                    inspect.Parameter.POSITIONAL_ONLY,
-                    inspect.Parameter.POSITIONAL_OR_KEYWORD,
-                }:
-                    args.append(val)
-                elif arg.kind == inspect.Parameter.VAR_POSITIONAL:
-                    args.extend(val)
-                else:
-                    kwargs[arg_name] = val
-            return fn(*args, **kwargs)
+    def add_commands(self, *func: tp.Callable) -> tp.Tuple["Arger", ...]:
+        """Add multiple sub-commands to the main command at once"""
+        return tuple(self.add_cmd(fn) for fn in func)
 
-        return _dispatch
+    def _dispatch(self, **ns: tp.Any) -> tp.Any:
+        """Calls the given function with args parsed from CLI
+
+        Args:
+            ns: namespace after parsing
+        """
+
+        kwargs = {}
+        args = []
+        for arg_name, arg in self.args.items():
+            val = ns[arg_name]
+            if arg.kind in {
+                inspect.Parameter.POSITIONAL_ONLY,
+                inspect.Parameter.POSITIONAL_OR_KEYWORD,
+            }:
+                args.append(val)
+            elif arg.kind == inspect.Parameter.VAR_POSITIONAL:
+                args.extend(val)
+            else:
+                kwargs[arg_name] = val
+        return self.func(*args, **kwargs) if self.func else None
 
 
 def get_nargs(typ: tp.Any) -> tp.Tuple[tp.Any, tp.Union[int, str]]:
