@@ -59,7 +59,7 @@ def release(
     msg = f"chore: bump version to {version_num}"
 
     # tagging the current commit in order to place the name correct in the changelog
-    prun(f"git tag -a {version_num} -m {msg}")
+    prun(f"git tag {version_num}")
 
     prun("git-changelog", ".", "-s", "angular", "-o", "CHANGELOG.md")
     prun("git status")
@@ -73,7 +73,8 @@ def release(
     # using force to move the tag to the latest commit.
     prun(f"git tag {version_num} --force")
 
-    prun("git push --follow-tags")
+    prun("git push")
+    prun("git push --tags")
 
 
 # @arger.add_cmd
