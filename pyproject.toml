@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "arger"
-version = "1.2.5"
+version = "1.2.6"
 description = "Create argparser automatically from functions"
 
 license = "MIT"
@@ -14,8 +14,7 @@ homepage = "https://pypi.org/project/arger"
 documentation = "https://arger.readthedocs.io"
 repository = "https://github.com/jnoortheen/arger"
 
-keywords = [
-]
+keywords = []
 classifiers = [
     # TODO: update this list to match your application: https://pypi.org/pypi?%3Aaction=list_classifiers
     "Development Status :: 1 - Planning",
@@ -35,14 +34,14 @@ classifiers = [
 
 [tool.poetry.dependencies]
 
-python = "^3.6"
+python = ">=3.6"
 
 
 [tool.poetry.dev-dependencies]
 
 # Formatters
-black = {extras = ["d"], version = "^20.8b1"}
-isort = "^5.6.4"
+black = { extras = ["d"], version = "^20.8b1" }
+isort = { version = "^5.6.4", python = "^3.6" }
 
 # Linters
 mypy = "*"
@@ -65,7 +64,7 @@ pytest-clarity = "^0.3.0-alpha.0"
 # Documentation
 mkdocs = "^1.0"
 mkdocs-material = "^5.1.0"
-mkdocstrings = "^0.10.3"
+mkdocstrings = { version = "^0.10.3", python = "^3.6" }
 mknotebooks = "*"
 pymdown-extensions = "^7.0"
 pygments = "*"
@@ -81,7 +80,7 @@ pyinotify = "^0.9.6"
 "delegator.py" = "^0.1.1"
 jupyter = "^1.0.0"
 better-exceptions = "^0.2.2"
-git-changelog = "^0.4.0"
+git-changelog = { version = "^0.4.0", python = "^3.6" }
 
 [tool.black]
 
