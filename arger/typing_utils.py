@@ -3,7 +3,7 @@ import functools
 import sys
 from enum import Enum
 from inspect import isclass
-from typing import Any, FrozenSet, List, Set, Tuple, TypeVar
+from typing import Any, FrozenSet, List, Set, Tuple, TypeVar, Union
 
 NEW_TYPING = sys.version_info[:3] >= (3, 7, 0)  # PEP 560
 
@@ -27,7 +27,7 @@ def define_old_types():
             Set: set,
             FrozenSet: frozenset,
         }.items():
-            if hasattr(tp, '__name__'):
+            if hasattr(tp, "__name__"):
                 origins[tp.__name__] = orig  # type: ignore
     return origins
 
@@ -36,7 +36,7 @@ def get_origin(tp):
     """Return the python class for the GenericAlias. Dict->dict, List->list..."""
     origin = _get_origin(tp)
 
-    if not NEW_TYPING and hasattr(tp, '__name__'):
+    if not NEW_TYPING and hasattr(tp, "__name__"):
         old_type_origins = define_old_types()
         if tp.__name__ in old_type_origins:
             return old_type_origins[tp.__name__]
@@ -52,7 +52,7 @@ def match_types(tp, *matches) -> bool:
     return any([get_origin(m) is get_origin(tp) for m in matches])
 
 
-ARGS = '__args__'
+ARGS = "__args__"
 
 
 def get_inner_args(tp):
@@ -71,7 +71,7 @@ def unpack_type(tp, default=str) -> Any:
     """
     args = get_inner_args(tp)
     if args:
-        if str(args[0]) not in {'~T', 'typing.Any'}:
+        if str(args[0]) not in {"~T", "typing.Any"}:
             return args[0]
     return default
 
@@ -87,6 +87,15 @@ def is_enum(tp):
 
 def is_tuple(tp):
     return match_types(tp, tuple)
+
+
+def is_optional(tp):
+    """Check that tp = typing.Optional[typ1]"""
+    if match_types(tp, Union):
+        args = get_inner_args(tp)
+        if len(args) == 2:
+            return type(None) in args
+    return False
 
 
 def cast(tp, val) -> Any:
@@ -114,4 +123,4 @@ def cast(tp, val) -> Any:
     return origin(val)
 
 
-T = TypeVar('T')
+T = TypeVar("T")

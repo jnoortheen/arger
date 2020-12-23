@@ -25,6 +25,7 @@ a:int,              # -> add_argument(dest='a', type=int)
 a:Tuple[int, ...],  # -> add_argument(dest='a', type=int, nargs='+') : one or more
 a:Tuple[int, int],  # -> add_argument(dest='a', type=int, nargs='2') : consumes 2 positional
 a:List[int],        # -> add_argument(dest="a", type=int, nargs="*") : zero or more
+a:Optional[int],    # -> add_argument(dest="a", type=int, nargs="?") : zero or one positional
 a:Enum(
     'AnySubClsOfEnum',
     'ONE TWO'

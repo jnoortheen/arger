@@ -378,7 +378,11 @@ class TypeAction(ap.Action):
         self.is_enum = False
         if typ is not _EMPTY:
             origin = tp_utils.get_origin(typ)
-            if self.is_iterable:
+
+            if tp_utils.is_optional(typ) and "default" not in kwargs:
+                kwargs["nargs"] = "?"
+                origin = tp_utils.unpack_type(typ)
+            elif self.is_iterable:
                 origin, kwargs["nargs"] = get_nargs(typ)
 
             if tp_utils.is_enum(origin):
