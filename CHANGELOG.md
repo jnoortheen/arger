@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [v1.2.8](https://github.com/jnoortheen/arger/releases/tag/v1.2.8) - 2021-01-02
+
+<small>[Compare with v1.2.7](https://github.com/jnoortheen/arger/compare/v1.2.7...v1.2.8)</small>
+
+### Code Refactoring
+- Split __version__ to new module ([e60b059](https://github.com/jnoortheen/arger/commit/e60b0594ee14a110bede7b45ec5b4541d6e09262) by Noortheen Raja).
+
+
 ## [v1.2.7](https://github.com/jnoortheen/arger/releases/tag/v1.2.7) - 2020-12-23
 
 <small>[Compare with v1.2.6](https://github.com/jnoortheen/arger/compare/v1.2.6...v1.2.7)</small>
