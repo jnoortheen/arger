@@ -1,0 +1,525 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="Create argparser automatically from functions" name="description"/>
+<link href="https://jnoortheen.github.io/arger/examples/4-supported-types/usage/" rel="canonical"/>
+<meta content="Noortheen Raja" name="author"/>
+<link href="../../../assets/images/favicon.png" rel="shortcut icon"/>
+<meta content="mkdocs-1.1.2, mkdocs-material-5.5.14" name="generator"/>
+<title>Usage - arger</title>
+<link href="../../../assets/stylesheets/main.d3202873.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
+<style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+<link href="../../../css/ansi-colours.css" rel="stylesheet"/>
+<link href="../../../css/jupyter-cells.css" rel="stylesheet"/>
+<link href="../../../css/pandas-dataframe.css" rel="stylesheet"/>
+</head>
+<body dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="Header" class="md-header-nav md-grid">
+<a aria-label="arger" class="md-header-nav__button md-logo" href="https://jnoortheen.github.io/arger" title="arger">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"></path></svg>
+</a>
+<label class="md-header-nav__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"></path></svg>
+</label>
+<div class="md-header-nav__title" data-md-component="header-title">
+<div class="md-header-nav__ellipsis">
+<span class="md-header-nav__topic md-ellipsis">
+            arger
+          </span>
+<span class="md-header-nav__topic md-ellipsis">
+            
+              Usage
+            
+          </span>
+</div>
+</div>
+<label class="md-header-nav__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" data-md-state="active" name="query" placeholder="Search" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</label>
+<button aria-label="Clear" class="md-search__icon md-icon" data-md-component="search-reset" tabindex="-1" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path></svg>
+</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header-nav__source">
+<a class="md-source" href="https://github.com/jnoortheen/arger/" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="arger" class="md-nav__button md-logo" href="https://jnoortheen.github.io/arger" title="arger">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"></path></svg>
+</a>
+    arger
+  </label>
+<div class="md-nav__source">
+<a class="md-source" href="https://github.com/jnoortheen/arger/" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../.." title="Overview">
+      Overview
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../1-arger/" title="Arger">
+      Arger
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../2-alternatives/" title="Similar Projects">
+      Similar Projects
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../3-api-docs/" title="API Documentation">
+      API Documentation
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" data-md-toggle="nav-5" id="nav-5" type="checkbox"/>
+<label class="md-nav__link" for="nav-5">
+      Examples
+      <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="Examples" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="nav-5">
+<span class="md-nav__icon md-icon"></span>
+        Examples
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-5-1" id="nav-5-1" type="checkbox"/>
+<label class="md-nav__link" for="nav-5-1">
+      1 single function
+      <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="1 single function" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="nav-5-1">
+<span class="md-nav__icon md-icon"></span>
+        1 single function
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../1-single-function/" title="Single function">
+      Single function
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../1-single-function/usage/" title="Usage">
+      Usage
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-5-2" id="nav-5-2" type="checkbox"/>
+<label class="md-nav__link" for="nav-5-2">
+      2 sub commands
+      <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="2 sub commands" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="nav-5-2">
+<span class="md-nav__icon md-icon"></span>
+        2 sub commands
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../2-sub-commands/" title="Sub-commands">
+      Sub-commands
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../2-sub-commands/usage/" title="Usage">
+      Usage
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-5-3" id="nav-5-3" type="checkbox"/>
+<label class="md-nav__link" for="nav-5-3">
+      3 arger as function
+      <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="3 arger as function" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="nav-5-3">
+<span class="md-nav__icon md-icon"></span>
+        3 arger as function
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../3-arger-as-function/" title="Arger from function">
+      Arger from function
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../3-arger-as-function/usage/" title="Usage">
+      Usage
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" data-md-toggle="nav-5-4" id="nav-5-4" type="checkbox"/>
+<label class="md-nav__link" for="nav-5-4">
+      4 supported types
+      <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="4 supported types" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="nav-5-4">
+<span class="md-nav__icon md-icon"></span>
+        4 supported types
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../" title="Supported Type">
+      Supported Type
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<a class="md-nav__link md-nav__link--active" href="./" title="Usage">
+      Usage
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/jnoortheen/arger/edit/master/docs/examples/4-supported-types/usage.ipynb" title="Edit this page">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"></path></svg>
+</a>
+<h1>Usage</h1>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script>
+(function() {
+  function addWidgetsRenderer() {
+    var mimeElement = document.querySelector('script[type="application/vnd.jupyter.widget-view+json"]');
+    var scriptElement = document.createElement('script');
+    var widgetRendererSrc = 'https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js';
+    var widgetState;
+
+    // Fallback for older version:
+    try {
+      widgetState = mimeElement && JSON.parse(mimeElement.innerHTML);
+
+      if (widgetState && (widgetState.version_major < 2 || !widgetState.version_major)) {
+        widgetRendererSrc = 'jupyter-js-widgets@*/dist/embed.js';
+      }
+    } catch(e) {}
+
+    scriptElement.src = widgetRendererSrc;
+    document.body.appendChild(scriptElement);
+  }
+
+  document.addEventListener('DOMContentLoaded', addWidgetsRenderer);
+}());
+</script>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="c1"># Run empty</span>
+<span class="err">!</span><span class="n">python</span> <span class="n">src</span><span class="o">.</span><span class="n">py</span>
+</code></pre></div>
+</td></tr></table>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="c1"># Run help</span>
+<span class="err">!</span><span class="n">python</span> <span class="n">src</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">h</span>
+</code></pre></div>
+</td></tr></table>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>usage: pytest [-h] {cmd1,cmd2} ...
+
+App Description goes here
+
+optional arguments:
+  -h, --help   show this help message and exit
+
+commands:
+  {cmd1,cmd2}
+    cmd1       Example function with types documented in the docstring.
+    cmd2       A script with three optional values.
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="c1"># ran `cmd1` help</span>
+<span class="err">!</span><span class="n">python</span> <span class="n">src</span><span class="o">.</span><span class="n">py</span> <span class="n">cmd1</span> <span class="o">-</span><span class="n">h</span>
+</code></pre></div>
+</td></tr></table>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>usage: pytest cmd1 [-h] [-a {one,two}] [-o OPTIONAL_STR] [-p OPTIONAL_INT]
+                   [-t [OPTIONAL_TPL [OPTIONAL_TPL ...]]]
+                   an_int an_str a_tuple a_tuple a_tuple a_var_tuple
+                   [a_var_tuple ...]
+
+Example function with types documented in the docstring.
+
+positional arguments:
+  an_int
+  an_str
+  a_tuple
+  a_var_tuple
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -a {one,two}, --an-enum {one,two}
+  -o OPTIONAL_STR, --optional-str OPTIONAL_STR
+  -p OPTIONAL_INT, --optional-int OPTIONAL_INT
+  -t [OPTIONAL_TPL [OPTIONAL_TPL ...]], --optional-tpl [OPTIONAL_TPL [OPTIONAL_TPL ...]]
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="c1"># ran `cmd1` with only required</span>
+<span class="err">!</span><span class="n">python</span> <span class="n">src</span><span class="o">.</span><span class="n">py</span> <span class="n">cmd1</span> <span class="mi">10</span> <span class="n">str1</span> <span class="n">tp1</span> <span class="n">tp2</span> <span class="n">tp3</span> <span class="n">vtp1</span>
+</code></pre></div>
+</td></tr></table>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>a_tuple (&lt;class 'tuple'&gt;): ('tp1', 'tp2', 'tp3')
+a_var_tuple (&lt;class 'tuple'&gt;): ('vtp1',)
+an_enum (&lt;enum 'Choice'&gt;): Choice.one
+an_int (&lt;class 'int'&gt;): 10
+an_str (&lt;class 'str'&gt;): str1
+optional_int (&lt;class 'int'&gt;): 0
+optional_str (&lt;class 'str'&gt;): 
+optional_tpl (&lt;class 'tuple'&gt;): ()
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="c1"># ran `cmd1` with valid arguments</span>
+<span class="err">!</span><span class="n">python</span> <span class="n">src</span><span class="o">.</span><span class="n">py</span> <span class="n">cmd1</span> <span class="mi">10</span> <span class="n">str1</span> <span class="n">tp1</span> <span class="n">tp2</span> <span class="n">tp3</span> <span class="n">vtp1</span> <span class="o">--</span><span class="n">optional</span><span class="o">-</span><span class="n">tpl</span> <span class="n">otp1</span> <span class="n">otp2</span> <span class="o">--</span><span class="n">optional</span><span class="o">-</span><span class="n">tpl</span> <span class="n">otp3</span> <span class="o">--</span><span class="n">optional</span><span class="o">-</span><span class="nb">str</span> <span class="n">ostr</span> <span class="o">--</span><span class="n">optional</span><span class="o">-</span><span class="nb">int</span> <span class="mi">100</span> <span class="o">--</span><span class="n">an</span><span class="o">-</span><span class="n">enum</span> <span class="n">two</span>
+</code></pre></div>
+</td></tr></table>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>a_tuple (&lt;class 'tuple'&gt;): ('tp1', 'tp2', 'tp3')
+a_var_tuple (&lt;class 'tuple'&gt;): ('vtp1',)
+an_enum (&lt;enum 'Choice'&gt;): Choice.two
+an_int (&lt;class 'int'&gt;): 10
+an_str (&lt;class 'str'&gt;): str1
+optional_int (&lt;class 'int'&gt;): 100
+optional_str (&lt;class 'str'&gt;): ostr
+optional_tpl (&lt;class 'tuple'&gt;): ('otp1', 'otp2', 'otp3')
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="c1"># ran `cmd2` help</span>
+<span class="err">!</span><span class="n">python</span> <span class="n">src</span><span class="o">.</span><span class="n">py</span> <span class="n">cmd2</span> <span class="o">-</span><span class="n">h</span>
+</code></pre></div>
+</td></tr></table>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>usage: pytest cmd2 [-h] [-m] [-y] [--my] [a_list [a_list ...]]
+
+A script with three optional values.
+
+positional arguments:
+  a_list       catch all positional arguments (default: None)
+
+optional arguments:
+  -h, --help   show this help message and exit
+  -m, --m-opt  the m_opt helptext (default: False)
+  -y, --y-opt  the y_opt helptext (default: False)
+  --my         the my helptext (default: False)
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="c1"># ran `cmd2` with args</span>
+<span class="err">!</span><span class="n">python</span> <span class="n">src</span><span class="o">.</span><span class="n">py</span> <span class="n">cmd2</span> <span class="mi">10</span> <span class="mi">100</span> <span class="mi">1000</span>
+</code></pre></div>
+</td></tr></table>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>a_list (&lt;class 'list'&gt;): [10, 100, 1000]
+m_opt (&lt;class 'bool'&gt;): False
+my (&lt;class 'bool'&gt;): False
+y_opt (&lt;class 'bool'&gt;): False
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav aria-label="Footer" class="md-footer-nav__inner md-grid">
+<a class="md-footer-nav__link md-footer-nav__link--prev" href="../" rel="prev" title="Supported Type">
+<div class="md-footer-nav__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</div>
+<div class="md-footer-nav__title">
+<div class="md-ellipsis">
+<span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Supported Type
+              </div>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+          Material for MkDocs
+        </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../../assets/javascripts/vendor.2d1db4bd.min.js"></script>
+<script src="../../../assets/javascripts/bundle.6627ddf3.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+<script>
+        app = initialize({
+          base: "../../..",
+          features: [],
+          search: Object.assign({
+            worker: "../../../assets/javascripts/worker/search.5eca75d3.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+</body>
+</html>
