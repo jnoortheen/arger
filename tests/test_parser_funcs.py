@@ -39,7 +39,6 @@ def test_parse_function():
             "type": str,
         },
         {
-            "action": TypeAction,
             "default": None,
             "dest": "kw1",
             "help": "",

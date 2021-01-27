@@ -107,8 +107,6 @@ class Argument:
             value = locals()[var_name]
             if value is not None:
                 kwargs[var_name] = value
-        if "action" not in kwargs:
-            kwargs["action"] = TypeAction
         self.flags = flags
         self.kwargs = kwargs
 
@@ -143,7 +141,6 @@ class Argument:
         if param.kind == inspect.Parameter.VAR_POSITIONAL:
             self.kwargs.setdefault("nargs", "*")
         self._update(param, option_generator)
-        self._update_type(param.annotation)
 
     def _update(
         self,
@@ -152,7 +149,8 @@ class Argument:
     ):
         if param.default is _EMPTY:  # it will become a positional argument
             self.flags = (param.name,)
-        else:  # it will become a flat
+            self._update_type(param.annotation)
+        else:  # it will become a flag
             self.kwargs.setdefault("dest", param.name)
             if not self.flags:
                 self.flags = tuple(option_generator.generate(param.name))
@@ -166,6 +164,8 @@ class Argument:
             and ("type" not in self.kwargs)
         ):
             self.kwargs.setdefault("type", typ)
+            if "action" not in self.kwargs:
+                self.kwargs["action"] = TypeAction
 
     def _update_default(self, typ: tp.Any, default: tp.Any):
         """Update type and default externally"""
@@ -174,13 +174,14 @@ class Argument:
         else:
             default = self.kwargs["default"]
 
-        if isinstance(default, bool):
-            self.kwargs["action"] = "store_true" if default is False else "store_false"
-            typ = self.kwargs.pop("type", _EMPTY)
-        elif default is not None and typ is _EMPTY:
+        typ = self.kwargs.pop("type", typ)
+        if default is not None and typ is _EMPTY:
             typ = type(default)
 
-        self._update_type(typ)
+        if typ == bool:
+            self.kwargs["action"] = "store_true" if default is False else "store_false"
+        else:
+            self._update_type(typ)
 
     def add_to(self, parser: "Arger"):
         return parser.add_argument(*self.flags, **self.kwargs)
