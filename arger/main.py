@@ -1,6 +1,7 @@
 # pylint: disable = protected-access,unused-argument,redefined-builtin
 import argparse as ap
 import copy
+import functools
 import inspect
 import sys
 import typing as tp
@@ -369,6 +370,33 @@ def get_nargs(typ: tp.Any) -> tp.Tuple[tp.Any, tp.Union[int, str]]:
     return inner, "*"
 
 
+def cast_enum(enum_cls, attr):
+    try:
+        return enum_cls[attr]
+    except KeyError:
+        raise ValueError(f"{enum_cls}.{attr} doesn't exist")
+
+
+def get_type_kwargs(typ, **kwargs):
+    factory_type = tp_utils.get_origin(typ)
+
+    if tp_utils.is_optional(typ) and "default" not in kwargs:
+        factory_type, kwargs["nargs"] = tp_utils.unpack_type(typ), "?"
+    elif tp_utils.is_seq_container(typ):
+        factory_type, kwargs["nargs"] = get_nargs(typ)
+
+    if tp_utils.is_enum(factory_type):
+        kwargs.setdefault("choices", list(factory_type))
+        factory_type = functools.partial(cast_enum, factory_type)
+    elif tp_utils.is_literal(factory_type):
+        params, factory_type = tp_utils.get_literal_params(typ)
+        if params:
+            kwargs.setdefault("choices", params)
+
+    kwargs["type"] = factory_type
+    return factory_type, kwargs
+
+
 class TypeAction(ap.Action):
     """After the parse update the type of value"""
 
@@ -376,26 +404,13 @@ class TypeAction(ap.Action):
         typ = kwargs.pop("type", _EMPTY)
         self.orig_type = typ
         self.is_iterable = tp_utils.is_seq_container(typ)
-        self.is_enum = False
+
         if typ is not _EMPTY:
-            origin = tp_utils.get_origin(typ)
-
-            if tp_utils.is_optional(typ) and "default" not in kwargs:
-                kwargs["nargs"] = "?"
-                origin = tp_utils.unpack_type(typ)
-            elif self.is_iterable:
-                origin, kwargs["nargs"] = get_nargs(typ)
-
-            if tp_utils.is_enum(origin):
-                kwargs.setdefault("choices", [e.name for e in origin])
-                origin = str
-                self.is_enum = True
-
-            kwargs["type"] = origin
+            factory_type, kwargs = get_type_kwargs(typ, **kwargs)
         super().__init__(*args, **kwargs)
 
     def cast_value(self, vals):
-        if self.is_iterable or self.is_enum:
+        if self.is_iterable:
             return tp_utils.cast(self.orig_type, vals)
         return vals
 

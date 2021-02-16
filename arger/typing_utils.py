@@ -49,7 +49,15 @@ def match_types(tp, *matches) -> bool:
     :param tp:
     :param matches:
     """
-    return any([get_origin(m) is get_origin(tp) for m in matches])
+    origin = get_origin(tp)
+    for m in matches:
+        if isinstance(m, str):  # instead of imported class use the class names
+            if str(origin).endswith(m):
+                return True
+        else:
+            if get_origin(m) is origin:
+                return True
+    return False
 
 
 ARGS = "__args__"
@@ -85,6 +93,16 @@ def is_enum(tp):
     return isclass(tp) and issubclass(tp, Enum)
 
 
+def is_literal(tp):
+    return match_types(tp, "Literal")
+
+
+def get_literal_params(typ):
+    params = [e for e in get_inner_args(typ)]
+    factory_type = type(params[0]) if params else str
+    return params, factory_type
+
+
 def is_tuple(tp):
     return match_types(tp, tuple)
 
@@ -104,7 +122,13 @@ def cast(tp, val) -> Any:
     origin = get_origin(tp)
 
     if is_enum(origin):
+        if isinstance(val, origin):
+            return val
         return origin[val]
+
+    if is_literal(origin):
+        _, typ = get_literal_params(origin)
+        return typ(val)
 
     if is_seq_container(origin):
         val = origin(val)

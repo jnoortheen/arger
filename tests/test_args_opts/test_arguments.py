@@ -3,6 +3,7 @@ from enum import Enum
 from typing import List, Optional, Tuple
 
 import pytest
+from typing_extensions import Literal
 
 
 class Num(Enum):
@@ -11,6 +12,8 @@ class Num(Enum):
 
 
 Num2 = Enum("Num2", "one two")
+
+Num3 = Literal["one", "two"]
 
 
 @pytest.mark.parametrize(
@@ -27,14 +30,17 @@ Num2 = Enum("Num2", "one two")
         ("enum", Num, "one", Num.one),
         ("enum", Num, "two", Num.two),
         ("enum", Num2, "one", Num2.one),
-        ("enum", Num2, "one", Num2.one),
+        ("enum", Num2, "two", Num2.two),
+        ("literal", Num3, "one", "one"),
+        ("literal", Num3, "two", "two"),
         # container types
         ("a_tuple", tuple, "1 2 3", ("1", "2", "3")),
         ("a_tuple", Tuple[int, ...], "1 2 3", (1, 2, 3)),
         ("a_tuple", Tuple[str, ...], "1 2 3", ("1", "2", "3")),
-        ("a_tuple", Tuple[Num, ...], "one two", (Num.one, Num.two)),
-        ("a_tuple", Tuple[float, ...], "1 2 3", (1.0, 2.0, 3.0)),
-        ("a_tuple", Tuple[str, int], "1 2", ("1", 2)),
+        ("a_tuple_enum", Tuple[Num, ...], "one two", (Num.one, Num.two)),
+        ("a_tuple_literal", Tuple[Num3, ...], "one two", ("one", "two")),
+        ("a_tuple_float", Tuple[float, ...], "1 2 3", (1.0, 2.0, 3.0)),
+        ("a_tuple_mixed", Tuple[str, int], "1 2", ("1", 2)),
         (
             "a_tuple",
             Tuple[int, float, Decimal, complex, str],

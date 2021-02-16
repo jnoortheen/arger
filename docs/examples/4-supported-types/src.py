@@ -9,6 +9,9 @@ class Choice(Enum):
     one = '1. One'
     two = '2. Two'
 
+    def __str__(self):
+        """by implementing this function one can control the enum-display in help string"""
+        return self.name
 
 arger = Arger(prog='pytest', description="App Description goes here")
 
