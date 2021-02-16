@@ -1301,15 +1301,11 @@ python-versions = "*"
 
 [[package]]
 name = "pytkdocs"
-version = "0.10.1"
+version = "0.3.0"
 description = "Load Python objects documentation."
 category = "dev"
 optional = false
 python-versions = ">=3.6,<4.0"
-
-[package.dependencies]
-dataclasses = {version = ">=0.7,<0.9", markers = "python_version == \"3.6\""}
-typing-extensions = {version = ">=3.7.4.3,<4.0.0.0", markers = "python_version == \"3.6\" or python_version == \"3.7\""}
 
 [[package]]
 name = "pywin32"
@@ -1642,7 +1638,7 @@ testing = ["pytest (>=3.5,!=3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.6"
-content-hash = "68c750a6c33076835958a35bd2e90bead69b69c610505bdc9a176bb262f8a5d7"
+content-hash = "755375d283a2544c415a9b7f1f613ff2d2da679f9c8205f179bcedefbdc5a63a"
 
 [metadata.files]
 aiohttp = [
@@ -2295,8 +2291,8 @@ python-termstyle = [
     {file = "python-termstyle-0.1.10.tgz", hash = "sha256:6faf42ba42f2826c38cf70dacb3ac51f248a418e48afc0e36593df11cf3ab1d2"},
 ]
 pytkdocs = [
-    {file = "pytkdocs-0.10.1-py3-none-any.whl", hash = "sha256:01fbb6f624abab5e034fffe9283ef1f36aa01702c0afae7dd29da16b3f48ce3b"},
-    {file = "pytkdocs-0.10.1.tar.gz", hash = "sha256:f3d510063e7c2951c7b52cc860846ecbd7b21ec4b2253ae5c0084a26b233132f"},
+    {file = "pytkdocs-0.3.0-py3-none-any.whl", hash = "sha256:62338e73b1950d3d0ab2785be9311919f44271d89fe959677e04e8f01aa5b6ad"},
+    {file = "pytkdocs-0.3.0.tar.gz", hash = "sha256:575ad6bb4c3a5b7b422ae08b4b557b7c411e89e54bc0535eb3cb610db1669c6e"},
 ]
 pywin32 = [
     {file = "pywin32-300-cp35-cp35m-win32.whl", hash = "sha256:1c204a81daed2089e55d11eefa4826c05e604d27fe2be40b6bf8db7b6a39da63"},

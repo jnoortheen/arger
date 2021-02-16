@@ -66,6 +66,7 @@ pytest-clarity = "^0.3.0-alpha.0"
 mkdocs = "^1.0"
 mkdocs-material = "^6.0"
 mkdocstrings = { version = "0.*", python = "^3.6" }
+pytkdocs = { version = "<0.4", python = "^3.6" }
 mknotebooks = "*"
 pymdown-extensions = "^7.0"
 pygments = "*"
