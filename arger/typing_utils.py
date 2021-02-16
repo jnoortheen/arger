@@ -52,7 +52,7 @@ def match_types(tp, *matches) -> bool:
     origin = get_origin(tp)
     for m in matches:
         if isinstance(m, str):  # instead of imported class use the class names
-            if str(origin).endswith(m):
+            if m in str(origin):
                 return True
         else:
             if get_origin(m) is origin:
@@ -94,7 +94,8 @@ def is_enum(tp):
 
 
 def is_literal(tp):
-    return match_types(tp, "Literal")
+    """since Literal could be imported from either typing/typing_extensions we use the name of cls to check"""
+    return match_types(tp, ".Literal")
 
 
 def get_literal_params(typ):
@@ -120,7 +121,6 @@ def cast(tp, val) -> Any:
     # https://github.com/contains-io/typingplus/blob/master/typingplus.py
     # for advanced casting one should use pydantic
     origin = get_origin(tp)
-
     if is_enum(origin):
         if isinstance(val, origin):
             return val

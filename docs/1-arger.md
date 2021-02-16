@@ -17,24 +17,34 @@ The function will be dispatched with values converted to the respective types.
 For example:
 
 ```py
+import arger
+from typing import *
+from enum import Enum
+
 # Type -> resulting `arger.add_argument` method call
 
 def _(
-a:str,              # -> add_argument(dest='a', type=str)
-a:int,              # -> add_argument(dest='a', type=int)
-a:Tuple[int, ...],  # -> add_argument(dest='a', type=int, nargs='+') : one or more
-a:Tuple[int, int],  # -> add_argument(dest='a', type=int, nargs='2') : consumes 2 positional
-a:List[int],        # -> add_argument(dest="a", type=int, nargs="*") : zero or more
-a:Optional[int],    # -> add_argument(dest="a", type=int, nargs="?") : zero or one positional
-a:Enum(
+a_st:str,              # -> add_argument(dest='a', type=str)
+a_in:int,              # -> add_argument(dest='a', type=int)
+a_tp:Tuple[int, ...],  # -> add_argument(dest='a', type=int, nargs='+') : one or more
+a_tp_int:Tuple[int, int],  # -> add_argument(dest='a', type=int, nargs='2') : consumes 2 positional
+a_ls:List[int],        # -> add_argument(dest="a", type=int, nargs="*") : zero or more
+a_opt:Optional[int],    # -> add_argument(dest="a", type=int, nargs="?") : zero or one positional
+a_en:Enum(
     'AnySubClsOfEnum',
     'ONE TWO'
-    ),               # -> add_argument(dest="a", choices=["ONE", "TWO"]) : accepts str from cli and returns as an Enum.
-a:cast(
+    ),               # -> add_argument(dest="a", choices=list(cls), type=lambda x: cls[x]) : accepts str from cli and returns as an Enum.
+a_lt: Literal[
+    'one', 'two'
+],                  # -> add_argment(dest="a_lt", choices=["one", "two"], type=str) : accepts str from cli and returns the same
+a_lt_in: Literal[
+    1, 2
+],                  # -> add_argment(dest="a_lt", choices=[1, 2], type=int) : accepts str from cli and returns int
+a_cs:cast(
     int,
     ActionSubCls
 ),                  # -> add_argument(dest="a", action=ActionSubCls)
-a:cast(
+a_cs2:cast(
     int,
     arger.Argument(
         metavar="INT",
