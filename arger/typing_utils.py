@@ -98,6 +98,10 @@ def is_literal(tp):
     return match_types(tp, ".Literal")
 
 
+def has_annotated(typ):
+    return ".Annotated" in str(typ)
+
+
 def get_literal_params(typ):
     params = tuple(get_inner_args(typ))
     factory_type = type(params[0]) if params else str
@@ -148,3 +152,10 @@ def cast(tp, val) -> Any:
 
 
 T = TypeVar("T")
+
+
+def get_annotated_args(typ):
+    if hasattr(typ, "__metadata__") and typ.__metadata__:
+        return get_origin(typ), typ.__metadata__[0]
+    else:
+        return get_origin(typ), None

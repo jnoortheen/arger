@@ -3,7 +3,9 @@ from enum import Enum
 from typing import List, Optional, Tuple
 
 import pytest
-from typing_extensions import Literal
+from typing_extensions import Annotated, Literal
+
+from arger import Argument
 
 
 class Num(Enum):
@@ -34,26 +36,115 @@ Num3 = Literal["one", "two"]
         ("literal", Num3, "one", "one"),
         ("literal", Num3, "two", "two"),
         # container types
-        ("a_tuple", tuple, "1 2 3", ("1", "2", "3")),
-        ("a_tuple", Tuple[int, ...], "1 2 3", (1, 2, 3)),
-        ("a_tuple", Tuple[str, ...], "1 2 3", ("1", "2", "3")),
-        ("a_tuple_enum", Tuple[Num, ...], "one two", (Num.one, Num.two)),
-        ("a_tuple_literal", Tuple[Num3, ...], "one two", ("one", "two")),
-        ("a_tuple_float", Tuple[float, ...], "1 2 3", (1.0, 2.0, 3.0)),
-        ("a_tuple_mixed", Tuple[str, int], "1 2", ("1", 2)),
+        (
+            "a_tuple",
+            tuple,
+            "1 2 3",
+            ("1", "2", "3"),
+        ),
+        (
+            "a_tuple_int",
+            Tuple[int, ...],
+            "1 2 3",
+            (1, 2, 3),
+        ),
+        (
+            "a_tuple_st",
+            Tuple[str, ...],
+            "1 2 3",
+            ("1", "2", "3"),
+        ),
+        (
+            "a_tuple_enum",
+            Tuple[Num, ...],
+            "one two",
+            (Num.one, Num.two),
+        ),
+        (
+            "a_tuple_literal",
+            Tuple[Num3, ...],
+            "one two",
+            ("one", "two"),
+        ),
+        (
+            "a_tuple_float",
+            Tuple[float, ...],
+            "1 2 3",
+            (1.0, 2.0, 3.0),
+        ),
+        (
+            "a_tuple_mixed",
+            Tuple[str, int],
+            "1 2",
+            ("1", 2),
+        ),
         (
             "a_tuple",
             Tuple[int, float, Decimal, complex, str],
             "1 2 30 4+4j five",
             (1, 2.0, Decimal(30), 4 + 4j, "five"),
         ),
-        ("a_list", list, "1 2 3", ["1", "2", "3"]),
-        ("a_list", List, "1 2 3", ["1", "2", "3"]),
-        ("a_list", List[str], "1 2 3", ["1", "2", "3"]),
-        ("a_list", List[Num], "one two", [Num.one, Num.two]),
-        ("a_list", List[int], "1 2 3", [1, 2, 3]),
-        ("a_list", List[Decimal], "1 2 3", [Decimal(1), Decimal(2), Decimal(3)]),
-        ("a_list", set, "1 2 3", {"1", "2", "3"}),
+        (
+            "a_list",
+            list,
+            "1 2 3",
+            ["1", "2", "3"],
+        ),
+        (
+            "a_list",
+            List,
+            "1 2 3",
+            ["1", "2", "3"],
+        ),
+        (
+            "a_list",
+            List[str],
+            "1 2 3",
+            ["1", "2", "3"],
+        ),
+        (
+            "a_list",
+            List[Num],
+            "one two",
+            [Num.one, Num.two],
+        ),
+        (
+            "a_list",
+            List[int],
+            "1 2 3",
+            [1, 2, 3],
+        ),
+        (
+            "a_list",
+            List[Decimal],
+            "1 2 3",
+            [Decimal(1), Decimal(2), Decimal(3)],
+        ),
+        (
+            "a_set",
+            set,
+            "1 2 3",
+            {"1", "2", "3"},
+        ),
+        # annotated argument
+        (
+            "ann_str",
+            Annotated[str, Argument(metavar="var")],
+            "ann",
+            "ann",
+        ),
+        (
+            "ann_enum",
+            Annotated[Num, Argument(metavar="var")],
+            "one",
+            Num.one,
+        ),
+        (
+            "ann_iter_enum",
+            Annotated[List[Num], Argument(metavar="var")],
+            "one two",
+            [Num.one, Num.two],
+        ),
     ],
 )
 def test_arguments(parser, argument, input, expected, name):

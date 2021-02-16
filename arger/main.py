@@ -45,7 +45,7 @@ class Argument:
         required: bool = None,
         nargs: tp.Union[int, str] = None,
         const: tp.Any = None,
-        choices: tp.Iterable[str] = None,
+        choices: tp.Iterable[tp.Any] = None,
         action: tp.Union[str, tp.Type[ap.Action]] = None,
         flags: tp.Sequence[str] = (),
         **kwargs: tp.Any,
@@ -124,9 +124,14 @@ class Argument:
     ) -> "Argument":
         hlp = pdoc.doc if pdoc else ""
 
+        arg = None
         if isinstance(param.annotation, Argument):
             arg = param.annotation
-        else:
+        elif tp_utils.has_annotated(param.annotation):
+            typ, arg = tp_utils.get_annotated_args(param.annotation)
+            param = param.replace(annotation=typ)
+
+        if arg is None:
             arg = Argument()
 
         arg.kwargs.setdefault("help", hlp)
