@@ -157,5 +157,4 @@ T = TypeVar("T")
 def get_annotated_args(typ):
     if hasattr(typ, "__metadata__") and typ.__metadata__:
         return get_origin(typ), typ.__metadata__[0]
-    else:
-        return get_origin(typ), None
+    return get_origin(typ), None

@@ -1,6 +1,9 @@
+import shlex
+import sys
+
 from delegator import run
 from typing_extensions import Literal
-
+import subprocess as sp
 from arger import Arger
 
 arger = Arger(
@@ -22,26 +25,33 @@ class Color:
 
 
 def prun(*cmd, **kwargs):
-    cmd = " ".join(cmd)
-    print(f"{Color.OKGREEN} $ {cmd}{Color.RESET}")
-    c = run(cmd, **kwargs)
-    print(c.out)
-    print(c.err)
+    if len(cmd) == 1 and len(shlex.split(cmd[0])) > 1:
+        cmd = shlex.split(cmd[0])
+    print(f"{Color.OKGREEN} $ {' '.join(cmd)}{Color.RESET}")
+    c = sp.run(cmd, **kwargs, capture_output=True)
+    sys.stdout.write(c.stdout.decode())
+    sys.stdout.flush()
+    sys.stderr.write(c.stderr.decode())
+    sys.stderr.flush()
+    if c.returncode:
+        raise arger.exit(
+            message=f"Failed[{c.returncode}] - {cmd}:\n {c.stderr.decode()}",
+            status=c.returncode,
+        )
     return c
 
 
 @arger.add_cmd
 def release(
     type: Literal[
-                "patch",
-                "minor",
-                "major",
-                "prepatch",
-                "preminor",
-                "premajor",
-                "prerelease",
-            ]
-    = "patch"
+        "patch",
+        "minor",
+        "major",
+        "prepatch",
+        "preminor",
+        "premajor",
+        "prerelease",
+    ] = "patch"
 ):
     """Bump version, tag and push them.
 
@@ -49,9 +59,10 @@ def release(
         type: version bump as supported by `poetry version` command
     """
     prun("make", "check", "test")
+
     prun("poetry", "version", type)
     c = prun("poetry", "version")
-    _, version = c.out.split()
+    _, version = c.stdout.decode().split()
 
     version_num = f"v{version}"
     msg = f"chore: bump version to {version_num}"
