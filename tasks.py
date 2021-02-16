@@ -1,9 +1,9 @@
 import shlex
+import subprocess as sp
 import sys
 
-from delegator import run
 from typing_extensions import Literal
-import subprocess as sp
+
 from arger import Arger
 
 arger = Arger(

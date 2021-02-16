@@ -5,6 +5,8 @@ from enum import Enum
 from inspect import isclass
 from typing import Any, FrozenSet, List, Set, Tuple, TypeVar, Union
 
+import typing_extensions as tpe
+
 NEW_TYPING = sys.version_info[:3] >= (3, 7, 0)  # PEP 560
 
 
@@ -34,12 +36,14 @@ def define_old_types():
 
 def get_origin(tp):
     """Return the python class for the GenericAlias. Dict->dict, List->list..."""
-    origin = _get_origin(tp)
 
+    origin = _get_origin(tp)
     if not NEW_TYPING and hasattr(tp, "__name__"):
         old_type_origins = define_old_types()
         if tp.__name__ in old_type_origins:
             return old_type_origins[tp.__name__]
+        if tp.__name__ == "Annotated" and tp.__args__:
+            return tp.__args__[0]
     return origin
 
 
