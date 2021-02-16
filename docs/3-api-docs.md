@@ -1,4 +1,4 @@
-# API Documentation
+# Reference
 
 ## Arger
 
