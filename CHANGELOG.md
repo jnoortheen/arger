@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [v1.3.0](https://github.com/jnoortheen/arger/releases/tag/v1.3.0) - 2021-02-16
+
+<small>[Compare with v1.2.11](https://github.com/jnoortheen/arger/compare/v1.2.11...v1.3.0)</small>
+
+### Bug Fixes
+- Py-lint errors ([0fa651a](https://github.com/jnoortheen/arger/commit/0fa651a36e0c3d983b299a88fc4a4bb1e2431548) by Noortheen Raja).
+
+
 ## [v1.2.11](https://github.com/jnoortheen/arger/releases/tag/v1.2.11) - 2021-02-16
 
 <small>[Compare with v1.2.10](https://github.com/jnoortheen/arger/compare/v1.2.10...v1.2.11)</small>
