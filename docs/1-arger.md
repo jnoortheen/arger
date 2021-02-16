@@ -40,17 +40,12 @@ a_lt: Literal[
 a_lt_in: Literal[
     1, 2
 ],                  # -> add_argment(dest="a_lt", choices=[1, 2], type=int) : accepts str from cli and returns int
-a_cs:cast(
-    int,
-    ActionSubCls
-),                  # -> add_argument(dest="a", action=ActionSubCls)
-a_cs2:cast(
-    int,
+a_cs2:Annotated[
+    int, # -> Argument's type argument. also satisfies type checkers
     arger.Argument(
         metavar="INT",
-        type=int,
         action=ActionSubCls
-)),                 # -> add_argument(dest="a", metavar="INT", type=int, action=ActionSubCls) : all the arguments to the `Argument` will get delegated to add_argument
+)],                 # -> add_argument(dest="a", metavar="INT", type=int, action=ActionSubCls) : all the arguments to the `Argument` will get delegated to add_argument
 kwarg:int = 0,      # -> add_argument("--kwarg", "-k", dest="kwarg", type=int, default=0)
 ):...
 ```
