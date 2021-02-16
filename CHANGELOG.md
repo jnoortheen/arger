@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [v1.2.10](https://github.com/jnoortheen/arger/releases/tag/v1.2.10) - 2021-02-16
+
+<small>[Compare with v1.2.9](https://github.com/jnoortheen/arger/compare/v1.2.9...v1.2.10)</small>
+
+### Features
+- Add literal support for choices ([82322f7](https://github.com/jnoortheen/arger/commit/82322f791408a674e6c81f74a9cd4287a666d550) by Noortheen Raja). Related issues/PRs: [#1](https://github.com/jnoortheen/arger/issues/1)
+
+
 ## [v1.2.9](https://github.com/jnoortheen/arger/releases/tag/v1.2.9) - 2021-01-27
 
 <small>[Compare with v1.2.8](https://github.com/jnoortheen/arger/compare/v1.2.8...v1.2.9)</small>

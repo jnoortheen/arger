@@ -1,6 +1,7 @@
 from delegator import run
-import typing as tp
-from arger import Arger, Argument
+from typing_extensions import Literal
+
+from arger import Arger
 
 arger = Arger(
     description="Common set of tasks to run",
@@ -31,10 +32,7 @@ def prun(*cmd, **kwargs):
 
 @arger.add_cmd
 def release(
-    type: tp.cast(
-        str,
-        Argument(
-            choices=[
+    type: Literal[
                 "patch",
                 "minor",
                 "major",
@@ -42,9 +40,8 @@ def release(
                 "preminor",
                 "premajor",
                 "prerelease",
-            ],
-        ),
-    ) = "patch"
+            ]
+    = "patch"
 ):
     """Bump version, tag and push them.
 
