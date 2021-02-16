@@ -1,4 +1,4 @@
-# pylint: disable = protected-access,unused-argument,redefined-builtin
+# pylint: disable = protected-access,unused-argument,redefined-builtin,unsubscriptable-object
 import argparse as ap
 import copy
 import functools

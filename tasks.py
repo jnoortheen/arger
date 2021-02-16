@@ -35,7 +35,7 @@ def prun(*cmd, **kwargs):
     sys.stderr.flush()
     if c.returncode:
         raise arger.exit(
-            message=f"Failed[{c.returncode}] - {cmd}:\n {c.stderr.decode()}",
+            message=f"Failed[{c.returncode}] - {cmd}",
             status=c.returncode,
         )
     return c

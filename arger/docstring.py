@@ -1,4 +1,4 @@
-# pylint: disable = protected-access
+# pylint: disable = protected-access,inherit-non-class
 import inspect
 import re
 import typing as tp
@@ -10,7 +10,7 @@ class ParamDocTp(tp.NamedTuple):
     doc: str
 
     @classmethod
-    def init(cls, type_hint: tp.Any, doc: str, flag_symbol='-'):
+    def init(cls, type_hint: tp.Any, doc: str, flag_symbol="-"):
         """Parse flags defined in param's doc
 
         Examples:
@@ -41,7 +41,7 @@ class DocstringParser:
     section_ptrn: tp.Pattern
     param_ptrn: tp.Pattern
 
-    _parsers: tp.List['DocstringParser'] = []
+    _parsers: tp.List["DocstringParser"] = []
 
     def __init_subclass__(cls, **_):
         # Cache costly init phase per session.
@@ -49,12 +49,12 @@ class DocstringParser:
 
     @classmethod
     def parse(cls, func: tp.Optional[tp.Callable]) -> DocstringTp:
-        doc = (inspect.getdoc(func) or '') if func else ''
+        doc = (inspect.getdoc(func) or "") if func else ""
         if doc:
             for parser in cls._parsers:
                 if parser.matches(doc):
                     return parser._parse(doc)
-        return DocstringTp(description=doc, epilog='', params={})
+        return DocstringTp(description=doc, epilog="", params={})
 
     def _parse(self, doc: str) -> DocstringTp:
         raise NotImplementedError
@@ -69,16 +69,16 @@ class NumpyDocParser(DocstringParser):
     """
 
     def __init__(self):
-        self.pattern = re.compile(r'(Parameters\n[-]+)')
-        self.section_ptrn = re.compile(r'\n\s*(?P<section>\w+)\n\s*[-]+\n+')
-        self.param_ptrn = re.compile(r'^(?P<param>\w+)[ \t]*:?[ \t]*(?P<type>\w+)?')
+        self.pattern = re.compile(r"(Parameters\n[-]+)")
+        self.section_ptrn = re.compile(r"\n\s*(?P<section>\w+)\n\s*[-]+\n+")
+        self.param_ptrn = re.compile(r"^(?P<param>\w+)[ \t]*:?[ \t]*(?P<type>\w+)?")
 
     def get_rest_of_section(self, params: str) -> tp.Tuple[str, str]:
         other_sect = self.section_ptrn.search(params)
         if other_sect:
             pos = other_sect.start()
             return params[pos:].strip(), params[:pos]
-        return '', params
+        return "", params
 
     def parse_params(self, params: str) -> tp.Dict[str, ParamDocTp]:
         docs = []
@@ -86,13 +86,13 @@ class NumpyDocParser(DocstringParser):
             match = self.param_ptrn.search(line)
             if match:
                 result = match.groupdict()
-                doc = result.get('doc', '')
-                docs.append([result['param'], result['type'], doc])
+                doc = result.get("doc", "")
+                docs.append([result["param"], result["type"], doc])
             elif docs:
                 docs[-1][-1] += line
 
         return {
-            param.strip('*'): ParamDocTp.init(tphint, doc)
+            param.strip("*"): ParamDocTp.init(tphint, doc)
             for param, tphint, doc in docs
         }
 
@@ -108,10 +108,10 @@ class GoogleDocParser(NumpyDocParser):
     """
 
     def __init__(self):  # pylint: disable=super-init-not-called
-        self.pattern = re.compile(r'\s(Args|Arguments):\s')
-        self.section_ptrn = re.compile(r'\n(?P<section>[A-Z]\w+):\n+')
+        self.pattern = re.compile(r"\s(Args|Arguments):\s")
+        self.section_ptrn = re.compile(r"\n(?P<section>[A-Z]\w+):\n+")
         self.param_ptrn = re.compile(
-            r'^\s+(?P<param>[*\w]+)\s*(\((?P<type>[\s,`:\w]+)\))?:\s*(?P<doc>[\s\S]+)'
+            r"^\s+(?P<param>[*\w]+)\s*(\((?P<type>[\s,`:\w]+)\))?:\s*(?P<doc>[\s\S]+)"
         )  # matches parameter_name e.g. param1 (type): description
 
 
@@ -121,15 +121,15 @@ class RstDocParser(DocstringParser):
     """
 
     def __init__(self):
-        self.pattern = re.compile(r':param')
-        self.section_ptrn = re.compile(r'\n:[\w]+')  # matches any start of the section
-        self.param_ptrn = re.compile(r'^[ ]+(?P<tp_param>.+):[ ]*(?P<doc>[\s\S]+)')
+        self.pattern = re.compile(r":param")
+        self.section_ptrn = re.compile(r"\n:[\w]+")  # matches any start of the section
+        self.param_ptrn = re.compile(r"^[ ]+(?P<tp_param>.+):[ ]*(?P<doc>[\s\S]+)")
 
     def parse_doc(self, line: str, params: tp.Dict[str, ParamDocTp]):
         match = self.param_ptrn.match(line)
         if match:
             tp_param, doc = match.groups()  # type: str, str
-            parts = tp_param.strip().rsplit(' ', maxsplit=1)
+            parts = tp_param.strip().rsplit(" ", maxsplit=1)
             param = parts[-1].strip()
             type_hint = None
             if len(parts) > 1:
@@ -139,7 +139,7 @@ class RstDocParser(DocstringParser):
     def _parse(self, doc: str) -> DocstringTp:
         lines = self.pattern.split(doc)
         long_desc = lines.pop(0)
-        epilog = ''
+        epilog = ""
         params: tp.Dict[str, ParamDocTp] = {}
         for idx, lin in enumerate(lines):
             sections = self.section_ptrn.split(lin, maxsplit=1)
