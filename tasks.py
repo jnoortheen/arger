@@ -48,6 +48,7 @@ def release(
     Args:
         type: version bump as supported by `poetry version` command
     """
+    prun("make", "check", "test")
     prun("poetry", "version", type)
     c = prun("poetry", "version")
     _, version = c.out.split()

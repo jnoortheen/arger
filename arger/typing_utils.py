@@ -99,7 +99,7 @@ def is_literal(tp):
 
 
 def get_literal_params(typ):
-    params = [e for e in get_inner_args(typ)]
+    params = tuple(get_inner_args(typ))
     factory_type = type(params[0]) if params else str
     return params, factory_type
 

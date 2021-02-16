@@ -373,8 +373,8 @@ def get_nargs(typ: tp.Any) -> tp.Tuple[tp.Any, tp.Union[int, str]]:
 def cast_enum(enum_cls, attr):
     try:
         return enum_cls[attr]
-    except KeyError:
-        raise ValueError(f"{enum_cls}.{attr} doesn't exist")
+    except KeyError as ex:
+        raise ValueError(f"{enum_cls}.{attr} doesn't exist") from ex
 
 
 def get_type_kwargs(typ, **kwargs):
@@ -406,7 +406,7 @@ class TypeAction(ap.Action):
         self.is_iterable = tp_utils.is_seq_container(typ)
 
         if typ is not _EMPTY:
-            factory_type, kwargs = get_type_kwargs(typ, **kwargs)
+            _, kwargs = get_type_kwargs(typ, **kwargs)
         super().__init__(*args, **kwargs)
 
     def cast_value(self, vals):
