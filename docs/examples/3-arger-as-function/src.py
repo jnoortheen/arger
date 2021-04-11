@@ -7,7 +7,7 @@ from tests.utils import _reprint
 ctx = {}
 
 
-@Arger.init(prog='pytest')  # any argument to the parser
+@Arger.init(prog="pytest")  # any argument to the parser
 def arger(verbose=False, log=False, log_file: Optional[str] = None):
     """App Description goes here.
 
@@ -42,10 +42,10 @@ def remove(name: str):
 
 
 @arger.add_cmd
-def list():
+def list(filter: Optional[str]):
     """List all tests."""
     _reprint(**locals(), container=container, **ctx)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     arger.run()

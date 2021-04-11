@@ -385,8 +385,10 @@ def cast_enum(enum_cls, attr):
 def get_type_kwargs(typ, **kwargs):
     factory_type = tp_utils.get_origin(typ)
 
-    if tp_utils.is_optional(typ) and "default" not in kwargs:
-        factory_type, kwargs["nargs"] = tp_utils.unpack_type(typ), "?"
+    if tp_utils.is_optional(typ):
+        factory_type = tp_utils.unpack_type(typ)
+        if "default" not in kwargs:
+            kwargs["nargs"] = "?"
     elif tp_utils.is_seq_container(typ):
         factory_type, kwargs["nargs"] = get_nargs(typ)
 
@@ -399,7 +401,7 @@ def get_type_kwargs(typ, **kwargs):
             kwargs.setdefault("choices", params)
 
     kwargs["type"] = factory_type
-    return factory_type, kwargs
+    return kwargs
 
 
 class TypeAction(ap.Action):
@@ -411,7 +413,7 @@ class TypeAction(ap.Action):
         self.is_iterable = tp_utils.is_seq_container(typ)
 
         if typ is not _EMPTY:
-            _, kwargs = get_type_kwargs(typ, **kwargs)
+            kwargs = get_type_kwargs(typ, **kwargs)
         super().__init__(*args, **kwargs)
 
     def cast_value(self, vals):
