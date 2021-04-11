@@ -4,7 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [v1.3.6](https://github.com/jnoortheen/arger/releases/tag/v1.3.6) - 2021-02-16
+## [v1.3.7](https://github.com/jnoortheen/arger/releases/tag/v1.3.7) - 2021-04-11
+
+<small>[Compare with v1.3.6](https://github.com/jnoortheen/arger/compare/v1.3.6...v1.3.7)</small>
+
+### Bug Fixes
+- Typing.optional kwarg handling ([76978c3](https://github.com/jnoortheen/arger/commit/76978c378ee8b706c7ed35e60cbd3b82137b4c29) by Noortheen Raja). Related issues/PRs: [#2](https://github.com/jnoortheen/arger/issues/2)
+
+
+## [v1.3.6](https://github.com/jnoortheen/arger/releases/tag/v1.3.6) - 2021-02-17
 
 <small>[Compare with v1.3.5](https://github.com/jnoortheen/arger/compare/v1.3.5...v1.3.6)</small>
 
