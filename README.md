@@ -32,24 +32,49 @@ $ poetry add arger
 ``` python
 from arger import Arger
 
+
 def main(param1: int, param2: str, kw1=None, kw2=False):
     """Example function with types documented in the docstring.
-
     :param param1: The first parameter.
     :param param2: The second parameter.
+    :param kw1: this is optional parameter.
+    :param kw2: this is boolean. setting flag sets True.
     """
     print(locals())
 
-if __name__ == '__main__':
-    Arger(main).run()
+
+arger = Arger(
+    main,
+    prog="pytest",  # for testing purpose. otherwise not required
+)
+
+if __name__ == "__main__":
+    arger.run()
 ```
 
 * Here Arger is just a subclass of `ArgumentParser`. It will not conceal you from using other `argparse` libraries.
 
 * run this normally with
 
+```sh
+$ python test.py -h
+usage: pytest [-h] [-k KW1] [-w] param1 param2
+
+Example function with types documented in the docstring.
+
+positional arguments:
+  param1             The first parameter.
+  param2             The second parameter.
+
+optional arguments:
+  -h, --help         show this help message and exit
+  -k KW1, --kw1 KW1  this is optional parameter. (default: None)
+  -w, --kw2          this is boolean. setting flag sets True. (default: False)
+```
+
 ``` sh
-python test.py 100 param2
+$ python test.py 100 param2
+{'param1': 100, 'param2': 'param2', 'kw1': None, 'kw2': False}
 ```
 
 * Checkout [examples](docs/examples) folder and documentation to see more of `arger` in action. It supports any level of sub-commands.
