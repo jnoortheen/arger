@@ -22,7 +22,7 @@ jobs:
         key: ${{ runner.os }}-{{ matrix.python-version }}-poetry-test-${{ hashFiles('poetry.lock') }}
         restore-keys: |
           ${{ runner.os }}-{{ matrix.python-version }}-poetry-test-
-    - uses: Gr1N/setup-poetry@v4
+    - uses: Gr1N/setup-poetry@v7
     - name: Install dependencies
       run: poetry install
     - name: Test with pytest
