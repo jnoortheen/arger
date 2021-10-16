@@ -6,7 +6,6 @@ from typing import Any, TypeVar, Union
 
 def get_origin(tp):
     """Return the python class for the GenericAlias. Dict->dict, List->list..."""
-    """Return x.__origin__ or type(x) based on the Python version."""
     if hasattr(tp, "_gorg"):
         return tp._gorg
     if getattr(tp, "__origin__", None) is not None:
