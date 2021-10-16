@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [v1.4.1](https://github.com/jnoortheen/arger/releases/tag/v1.4.1) - 2021-10-16
+
+<small>[Compare with v1.3.8](https://github.com/jnoortheen/arger/compare/v1.3.8...v1.4.1)</small>
+
+### Bug Fixes
+- Qa errors ([2f07baa](https://github.com/jnoortheen/arger/commit/2f07baa79da5d206a2f8aafa6f7ce0c4abc11d81) by Noortheen Raja).
+
+
 ## [v1.3.8](https://github.com/jnoortheen/arger/releases/tag/v1.3.8) - 2021-04-11
 
 <small>[Compare with v1.3.7](https://github.com/jnoortheen/arger/compare/v1.3.7...v1.3.8)</small>
