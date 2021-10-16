@@ -1,0 +1,2546 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Create argparser automatically from functions">
+      
+      
+      
+        <meta name="author" content="Noortheen Raja">
+      
+      
+        <link rel="canonical" href="https://jnoortheen.github.io/arger/changelog/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.3">
+    
+    
+      
+        <title>Changelog - arger</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.5143246d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../css/pandas-dataframe.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#changelog" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="arger" class="md-header__button md-logo" aria-label="arger" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            arger
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Changelog
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/jnoortheen/arger/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="arger" class="md-nav__button md-logo" aria-label="arger" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    arger
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/jnoortheen/arger/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1-arger/" class="md-nav__link">
+        Arger
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2-alternatives/" class="md-nav__link">
+        Similar Projects
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3-api-docs/" class="md-nav__link">
+        Reference
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Changelog
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Changelog
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#v142-2021-10-16" class="md-nav__link">
+    v1.4.2 - 2021-10-16
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.4.2 - 2021-10-16">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v138-2021-04-11" class="md-nav__link">
+    v1.3.8 - 2021-04-11
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.3.8 - 2021-04-11">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_1" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v137-2021-04-11" class="md-nav__link">
+    v1.3.7 - 2021-04-11
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.3.7 - 2021-04-11">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_2" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v136-2021-02-17" class="md-nav__link">
+    v1.3.6 - 2021-02-17
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.3.6 - 2021-02-17">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_3" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v135-2021-02-16" class="md-nav__link">
+    v1.3.5 - 2021-02-16
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.3.5 - 2021-02-16">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_4" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v134-2021-02-16" class="md-nav__link">
+    v1.3.4 - 2021-02-16
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v131-2021-02-16" class="md-nav__link">
+    v1.3.1 - 2021-02-16
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.3.1 - 2021-02-16">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v130-2021-02-16" class="md-nav__link">
+    v1.3.0 - 2021-02-16
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.3.0 - 2021-02-16">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_5" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v1211-2021-02-16" class="md-nav__link">
+    v1.2.11 - 2021-02-16
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.2.11 - 2021-02-16">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_6" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v1210-2021-02-16" class="md-nav__link">
+    v1.2.10 - 2021-02-16
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.2.10 - 2021-02-16">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_1" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v129-2021-01-27" class="md-nav__link">
+    v1.2.9 - 2021-01-27
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.2.9 - 2021-01-27">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_7" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v128-2021-01-02" class="md-nav__link">
+    v1.2.8 - 2021-01-02
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.2.8 - 2021-01-02">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#code-refactoring" class="md-nav__link">
+    Code Refactoring
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v127-2020-12-23" class="md-nav__link">
+    v1.2.7 - 2020-12-23
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.2.7 - 2020-12-23">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_2" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v126-2020-12-16" class="md-nav__link">
+    v1.2.6 - 2020-12-16
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v125-2020-12-16" class="md-nav__link">
+    v1.2.5 - 2020-12-16
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v124-2020-12-07" class="md-nav__link">
+    v1.2.4 - 2020-12-07
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v123-2020-12-07" class="md-nav__link">
+    v1.2.3 - 2020-12-07
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v122-2020-12-07" class="md-nav__link">
+    v1.2.2 - 2020-12-07
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v121-2020-12-07" class="md-nav__link">
+    v1.2.1 - 2020-12-07
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.2.1 - 2020-12-07">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_3" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v120-2020-12-06" class="md-nav__link">
+    v1.2.0 - 2020-12-06
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v110-2020-12-05" class="md-nav__link">
+    v1.1.0 - 2020-12-05
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.1.0 - 2020-12-05">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_4" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v1011-2020-12-04" class="md-nav__link">
+    v1.0.11 - 2020-12-04
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.0.11 - 2020-12-04">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_8" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v1010-2020-11-28" class="md-nav__link">
+    v1.0.10 - 2020-11-28
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v109-2020-11-28" class="md-nav__link">
+    v1.0.9 - 2020-11-28
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.0.9 - 2020-11-28">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#code-refactoring_1" class="md-nav__link">
+    Code Refactoring
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_5" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v108-2020-11-11" class="md-nav__link">
+    v1.0.8 - 2020-11-11
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.0.8 - 2020-11-11">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_9" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v107-2020-11-09" class="md-nav__link">
+    v1.0.7 - 2020-11-09
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.0.7 - 2020-11-09">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#code-refactoring_2" class="md-nav__link">
+    Code Refactoring
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_6" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v106-2020-11-01" class="md-nav__link">
+    v1.0.6 - 2020-11-01
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.0.6 - 2020-11-01">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_7" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v105-2020-11-01" class="md-nav__link">
+    v1.0.5 - 2020-11-01
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v103-2020-11-01" class="md-nav__link">
+    v1.0.3 - 2020-11-01
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.0.3 - 2020-11-01">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_8" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v102-2020-11-01" class="md-nav__link">
+    v1.0.2 - 2020-11-01
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.0.2 - 2020-11-01">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_9" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v101-2020-11-01" class="md-nav__link">
+    v1.0.1 - 2020-11-01
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.0.1 - 2020-11-01">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_10" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-refactoring_3" class="md-nav__link">
+    Code Refactoring
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_10" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v041-2020-04-18" class="md-nav__link">
+    v0.4.1 - 2020-04-18
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.4.1 - 2020-04-18">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_11" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v040-2020-04-18" class="md-nav__link">
+    v0.4.0 - 2020-04-18
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.4.0 - 2020-04-18">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_12" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-refactoring_4" class="md-nav__link">
+    Code Refactoring
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_11" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v030-2020-04-16" class="md-nav__link">
+    v0.3.0 - 2020-04-16
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.3.0 - 2020-04-16">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#code-refactoring_5" class="md-nav__link">
+    Code Refactoring
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_12" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v024-2020-04-14" class="md-nav__link">
+    v0.2.4 - 2020-04-14
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.2.4 - 2020-04-14">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_13" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v023-2020-04-14" class="md-nav__link">
+    v0.2.3 - 2020-04-14
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.2.3 - 2020-04-14">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_14" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-refactoring_6" class="md-nav__link">
+    Code Refactoring
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_13" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v022-2020-04-13" class="md-nav__link">
+    v0.2.2 - 2020-04-13
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v021-2020-04-13" class="md-nav__link">
+    v0.2.1 - 2020-04-13
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.2.1 - 2020-04-13">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_15" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v020-2020-04-13" class="md-nav__link">
+    v0.2.0 - 2020-04-13
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.2.0 - 2020-04-13">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_14" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v013-2020-04-11" class="md-nav__link">
+    v0.1.3 - 2020-04-11
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v012-2020-04-11" class="md-nav__link">
+    v0.1.2 - 2020-04-11
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v011-2020-04-11" class="md-nav__link">
+    v0.1.1 - 2020-04-11
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#01-2020-04-11" class="md-nav__link">
+    0.1 - 2020-04-11
+  </a>
+  
+    <nav class="md-nav" aria-label="0.1 - 2020-04-11">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_16" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-refactoring_7" class="md-nav__link">
+    Code Refactoring
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_15" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          Examples
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Examples" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Examples
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1" type="checkbox" id="__nav_6_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_1">
+          1 single function
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="1 single function" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_1">
+          <span class="md-nav__icon md-icon"></span>
+          1 single function
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/1-single-function/" class="md-nav__link">
+        Single function
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/1-single-function/usage/" class="md-nav__link">
+        Usage
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_2" type="checkbox" id="__nav_6_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_2">
+          2 sub commands
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="2 sub commands" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_2">
+          <span class="md-nav__icon md-icon"></span>
+          2 sub commands
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/2-sub-commands/" class="md-nav__link">
+        Sub-commands
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/2-sub-commands/usage/" class="md-nav__link">
+        Usage
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_3" type="checkbox" id="__nav_6_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_3">
+          3 arger as function
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="3 arger as function" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_3">
+          <span class="md-nav__icon md-icon"></span>
+          3 arger as function
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/3-arger-as-function/" class="md-nav__link">
+        Arger from function
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/3-arger-as-function/usage/" class="md-nav__link">
+        Usage
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4" type="checkbox" id="__nav_6_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_4">
+          4 supported types
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="4 supported types" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_4">
+          <span class="md-nav__icon md-icon"></span>
+          4 supported types
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/4-supported-types/" class="md-nav__link">
+        Supported Type
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/4-supported-types/usage/" class="md-nav__link">
+        Usage
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#v142-2021-10-16" class="md-nav__link">
+    v1.4.2 - 2021-10-16
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.4.2 - 2021-10-16">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v138-2021-04-11" class="md-nav__link">
+    v1.3.8 - 2021-04-11
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.3.8 - 2021-04-11">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_1" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v137-2021-04-11" class="md-nav__link">
+    v1.3.7 - 2021-04-11
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.3.7 - 2021-04-11">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_2" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v136-2021-02-17" class="md-nav__link">
+    v1.3.6 - 2021-02-17
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.3.6 - 2021-02-17">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_3" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v135-2021-02-16" class="md-nav__link">
+    v1.3.5 - 2021-02-16
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.3.5 - 2021-02-16">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_4" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v134-2021-02-16" class="md-nav__link">
+    v1.3.4 - 2021-02-16
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v131-2021-02-16" class="md-nav__link">
+    v1.3.1 - 2021-02-16
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.3.1 - 2021-02-16">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v130-2021-02-16" class="md-nav__link">
+    v1.3.0 - 2021-02-16
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.3.0 - 2021-02-16">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_5" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v1211-2021-02-16" class="md-nav__link">
+    v1.2.11 - 2021-02-16
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.2.11 - 2021-02-16">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_6" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v1210-2021-02-16" class="md-nav__link">
+    v1.2.10 - 2021-02-16
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.2.10 - 2021-02-16">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_1" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v129-2021-01-27" class="md-nav__link">
+    v1.2.9 - 2021-01-27
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.2.9 - 2021-01-27">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_7" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v128-2021-01-02" class="md-nav__link">
+    v1.2.8 - 2021-01-02
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.2.8 - 2021-01-02">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#code-refactoring" class="md-nav__link">
+    Code Refactoring
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v127-2020-12-23" class="md-nav__link">
+    v1.2.7 - 2020-12-23
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.2.7 - 2020-12-23">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_2" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v126-2020-12-16" class="md-nav__link">
+    v1.2.6 - 2020-12-16
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v125-2020-12-16" class="md-nav__link">
+    v1.2.5 - 2020-12-16
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v124-2020-12-07" class="md-nav__link">
+    v1.2.4 - 2020-12-07
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v123-2020-12-07" class="md-nav__link">
+    v1.2.3 - 2020-12-07
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v122-2020-12-07" class="md-nav__link">
+    v1.2.2 - 2020-12-07
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v121-2020-12-07" class="md-nav__link">
+    v1.2.1 - 2020-12-07
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.2.1 - 2020-12-07">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_3" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v120-2020-12-06" class="md-nav__link">
+    v1.2.0 - 2020-12-06
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v110-2020-12-05" class="md-nav__link">
+    v1.1.0 - 2020-12-05
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.1.0 - 2020-12-05">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_4" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v1011-2020-12-04" class="md-nav__link">
+    v1.0.11 - 2020-12-04
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.0.11 - 2020-12-04">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_8" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v1010-2020-11-28" class="md-nav__link">
+    v1.0.10 - 2020-11-28
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v109-2020-11-28" class="md-nav__link">
+    v1.0.9 - 2020-11-28
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.0.9 - 2020-11-28">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#code-refactoring_1" class="md-nav__link">
+    Code Refactoring
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_5" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v108-2020-11-11" class="md-nav__link">
+    v1.0.8 - 2020-11-11
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.0.8 - 2020-11-11">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_9" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v107-2020-11-09" class="md-nav__link">
+    v1.0.7 - 2020-11-09
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.0.7 - 2020-11-09">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#code-refactoring_2" class="md-nav__link">
+    Code Refactoring
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_6" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v106-2020-11-01" class="md-nav__link">
+    v1.0.6 - 2020-11-01
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.0.6 - 2020-11-01">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_7" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v105-2020-11-01" class="md-nav__link">
+    v1.0.5 - 2020-11-01
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v103-2020-11-01" class="md-nav__link">
+    v1.0.3 - 2020-11-01
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.0.3 - 2020-11-01">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_8" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v102-2020-11-01" class="md-nav__link">
+    v1.0.2 - 2020-11-01
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.0.2 - 2020-11-01">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_9" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v101-2020-11-01" class="md-nav__link">
+    v1.0.1 - 2020-11-01
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.0.1 - 2020-11-01">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_10" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-refactoring_3" class="md-nav__link">
+    Code Refactoring
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_10" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v041-2020-04-18" class="md-nav__link">
+    v0.4.1 - 2020-04-18
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.4.1 - 2020-04-18">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_11" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v040-2020-04-18" class="md-nav__link">
+    v0.4.0 - 2020-04-18
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.4.0 - 2020-04-18">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_12" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-refactoring_4" class="md-nav__link">
+    Code Refactoring
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_11" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v030-2020-04-16" class="md-nav__link">
+    v0.3.0 - 2020-04-16
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.3.0 - 2020-04-16">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#code-refactoring_5" class="md-nav__link">
+    Code Refactoring
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_12" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v024-2020-04-14" class="md-nav__link">
+    v0.2.4 - 2020-04-14
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.2.4 - 2020-04-14">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_13" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v023-2020-04-14" class="md-nav__link">
+    v0.2.3 - 2020-04-14
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.2.3 - 2020-04-14">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_14" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-refactoring_6" class="md-nav__link">
+    Code Refactoring
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_13" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v022-2020-04-13" class="md-nav__link">
+    v0.2.2 - 2020-04-13
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v021-2020-04-13" class="md-nav__link">
+    v0.2.1 - 2020-04-13
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.2.1 - 2020-04-13">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_15" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v020-2020-04-13" class="md-nav__link">
+    v0.2.0 - 2020-04-13
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.2.0 - 2020-04-13">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_14" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v013-2020-04-11" class="md-nav__link">
+    v0.1.3 - 2020-04-11
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v012-2020-04-11" class="md-nav__link">
+    v0.1.2 - 2020-04-11
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v011-2020-04-11" class="md-nav__link">
+    v0.1.1 - 2020-04-11
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#01-2020-04-11" class="md-nav__link">
+    0.1 - 2020-04-11
+  </a>
+  
+    <nav class="md-nav" aria-label="0.1 - 2020-04-11">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_16" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-refactoring_7" class="md-nav__link">
+    Code Refactoring
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_15" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/jnoortheen/arger/edit/master/docs/changelog.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="changelog">Changelog</h1>
+<p>All notable changes to this project will be documented in this file.</p>
+<p>The format is based on <a href="http://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>
+and this project adheres to <a href="http://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
+<h2 id="v142-2021-10-16"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.4.2">v1.4.2</a> - 2021-10-16</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.3.8...v1.4.2">Compare with v1.3.8</a></small></p>
+<h3 id="bug-fixes">Bug Fixes</h3>
+<ul>
+<li>Handle py310 help out change (<a href="https://github.com/jnoortheen/arger/commit/cf3a570be35f3a74fe155177a87c0322d9e8f1ec">cf3a570</a> by Noortheen Raja).</li>
+<li>Github py version (<a href="https://github.com/jnoortheen/arger/commit/04912ec1b862ab33e013740baf697b268b1be498">04912ec</a> by Noortheen Raja).</li>
+<li>Qa errors (<a href="https://github.com/jnoortheen/arger/commit/2d53c810dee14887786b12a66f6230f48bd270ee">2d53c81</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v138-2021-04-11"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.3.8">v1.3.8</a> - 2021-04-11</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.3.7...v1.3.8">Compare with v1.3.7</a></small></p>
+<h3 id="bug-fixes_1">Bug Fixes</h3>
+<ul>
+<li>Handle failing mkdocs build (<a href="https://github.com/jnoortheen/arger/commit/8d72d4db25ea39c52f1ddca31975f12db16ac2c8">8d72d4d</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v137-2021-04-11"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.3.7">v1.3.7</a> - 2021-04-11</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.3.6...v1.3.7">Compare with v1.3.6</a></small></p>
+<h3 id="bug-fixes_2">Bug Fixes</h3>
+<ul>
+<li>Typing.optional kwarg handling (<a href="https://github.com/jnoortheen/arger/commit/76978c378ee8b706c7ed35e60cbd3b82137b4c29">76978c3</a> by Noortheen Raja). Related issues/PRs: <a href="https://github.com/jnoortheen/arger/issues/2">#2</a></li>
+</ul>
+<h2 id="v136-2021-02-17"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.3.6">v1.3.6</a> - 2021-02-17</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.3.5...v1.3.6">Compare with v1.3.5</a></small></p>
+<h3 id="bug-fixes_3">Bug Fixes</h3>
+<ul>
+<li>Failing pytkdocs api docstring getter (<a href="https://github.com/jnoortheen/arger/commit/7f2222c812c4171e342dfb2dec6571684849602b">7f2222c</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v135-2021-02-16"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.3.5">v1.3.5</a> - 2021-02-16</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.3.4...v1.3.5">Compare with v1.3.4</a></small></p>
+<h3 id="bug-fixes_4">Bug Fixes</h3>
+<ul>
+<li>Py36 compatibility for get_origin(annotated) (<a href="https://github.com/jnoortheen/arger/commit/20abc00734ead149d1dd9ef5228928c46bea15eb">20abc00</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v134-2021-02-16"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.3.4">v1.3.4</a> - 2021-02-16</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.3.1...v1.3.4">Compare with v1.3.1</a></small></p>
+<h2 id="v131-2021-02-16"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.3.1">v1.3.1</a> - 2021-02-16</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.3.0...v1.3.1">Compare with v1.3.0</a></small></p>
+<h3 id="features">Features</h3>
+<ul>
+<li>Use annotated for arguments (<a href="https://github.com/jnoortheen/arger/commit/ddbdf381f772d505fe15ad577d8d57aa3a585ab9">ddbdf38</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v130-2021-02-16"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.3.0">v1.3.0</a> - 2021-02-16</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.2.11...v1.3.0">Compare with v1.2.11</a></small></p>
+<h3 id="bug-fixes_5">Bug Fixes</h3>
+<ul>
+<li>Py-lint errors (<a href="https://github.com/jnoortheen/arger/commit/0fa651a36e0c3d983b299a88fc4a4bb1e2431548">0fa651a</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v1211-2021-02-16"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.2.11">v1.2.11</a> - 2021-02-16</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.2.10...v1.2.11">Compare with v1.2.10</a></small></p>
+<h3 id="bug-fixes_6">Bug Fixes</h3>
+<ul>
+<li>Py36 literal compatibilty (<a href="https://github.com/jnoortheen/arger/commit/2baf271f6b47ee2c1c36efe071e749a550afbe1f">2baf271</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v1210-2021-02-16"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.2.10">v1.2.10</a> - 2021-02-16</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.2.9...v1.2.10">Compare with v1.2.9</a></small></p>
+<h3 id="features_1">Features</h3>
+<ul>
+<li>Add literal support for choices (<a href="https://github.com/jnoortheen/arger/commit/82322f791408a674e6c81f74a9cd4287a666d550">82322f7</a> by Noortheen Raja). Related issues/PRs: <a href="https://github.com/jnoortheen/arger/issues/1">#1</a></li>
+</ul>
+<h2 id="v129-2021-01-27"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.2.9">v1.2.9</a> - 2021-01-27</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.2.8...v1.2.9">Compare with v1.2.8</a></small></p>
+<h3 id="bug-fixes_7">Bug Fixes</h3>
+<ul>
+<li>When <code>param:bool=true</code> used raises error (<a href="https://github.com/jnoortheen/arger/commit/1537b4189e0a4273ac33e469b1491560e2aafd05">1537b41</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v128-2021-01-02"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.2.8">v1.2.8</a> - 2021-01-02</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.2.7...v1.2.8">Compare with v1.2.7</a></small></p>
+<h3 id="code-refactoring">Code Refactoring</h3>
+<ul>
+<li>Split <strong>version</strong> to new module (<a href="https://github.com/jnoortheen/arger/commit/e60b0594ee14a110bede7b45ec5b4541d6e09262">e60b059</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v127-2020-12-23"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.2.7">v1.2.7</a> - 2020-12-23</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.2.6...v1.2.7">Compare with v1.2.6</a></small></p>
+<h3 id="features_2">Features</h3>
+<ul>
+<li>Add support for typing.optional &lt;-&gt; nargs="?" (<a href="https://github.com/jnoortheen/arger/commit/12ab8c771f9a91600b2e4695776f83973b7e4f9f">12ab8c7</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v126-2020-12-16"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.2.6">v1.2.6</a> - 2020-12-16</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.2.5...v1.2.6">Compare with v1.2.5</a></small></p>
+<h2 id="v125-2020-12-16"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.2.5">v1.2.5</a> - 2020-12-16</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.2.4...v1.2.5">Compare with v1.2.4</a></small></p>
+<h2 id="v124-2020-12-07"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.2.4">v1.2.4</a> - 2020-12-07</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.2.3...v1.2.4">Compare with v1.2.3</a></small></p>
+<h2 id="v123-2020-12-07"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.2.3">v1.2.3</a> - 2020-12-07</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.2.2...v1.2.3">Compare with v1.2.2</a></small></p>
+<h2 id="v122-2020-12-07"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.2.2">v1.2.2</a> - 2020-12-07</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.2.1...v1.2.2">Compare with v1.2.1</a></small></p>
+<h2 id="v121-2020-12-07"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.2.1">v1.2.1</a> - 2020-12-07</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.2.0...v1.2.1">Compare with v1.2.0</a></small></p>
+<h3 id="features_3">Features</h3>
+<ul>
+<li>Support add arger.add_commands method (<a href="https://github.com/jnoortheen/arger/commit/a9cb3faa34b1900c7bdb5093e04acb0ee07ea835">a9cb3fa</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v120-2020-12-06"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.2.0">v1.2.0</a> - 2020-12-06</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.1.0...v1.2.0">Compare with v1.1.0</a></small></p>
+<h2 id="v110-2020-12-05"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.1.0">v1.1.0</a> - 2020-12-05</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.0.11...v1.1.0">Compare with v1.0.11</a></small></p>
+<h3 id="features_4">Features</h3>
+<ul>
+<li>Option to customize sub-commands title (<a href="https://github.com/jnoortheen/arger/commit/982dab6ba19683ccd1bbf51c2eb98f3cb261f871">982dab6</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v1011-2020-12-04"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.0.11">v1.0.11</a> - 2020-12-04</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.0.10...v1.0.11">Compare with v1.0.10</a></small></p>
+<h3 id="bug-fixes_8">Bug Fixes</h3>
+<ul>
+<li>When *varargs used, it caused incorrect function dispatch (<a href="https://github.com/jnoortheen/arger/commit/020982086c8e8a270510cabc4b61240f0dc0523f">0209820</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v1010-2020-11-28"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.0.10">v1.0.10</a> - 2020-11-28</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.0.9...v1.0.10">Compare with v1.0.9</a></small></p>
+<h2 id="v109-2020-11-28"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.0.9">v1.0.9</a> - 2020-11-28</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.0.8...v1.0.9">Compare with v1.0.8</a></small></p>
+<h3 id="code-refactoring_1">Code Refactoring</h3>
+<ul>
+<li>Use _init_subclass to register docstring parsers (<a href="https://github.com/jnoortheen/arger/commit/ac486bd43866e24e6ae930bcb21b09e3f47456ab">ac486bd</a> by Noortheen Raja).</li>
+</ul>
+<h3 id="features_5">Features</h3>
+<ul>
+<li>Use prefix_chars settings to generate flags (<a href="https://github.com/jnoortheen/arger/commit/c9eabb203926910572c9e7946b7d15a7a7b2e1cf">c9eabb2</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v108-2020-11-11"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.0.8">v1.0.8</a> - 2020-11-11</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.0.7...v1.0.8">Compare with v1.0.7</a></small></p>
+<h3 id="bug-fixes_9">Bug Fixes</h3>
+<ul>
+<li>Update numpy docstring parser (<a href="https://github.com/jnoortheen/arger/commit/b479611ca0d3ae62cb359b28a4cf40af04debe52">b479611</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v107-2020-11-09"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.0.7">v1.0.7</a> - 2020-11-09</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.0.6...v1.0.7">Compare with v1.0.6</a></small></p>
+<h3 id="code-refactoring_2">Code Refactoring</h3>
+<ul>
+<li>Merge funcs and maian modules (<a href="https://github.com/jnoortheen/arger/commit/fd0ab1c1d6dfb994c145c083de9ab89b879daacc">fd0ab1c</a> by Noortheen Raja).</li>
+<li>Remove parsedfunc type (<a href="https://github.com/jnoortheen/arger/commit/37810d6b1b7aa74d10a727659b846ebae8ab0ac2">37810d6</a> by Noortheen Raja).</li>
+<li>Merge classes that handle argument and option creation (<a href="https://github.com/jnoortheen/arger/commit/023877d72ddd1a5c22314594205ed371bbce60d4">023877d</a> by Noortheen Raja).</li>
+<li>Update typeaction handling vararg (<a href="https://github.com/jnoortheen/arger/commit/351979fc37ef0b82df823e9105da25bc1a2746f9">351979f</a> by Noortheen Raja).</li>
+<li>Replace namedtuple param with inspect.parameter (<a href="https://github.com/jnoortheen/arger/commit/545cb803134c58602d9dda72c5853ba6e40053f7">545cb80</a> by Noortheen Raja).</li>
+<li>Merge into single module parsers (<a href="https://github.com/jnoortheen/arger/commit/73e4f0830bebb4e0bd4292ebd32fa2a1bcfd434d">73e4f08</a> by Noortheen Raja).</li>
+<li>Update argument update funcs (<a href="https://github.com/jnoortheen/arger/commit/08f90805f60caa4559bf480ba3109f2f638d58b7">08f9080</a> by Noortheen Raja).</li>
+<li>Reduce number of modules (<a href="https://github.com/jnoortheen/arger/commit/ca4471ffb180e5024f45f71f9b3fa6aa227285da">ca4471f</a> by Noortheen Raja).</li>
+<li>Update usage of types inside docstrings (<a href="https://github.com/jnoortheen/arger/commit/7e2f20aa88404ce8ac4276a75c7b3c98aa8b89bd">7e2f20a</a> by Noortheen Raja).</li>
+<li>Move code from types to typing_utils (<a href="https://github.com/jnoortheen/arger/commit/b9c779c4bc4ec06b94170e8e023b98d6ee06dc5e">b9c779c</a> by Noortheen Raja).</li>
+</ul>
+<h3 id="features_6">Features</h3>
+<ul>
+<li>Add version flag/action by passing version string to arger (<a href="https://github.com/jnoortheen/arger/commit/286328bdcadf2dc8866cbe4b3202ba035bf54872">286328b</a> by Noortheen Raja).</li>
+<li>Create subcommands as soon as arger initiated (<a href="https://github.com/jnoortheen/arger/commit/9848e4eb7c552e17624c32a9a3b53875fb93587a">9848e4e</a> by Noortheen Raja).</li>
+<li>Publish docs to github-pages (<a href="https://github.com/jnoortheen/arger/commit/57894fa5b7529283c3c23291e0350758a1ca413d">57894fa</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v106-2020-11-01"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.0.6">v1.0.6</a> - 2020-11-01</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.0.5...v1.0.6">Compare with v1.0.5</a></small></p>
+<h3 id="features_7">Features</h3>
+<ul>
+<li>Add python 3.9 support (<a href="https://github.com/jnoortheen/arger/commit/c647243b1dc131b3b6d7b11a1e1c2118d3e08628">c647243</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v105-2020-11-01"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.0.5">v1.0.5</a> - 2020-11-01</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.0.3...v1.0.5">Compare with v1.0.3</a></small></p>
+<h2 id="v103-2020-11-01"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.0.3">v1.0.3</a> - 2020-11-01</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.0.2...v1.0.3">Compare with v1.0.2</a></small></p>
+<h3 id="features_8">Features</h3>
+<ul>
+<li>Implement skipping private arguments (<a href="https://github.com/jnoortheen/arger/commit/24d74047064071240244651475b57f00f1470426">24d7404</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v102-2020-11-01"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.0.2">v1.0.2</a> - 2020-11-01</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v1.0.1...v1.0.2">Compare with v1.0.1</a></small></p>
+<h3 id="features_9">Features</h3>
+<ul>
+<li>Add py39 to ci tests (<a href="https://github.com/jnoortheen/arger/commit/ec32e84ab71d51be0771d29d1ab2d1ac117a033f">ec32e84</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v101-2020-11-01"><a href="https://github.com/jnoortheen/arger/releases/tag/v1.0.1">v1.0.1</a> - 2020-11-01</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v0.4.1...v1.0.1">Compare with v0.4.1</a></small></p>
+<h3 id="bug-fixes_10">Bug Fixes</h3>
+<ul>
+<li>Py36 compat with re.pattern (<a href="https://github.com/jnoortheen/arger/commit/c6958619da3423cdc4590c25a3767a2ed7589a1a">c695861</a> by Noortheen Raja).</li>
+</ul>
+<h3 id="code-refactoring_3">Code Refactoring</h3>
+<ul>
+<li>Rewrite arger using new docstring parser (<a href="https://github.com/jnoortheen/arger/commit/9cd93a5b7de69765803e20efeafdf274e06867f4">9cd93a5</a> by Noortheen Raja).</li>
+<li>Update docstring parser and add tests (<a href="https://github.com/jnoortheen/arger/commit/3d9d681ad9875f0c0b632220b6415e2c9668dc3d">3d9d681</a> by Noortheen Raja).</li>
+<li>Remove external dependency to parse docstring (<a href="https://github.com/jnoortheen/arger/commit/ac72e9fb799d3c24b574ff6d7ff5f0dd4084f163">ac72e9f</a> by Noortheen Raja).</li>
+</ul>
+<h3 id="features_10">Features</h3>
+<ul>
+<li>First stable release (<a href="https://github.com/jnoortheen/arger/commit/fc6e935c50ac126d16b3811ee0d22545f6ad100b">fc6e935</a> by Noortheen Raja).</li>
+<li>Any level of nested commands will get dispatched (<a href="https://github.com/jnoortheen/arger/commit/9e579b15dd42dd52fd88326c108c2af8cbe6c0b1">9e579b1</a> by Noortheen Raja).</li>
+<li>Use notebook for testing examples (<a href="https://github.com/jnoortheen/arger/commit/3ee43103a8d43d1a057cc8ada76e60f0a978fe6d">3ee4310</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v041-2020-04-18"><a href="https://github.com/jnoortheen/arger/releases/tag/v0.4.1">v0.4.1</a> - 2020-04-18</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v0.4.0...v0.4.1">Compare with v0.4.0</a></small></p>
+<h3 id="bug-fixes_11">Bug Fixes</h3>
+<ul>
+<li>Mypy errors (<a href="https://github.com/jnoortheen/arger/commit/09111b065cbc0a38b75ebe1984ffd47ce3714936">09111b0</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v040-2020-04-18"><a href="https://github.com/jnoortheen/arger/releases/tag/v0.4.0">v0.4.0</a> - 2020-04-18</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v0.3.0...v0.4.0">Compare with v0.3.0</a></small></p>
+<h3 id="bug-fixes_12">Bug Fixes</h3>
+<ul>
+<li>Py36 compatibility (<a href="https://github.com/jnoortheen/arger/commit/fe72990cd590183786984f369b06edd01c5efcba">fe72990</a> by Noortheen Raja).</li>
+<li>Variable arg handling (<a href="https://github.com/jnoortheen/arger/commit/aaa7109ae3ecfbbe714802928b3737efb4b008b3">aaa7109</a> by Noortheen Raja).</li>
+</ul>
+<h3 id="code-refactoring_4">Code Refactoring</h3>
+<ul>
+<li>Inherit option from argument (<a href="https://github.com/jnoortheen/arger/commit/c581cb9f2ea8efecbb111c3ecb926bebc9dffa9e">c581cb9</a> by Noortheen Raja).</li>
+<li>Update typing-utils to work on py36 (<a href="https://github.com/jnoortheen/arger/commit/ec6f40a81217926bc8528ac8de6579c55bf77fbf">ec6f40a</a> by Noortheen Raja).</li>
+<li>Update parser functions (<a href="https://github.com/jnoortheen/arger/commit/3563223c7718a631d1dc95f5f539dc1b4a7fae37">3563223</a> by Noortheen Raja).</li>
+</ul>
+<h3 id="features_11">Features</h3>
+<ul>
+<li>Add support for more complex types (<a href="https://github.com/jnoortheen/arger/commit/584e53049a0e4a16b5193097052c3a2528ef3006">584e530</a> by Noortheen Raja).</li>
+<li>Add for tuple/list support (<a href="https://github.com/jnoortheen/arger/commit/895eb9c015492c700125eb5c98bad2f45275cca3">895eb9c</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v030-2020-04-16"><a href="https://github.com/jnoortheen/arger/releases/tag/v0.3.0">v0.3.0</a> - 2020-04-16</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v0.2.4...v0.3.0">Compare with v0.2.4</a></small></p>
+<h3 id="code-refactoring_5">Code Refactoring</h3>
+<ul>
+<li>Reduce complexity in parser function (<a href="https://github.com/jnoortheen/arger/commit/2c2d58623ae4322bc4c2510f745a11655ee6bfb6">2c2d586</a> by Noortheen Raja).</li>
+</ul>
+<h3 id="features_12">Features</h3>
+<ul>
+<li>Implement mkdocs (<a href="https://github.com/jnoortheen/arger/commit/6ee7e700523ff5ad2765537b5e68ec321487f615">6ee7e70</a> by Noortheen Raja).</li>
+<li>Add support for variadict arguments (<a href="https://github.com/jnoortheen/arger/commit/dc857c427f86cf56403f0bc376317d723e4f0f1b">dc857c4</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v024-2020-04-14"><a href="https://github.com/jnoortheen/arger/releases/tag/v0.2.4">v0.2.4</a> - 2020-04-14</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v0.2.3...v0.2.4">Compare with v0.2.3</a></small></p>
+<h3 id="bug-fixes_13">Bug Fixes</h3>
+<ul>
+<li>Setting flags only when not defined (<a href="https://github.com/jnoortheen/arger/commit/c9f63d0745d5d364f12f6f7192afd8f841886996">c9f63d0</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v023-2020-04-14"><a href="https://github.com/jnoortheen/arger/releases/tag/v0.2.3">v0.2.3</a> - 2020-04-14</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v0.2.2...v0.2.3">Compare with v0.2.2</a></small></p>
+<h3 id="bug-fixes_14">Bug Fixes</h3>
+<ul>
+<li>Using option to define arguments (<a href="https://github.com/jnoortheen/arger/commit/ed87eecf49ab9da5de422498ef118dad3b67a14a">ed87eec</a> by Noortheen Raja).</li>
+</ul>
+<h3 id="code-refactoring_6">Code Refactoring</h3>
+<ul>
+<li>Rename arger class module (<a href="https://github.com/jnoortheen/arger/commit/b8a45d11a228bba090aab40380698f678414387f">b8a45d1</a> by Noortheen Raja).</li>
+</ul>
+<h3 id="features_13">Features</h3>
+<ul>
+<li>Use option for populating arguments (<a href="https://github.com/jnoortheen/arger/commit/aef46e70aafadb8000a3e47c6a4144bed2fbc6d6">aef46e7</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v022-2020-04-13"><a href="https://github.com/jnoortheen/arger/releases/tag/v0.2.2">v0.2.2</a> - 2020-04-13</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v0.2.1...v0.2.2">Compare with v0.2.1</a></small></p>
+<h2 id="v021-2020-04-13"><a href="https://github.com/jnoortheen/arger/releases/tag/v0.2.1">v0.2.1</a> - 2020-04-13</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v0.2.0...v0.2.1">Compare with v0.2.0</a></small></p>
+<h3 id="bug-fixes_15">Bug Fixes</h3>
+<ul>
+<li>Handle tests passing sys.argv (<a href="https://github.com/jnoortheen/arger/commit/9226d972553c023dbf4097e7637d88de65fc4367">9226d97</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v020-2020-04-13"><a href="https://github.com/jnoortheen/arger/releases/tag/v0.2.0">v0.2.0</a> - 2020-04-13</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v0.1.3...v0.2.0">Compare with v0.1.3</a></small></p>
+<h3 id="features_14">Features</h3>
+<ul>
+<li>Sub-command with a root context function (<a href="https://github.com/jnoortheen/arger/commit/0c9d19d05c70520b065ecef44863f7355e3da8aa">0c9d19d</a> by Noortheen Raja).</li>
+<li>Add python &lt; 37 compatible type checks (<a href="https://github.com/jnoortheen/arger/commit/f4787716a8c0c7fbfa384d8a55c22eebba913078">f478771</a> by Noortheen Raja).</li>
+<li>Call nested commands (<a href="https://github.com/jnoortheen/arger/commit/662d05ab0fc7ab969e87fe4543dba2d04ab2da45">662d05a</a> by Noortheen Raja).</li>
+<li>Add ability to add nested commands (<a href="https://github.com/jnoortheen/arger/commit/923a4a0c34f1e248d8301d2705c2e6d07296eb08">923a4a0</a> by Noortheen Raja).</li>
+</ul>
+<h2 id="v013-2020-04-11"><a href="https://github.com/jnoortheen/arger/releases/tag/v0.1.3">v0.1.3</a> - 2020-04-11</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v0.1.2...v0.1.3">Compare with v0.1.2</a></small></p>
+<h2 id="v012-2020-04-11"><a href="https://github.com/jnoortheen/arger/releases/tag/v0.1.2">v0.1.2</a> - 2020-04-11</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/v0.1.1...v0.1.2">Compare with v0.1.1</a></small></p>
+<h2 id="v011-2020-04-11"><a href="https://github.com/jnoortheen/arger/releases/tag/v0.1.1">v0.1.1</a> - 2020-04-11</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/0.1...v0.1.1">Compare with 0.1</a></small></p>
+<h2 id="01-2020-04-11"><a href="https://github.com/jnoortheen/arger/releases/tag/0.1">0.1</a> - 2020-04-11</h2>
+<p><small><a href="https://github.com/jnoortheen/arger/compare/0e07f27250630f02ddfb3d9cc515c724ef30395b...0.1">Compare with first commit</a></small></p>
+<h3 id="bug-fixes_16">Bug Fixes</h3>
+<ul>
+<li>Recognise type from typehint and default value (<a href="https://github.com/jnoortheen/arger/commit/405cfad716aa4361232de2df3af9127ef80c7e3b">405cfad</a> by Noortheen Raja).</li>
+<li>Mypy type errors (<a href="https://github.com/jnoortheen/arger/commit/522954cb1fd0be7f52b464d56b9c6b3d985a1551">522954c</a> by Noortheen Raja).</li>
+<li>Test workflow (<a href="https://github.com/jnoortheen/arger/commit/951e23efbdd498d669619607ef5f941a6dd5a583">951e23e</a> by Noortheen Raja).</li>
+</ul>
+<h3 id="code-refactoring_7">Code Refactoring</h3>
+<ul>
+<li>Add arger structs (<a href="https://github.com/jnoortheen/arger/commit/6722d7a267088b6ff905f452a9ab9a373dd5794e">6722d7a</a> by Noortheen Raja).</li>
+<li>Remove notebooks folder (<a href="https://github.com/jnoortheen/arger/commit/d7f303b2f670e03376c03cdaa4c84eadfddddc22">d7f303b</a> by Noortheen Raja).</li>
+<li>Move out docstring to sub functions (<a href="https://github.com/jnoortheen/arger/commit/e7ecd49956eee72891dd793fbffe9493b7265ae2">e7ecd49</a> by Noortheen Raja).</li>
+</ul>
+<h3 id="features_15">Features</h3>
+<ul>
+<li>Implement single function dispatch (<a href="https://github.com/jnoortheen/arger/commit/171e871282e2263075d1b548c138970688a8af25">171e871</a> by Noortheen Raja).</li>
+<li>Make arger work with single or multi functions (<a href="https://github.com/jnoortheen/arger/commit/5299fbaf5e13edd86bb92991fcfd6683b4d52cf7">5299fba</a> by Noortheen Raja).</li>
+<li>Implement parser (<a href="https://github.com/jnoortheen/arger/commit/1fd04ad5a01d23c4d0cd4e59e366a30e1e5f44ac">1fd04ad</a> by Noortheen Raja).</li>
+<li>Add action to publish package (<a href="https://github.com/jnoortheen/arger/commit/e85fe081cba967b5268d3bb80fbc4424a2e439b1">e85fe08</a> by Noortheen Raja).</li>
+<li>Add github actions for testing and linting (<a href="https://github.com/jnoortheen/arger/commit/d9ea90d21aff1214c1b0d61639a1ca19ee7ff19d">d9ea90d</a> by Noortheen Raja).</li>
+<li>Add boilerplate from (<a href="https://github.com/jnoortheen/arger/commit/0e07f27250630f02ddfb3d9cc515c724ef30395b">0e07f27</a> by Noortheen Raja).</li>
+</ul>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../3-api-docs/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Reference" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Reference
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../examples/1-single-function/" class="md-footer__link md-footer__link--next" aria-label="Next: Single function" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Single function
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.8397ff9e.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f89c2efe.min.js"></script>
+      
+    
+  </body>
+</html>
