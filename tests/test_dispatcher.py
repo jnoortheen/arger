@@ -32,11 +32,13 @@ def test_example(capsys, arger, args, expected: str):
 
     if sys.version_info >= (3, 9):
         expected = re.sub(
-            r'\[(?P<arg>\w+) \[(?P=arg) ...]]', r'[\g<arg> ...]', expected
+            r"\[(?P<arg>\w+) \[(?P=arg) ...]]", r"[\g<arg> ...]", expected
         )
+    if sys.version_info >= (3, 10):
+        expected = expected.replace("optional arguments:", "options:")
     capture = capsys.readouterr()
     out = capture.err or capture.out
-    assert out.split() == expected.split(), ''.join(
+    assert out.split() == expected.split(), "".join(
         [
             f"\n{Fore.BLUE}{Back.WHITE}cmd: {Style.RESET_ALL}\n{args}",
             f"\n{Fore.BLUE}{Back.WHITE}out: {Style.RESET_ALL}\n{out}",
