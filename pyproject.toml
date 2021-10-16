@@ -34,14 +34,14 @@ classifiers = [
 
 [tool.poetry.dependencies]
 
-python = ">=3.6"
-typing-extensions = "^3.7.4"
+python = ">=3.8"
+typing-extensions = ">3.7.4"
 
 
 [tool.poetry.dev-dependencies]
 
 # Formatters
-black = { extras = ["d"], version = "^20.8b1" }
+black =  "*"
 isort = { version = "^5.6.4", python = "^3.6" }
 
 # Linters
@@ -56,32 +56,25 @@ pytest-describe = "*"
 pytest-expecter = "*"
 pytest-random = "*"
 freezegun = "*"
-pytest-lazy-fixture = "^0.6.3"
-pytest-clarity = "^0.3.0-alpha.0"
+pytest-lazy-fixture = "*"
 
 # Reports
 #coveragespace = "^3.1.1"
 
 # Documentation
 mkdocs = "^1.0"
-mkdocs-material = "^6.0"
+mkdocs-material = "*"
 mkdocstrings = { version = "0.14.*", python = "^3.6" }
 pytkdocs = { version = "<0.4", python = "^3.6" }
 mknotebooks = "*"
-pymdown-extensions = "^7.0"
+pymdown-extensions = "*"
 pygments = "*"
 
 # Tooling
-pyinstaller = "*"
-sniffer = "*"
-MacFSEvents = { version = "*", platform = "darwin" }
-pync = { version = "*", platform = "darwin" }
 ipython = "^7.12.0"
 tox = "^3.14.5"
-pyinotify = "^0.9.6"
-"delegator.py" = "^0.1.1"
 jupyter = "^1.0.0"
-better-exceptions = "^0.2.2"
+better-exceptions = "*"
 git-changelog = { version = "^0.4.0", python = "^3.6" }
 
 [tool.black]
