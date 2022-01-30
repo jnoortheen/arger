@@ -19,12 +19,6 @@ Install it directly into an activated virtual environment:
 $ pip install arger
 ```
 
-or add it to your [Poetry](https://poetry.eustace.io/) project:
-
-``` text
-$ poetry add arger
-```
-
 # :books: Usage
 
 * create a python file called test.py
