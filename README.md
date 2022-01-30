@@ -29,10 +29,12 @@ from arger import Arger
 
 def main(param1: int, param2: str, kw1=None, kw2=False):
     """Example function with types documented in the docstring.
-    :param param1: The first parameter.
-    :param param2: The second parameter.
-    :param kw1: this is optional parameter.
-    :param kw2: this is boolean. setting flag sets True.
+    
+    Args:
+        param1: The first parameter.
+        param2: The second parameter.
+        kw1: this is optional parameter.
+        kw2: this is boolean. setting flag sets True.
     """
     print(locals())
 
