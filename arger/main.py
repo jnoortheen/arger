@@ -134,6 +134,9 @@ class Argument:
         if arg is None:
             arg = Argument()
 
+        if pdoc and pdoc.flags and (not arg.flags):
+            arg.flags = pdoc.flags
+
         arg.kwargs.setdefault("help", hlp)
         arg.update(param, option_generator)
         return arg
