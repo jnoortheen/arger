@@ -38,15 +38,15 @@ typing-extensions = ">3.7.4"
 
 # Formatters
 black =  "*"
-isort = { version = "^5.6.4", python = "^3.6" }
+isort = { version = "*", python = "^3.6" }
 
 # Linters
 mypy = "*"
 pydocstyle = "*"
-pylint = "^2.0"
+pylint = "*"
 
 # Testing
-pytest = "^6.1"
+pytest = "*"
 pytest-cov = "*"
 pytest-describe = "*"
 pytest-expecter = "*"
@@ -67,17 +67,17 @@ pymdown-extensions = "*"
 pygments = "*"
 
 # Tooling
-ipython = "^7.31.1"
-tox = "^3.14.5"
-jupyter = "^1.0.0"
+ipython = "*"
+tox = "*"
+jupyter = "*"
 better-exceptions = "*"
-git-changelog = { version = "^0.4.0", python = "^3.6" }
-colorama = "^0.4.4"
-types-setuptools = "^57.4.2"
+git-changelog = { version = "*", python = "^3.6" }
+colorama = "*"
+types-setuptools = "*"
 
 [tool.black]
 
-target-version = ["py36", "py37"]
+target-version = ["py38",]
 skip-string-normalization = true
 
 [build-system]
