@@ -62,8 +62,8 @@ endif
 
 .PHONY: format
 format:
-	poetry run isort $(PACKAGES)
-	poetry run black $(PACKAGES)
+	isort $(PACKAGES)
+	black $(PACKAGES)
 	@ echo
 
 .PHONY: lint

@@ -8,28 +8,23 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.8, 3.9, "3.10"]
+        python-version: [3.8, 3.9, "3.10", "3.11"]
 
     steps:
     - uses: actions/checkout@v2
     - name: 'Set up Python ${{ matrix.python-version }}'
-      uses: 'actions/setup-python@v2'
+      uses: 'actions/setup-python@v4'
       with:
         python-version: '${{ matrix.python-version }}'
-    - uses: actions/cache@v1
-      with:
-        path: ~/.cache/pypoetry/virtualenvs
-        key: ${{ runner.os }}-{{ matrix.python-version }}-poetry-test-${{ hashFiles('poetry.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-{{ matrix.python-version }}-poetry-test-
-    - uses: Gr1N/setup-poetry@v7
+        cache: 'pip'
+        cache-dependency-path: 'pyproject.toml'
     - name: Install dependencies
-      run: poetry install
+      run: pip install -e '.[dev]'
     - name: Test with pytest
       run: make test
     - id: Coverage
       if: matrix.python-version == 3.8
-      run: echo "##[set-output name=data;]$(poetry run python tasks.py show_coverage)"
+      run: echo "##[set-output name=data;]$(python tasks.py show_coverage)"
     - name: coverage badge
       uses: RubbaBoy/BYOB@v1.1.0
       if: matrix.python-version == 3.8
@@ -50,7 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: changelog
@@ -71,26 +66,21 @@ jobs:
           draft: false
           prerelease: false
       - name: Set up Python
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.8
-      - uses: Gr1N/setup-poetry@v4
-      - name: Publish
+          python-version: 3.11
+          cache: 'pip'
+          cache-dependency-path: 'pyproject.toml'
+      - name: Build
         run: |
-          poetry install
-          poetry config pypi-token.pypi $PYPI_TOKEN
-          poetry publish --build
-        env:
-          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+          pip install build
+          pip install '.[doc]'
+          python -m build .
+      - name: Publish package
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_TOKEN }}
       - name: Deploy docs
-        run: |
-          git config --list
-          git remote -v
-          git config --global user.name "${GITHUB_ACTOR}"
-          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-          remote_repo="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          git remote rm origin
-          git remote add origin "${remote_repo}"
-          poetry run mkdocs gh-deploy --force
+        run: mkdocs gh-deploy --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
