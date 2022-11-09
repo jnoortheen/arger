@@ -15,11 +15,12 @@ repos:
           "--profile=black",
         ]
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: ''  # Use the sha / tag you want to point at
+    rev: 'v0.990'  # Use the sha / tag you want to point at
     hooks:
       - id: mypy
-        args: [ "arger", "tests" ]
+        args: [ "arger", "tests", "--config-file=.mypy.ini" ]
         pass_filenames: false
+        additional_dependencies: ["types-setuptools"]
   - repo: local
     hooks:
       - id: pylint
@@ -27,4 +28,4 @@ repos:
         entry: pylint
         language: system
         types: [ python ]
-        args: [ "arger", "tests" ]
+        args: [ "arger", "tests", "--rcfile=.pylint.ini" ]

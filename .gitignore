@@ -47,3 +47,5 @@ Icon*
 .idea/
 .local/
 *.log
+
+pdm.lock

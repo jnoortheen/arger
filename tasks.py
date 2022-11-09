@@ -1,3 +1,4 @@
+# pylint: disable = subprocess-run-check,raising-bad-type,import-outside-toplevel,super-init-not-called
 import shlex
 import subprocess as sp
 import sys
@@ -43,26 +44,20 @@ def prun(*cmd, **kwargs):
 
 @arger.add_cmd
 def release(
-    type: Literal[
-        "patch",
+    typ: Literal[
+        "micro",
         "minor",
         "major",
-        "prepatch",
-        "preminor",
-        "premajor",
-        "prerelease",
-    ] = "patch"
+    ] = "micro"
 ):
     """Bump version, tag and push them.
 
     Args:
-        type: version bump as supported by `poetry version` command
+        typ: version bump as supported by `poetry version` command
     """
-    prun("make", "check", "test")
-
-    prun("poetry", "version", type)
-    c = prun("poetry", "version")
-    _, version = c.stdout.decode().split()
+    prun("pdm", "bump", typ)
+    c = prun("pdm", "show", "--version")
+    version = c.stdout.decode().strip()
 
     version_num = f"v{version}"
     msg = f"chore: bump version to {version_num}"
@@ -86,12 +81,7 @@ def release(
     prun("git push --tags")
 
 
-# @arger.add_cmd
-# def test():
-#     print('run tests')
-
-
-class Devnull(object):
+class Devnull:
     """
     A file like object that does nothing.
     """

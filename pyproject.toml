@@ -5,20 +5,16 @@ skip-string-normalization = true
 
 [project.optional-dependencies]
 dev = [
-    "black",
-    "isort",
     "ipython",
     "tox",
     "jupyter",
     "better-exceptions",
     "git-changelog",
     "colorama",
-    "types-setuptools",
 ]
 lint = [
-    "mypy",
     "pydocstyle",
-    "pylint",
+    "pylint>=2.11",
 ]
 test = [
     "pytest",
@@ -32,7 +28,7 @@ test = [
 doc = [
     "mkdocs",
     "mkdocs-material",
-    "mkdocstringsNone",
+    "mkdocstrings",
     "pytkdocs",
     "mknotebooks",
     "pymdown-extensions",
@@ -58,7 +54,7 @@ dependencies = [
     "typing-extensions>3.7.4",
 ]
 name = "arger"
-version = "1.4.4"
+version = "1.4.5"
 description = "Create argparser automatically from functions"
 readme = "README.md"
 keywords = []
