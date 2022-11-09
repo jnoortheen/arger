@@ -19,7 +19,7 @@ jobs:
         cache: 'pip'
         cache-dependency-path: 'pyproject.toml'
     - name: Install dependencies
-      run: pip install -e '.[dev]'
+      run: pip install -e '.[test]'
     - name: Test with pytest
       run: pytest --cov=arger --cov-report=html --cov-report=term-missing:skip-covered
     - id: Coverage
