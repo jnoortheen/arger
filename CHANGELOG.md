@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [v1.4.7](https://github.com/jnoortheen/arger/releases/tag/v1.4.7) - 2022-11-09
+
+<small>[Compare with v1.4.6](https://github.com/jnoortheen/arger/compare/v1.4.6...v1.4.7)</small>
+
+
 ## [v1.4.6](https://github.com/jnoortheen/arger/releases/tag/v1.4.6) - 2022-11-09
 
 <small>[Compare with v1.4.4](https://github.com/jnoortheen/arger/compare/v1.4.4...v1.4.6)</small>
