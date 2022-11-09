@@ -24,6 +24,7 @@ test = [
     "pytest-random",
     "freezegun",
     "pytest-lazy-fixture",
+    "nbformat",
 ]
 doc = [
     "mkdocs",
