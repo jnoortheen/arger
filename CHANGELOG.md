@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [v1.4.6](https://github.com/jnoortheen/arger/releases/tag/v1.4.6) - 2022-11-09
+
+<small>[Compare with v1.4.4](https://github.com/jnoortheen/arger/compare/v1.4.4...v1.4.6)</small>
+
+### Code Refactoring
+- Remove make,tox ([64e4133](https://github.com/jnoortheen/arger/commit/64e4133c327957cd6a367d93987e77efcf74e985) by Noortheen Raja).
+
+
 ## [v1.4.4](https://github.com/jnoortheen/arger/releases/tag/v1.4.4) - 2022-07-02
 
 <small>[Compare with v1.4.2](https://github.com/jnoortheen/arger/compare/v1.4.2...v1.4.4)</small>

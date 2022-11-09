@@ -54,7 +54,7 @@ dependencies = [
     "typing-extensions>3.7.4",
 ]
 name = "arger"
-version = "1.4.5"
+version = "1.4.6"
 description = "Create argparser automatically from functions"
 readme = "README.md"
 keywords = []
