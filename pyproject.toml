@@ -10,7 +10,6 @@ dev = [
     "jupyter",
     "better-exceptions",
     "git-changelog",
-    "colorama",
 ]
 lint = [
     "pydocstyle",

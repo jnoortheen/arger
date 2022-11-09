@@ -26,7 +26,7 @@ jobs:
       if: matrix.python-version == 3.8
       run: echo "##[set-output name=data;]$(python tasks.py show_coverage)"
     - name: coverage badge
-      uses: RubbaBoy/BYOB@v1.1.0
+      uses: RubbaBoy/BYOB@v1.3.0
       if: matrix.python-version == 3.8
       with:
         NAME: coverage
