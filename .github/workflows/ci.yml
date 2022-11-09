@@ -21,7 +21,7 @@ jobs:
     - name: Install dependencies
       run: pip install -e '.[dev]'
     - name: Test with pytest
-      run: make test
+      run: pytest --cov=arger --cov-report=html --cov-report=term-missing:skip-covered
     - id: Coverage
       if: matrix.python-version == 3.8
       run: echo "##[set-output name=data;]$(python tasks.py show_coverage)"
