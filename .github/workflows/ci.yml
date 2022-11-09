@@ -34,9 +34,6 @@ jobs:
         STATUS: ${{ steps.Coverage.outputs.data }}
         COLOR: 42a7f5
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - if: matrix.python-version == 3.8
-      name: Lint source files
-      run: make check
 
   release:
     if: startsWith(github.ref, 'refs/tags/v')
