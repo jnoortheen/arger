@@ -68,3 +68,14 @@ classifiers = ["Development Status :: 1 - Planning", "Natural Language :: Englis
 homepage = "https://pypi.org/project/arger"
 repository = "https://github.com/jnoortheen/arger"
 documentation = "https://arger.readthedocs.io"
+
+
+[tool.pdm.scripts]
+post_install = "pre-commit install"
+clean-build = "rm -rf *.spec dist build"
+clean-docs = "rm -rf docs/*.png site"
+clean-test = "rm -rf .cache .pytest .coverage htmlcov"
+clean-install = "find $(PACKAGES) -name '__pycache__' -delete && rm -rf *.egg-info"
+clean = { composite = ["clean-build", "clean-docs", "clean-test", "clean-install"] }
+serve-docs = "mkdocs serve"
+lint = "mypy arger tests"

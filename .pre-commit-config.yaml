@@ -1,10 +1,30 @@
 ---
 
 repos:
+  - repo: https://github.com/ambv/black
+    rev: 22.10.0 # Newer versions don't support Python 3.6
+    hooks:
+      - id: black
+        language_version: python3
+  - repo: https://github.com/pycqa/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+        args: [
+          "--filter-files", # skip files that are excluded in config file
+          "--profile=black",
+        ]
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: ''  # Use the sha / tag you want to point at
+    hooks:
+      - id: mypy
+        args: [ "arger", "tests" ]
+        pass_filenames: false
   - repo: local
     hooks:
-      - id: check
-        name: check
-        entry: make format # make is not able to handle filenames
+      - id: pylint
+        name: pylint
+        entry: pylint
         language: system
-        pass_filenames: false
+        types: [ python ]
+        args: [ "arger", "tests" ]
