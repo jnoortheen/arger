@@ -2,8 +2,7 @@
 import shlex
 import subprocess as sp
 import sys
-
-from typing_extensions import Literal
+from typing import Literal
 
 from arger import Arger
 

@@ -44,9 +44,6 @@ wheels = [
 name = "arger"
 version = "1.4.8"
 source = { editable = "." }
-dependencies = [
-    { name = "typing-extensions" },
-]
 
 [package.optional-dependencies]
 dev = [
@@ -105,7 +102,6 @@ requires-dist = [
     { name = "pytest-random", marker = "extra == 'test'" },
     { name = "pytkdocs", marker = "extra == 'doc'" },
     { name = "tox", marker = "extra == 'dev'" },
-    { name = "typing-extensions", specifier = ">3.7.4" },
 ]
 
 [[package]]

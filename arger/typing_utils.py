@@ -24,9 +24,8 @@ def match_types(tp, *matches) -> bool:
         if isinstance(m, str):  # instead of imported class use the class names
             if m in str(origin):
                 return True
-        else:
-            if get_origin(m) is origin:
-                return True
+        elif get_origin(m) is origin:
+            return True
     return False
 
 

@@ -45,9 +45,6 @@ authors = [
 ]
 license = { text = "MIT" }
 requires-python = ">=3.9"
-dependencies = [
-    "typing-extensions>3.7.4",
-]
 name = "arger"
 version = "1.4.8"
 description = "Create argparser automatically from function signatures"
@@ -60,10 +57,39 @@ homepage = "https://pypi.org/project/arger"
 repository = "https://github.com/jnoortheen/arger"
 documentation = "https://arger.readthedocs.io"
 
+[tool.ruff]
+line-length = 120
 
 [tool.ruff.lint]
 ignore = [
     "E402", # top level imports
+]
+select = [
+    "F", # pyflakes
+    "E", # pycodestyle
+    "C90", # mccabe
+    "I", # isort
+    "UP", # pyupgrade
+    "B", # flake8-bugbear,
+    "SIM", # simplify
+    # "PL", # pylint
+    "RUF", # ruff
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "PLR2004",  # magic numbers in tests
+    "S101",     # assert allowed in tests
+    "UP006",
+    "UP035", 
+    "UP036",
+]
+"tasks.py" = [
+    "S603",     # subprocess call - security implications
+    "S607",     # partial path subprocess call
+]
+"arger/main.py" = [
+    "PLR0913",  # too many arguments
 ]
 
 [tool.poe.tasks]

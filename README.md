@@ -23,7 +23,7 @@ $ pip install arger
 
 * create a python file called test.py
 
-``` python
+``` py
 from arger import Arger
 
 

@@ -1,5 +1,6 @@
-from arger import Arger
 from argparse import Namespace
+
+from arger import Arger
 from tests.utils import _reprint
 
 

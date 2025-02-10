@@ -1,7 +1,8 @@
 """Integration tests configuration file."""
 import re
+from collections.abc import Iterator
 from pathlib import Path
-from typing import Iterator
+
 from nbformat import read
 from pytest import param
 

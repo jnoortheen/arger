@@ -113,7 +113,7 @@ class Argument:
 
     def __repr__(self):
         """helps during tests"""
-        return f"<{self.__class__.__name__}: {self.flags}, {repr(self.kwargs)}>"
+        return f"<{self.__class__.__name__}: {self.flags}, {self.kwargs!r}>"
 
     @classmethod
     def create(

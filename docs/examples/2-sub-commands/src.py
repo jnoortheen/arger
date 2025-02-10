@@ -1,7 +1,6 @@
 from arger import Arger
 from tests.utils import _reprint
 
-
 arger = Arger(prog='pytest', description="App Description goes here")
 
 container = []

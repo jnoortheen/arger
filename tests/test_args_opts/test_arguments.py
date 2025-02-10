@@ -1,9 +1,8 @@
 from decimal import Decimal
 from enum import Enum
-from typing import List, Optional, Tuple
+from typing import Annotated, List, Literal, Optional, Tuple
 
 import pytest
-from typing_extensions import Annotated, Literal
 
 from arger import Argument
 
