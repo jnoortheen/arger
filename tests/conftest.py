@@ -13,7 +13,7 @@ def parse_example(ipy_file: Path):
     nb = read(ipy_file, as_version=4)
     for cell in nb.cells:
         if cell.cell_type == "code":
-            cmd = [f for f in cell.source.splitlines() if f.startswith("!")][0]
+            cmd = next(f for f in cell.source.splitlines() if f.startswith("!"))
             py_file = ipy_file.with_name(cmd.split()[1])
             yield py_file, cmd, cell.outputs[0].text if cell.outputs else ""
 

@@ -35,5 +35,5 @@ def test_options(parser, argument, name, default, input, expected):
     assert getattr(ns, name) == default
 
     # parses input
-    ns = parser.parse_args([argument.flags[0]] + input.split())
+    ns = parser.parse_args([argument.flags[0], *input.split()])
     assert getattr(ns, name) == expected

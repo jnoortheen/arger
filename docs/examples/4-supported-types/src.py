@@ -1,5 +1,4 @@
 from enum import Enum
-from typing import List, Tuple
 
 from arger import Arger
 from tests.utils import _reprint
@@ -22,8 +21,8 @@ container = []
 def cmd1(
     an_int: int,
     an_str: str,
-    a_tuple: Tuple[str, str, str],  # nargs: 3 -> consume 3
-    a_var_tuple: Tuple[str, ...],  # nargs: +  -> consume one or more
+    a_tuple: tuple[str, str, str],  # nargs: 3 -> consume 3
+    a_var_tuple: tuple[str, ...],  # nargs: +  -> consume one or more
     an_enum=Choice.one,
     optional_str='',
     optional_int=0,
@@ -35,7 +34,7 @@ def cmd1(
 
 @arger.add_cmd
 def cmd2(
-    a_list: List[int],  # nargs='*': -> capture many args
+    a_list: list[int],  # nargs='*': -> capture many args
     m_opt=False,
     y_opt=False,
     my=False,
