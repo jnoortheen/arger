@@ -35,6 +35,11 @@ def test_example(capsys, pyfile, arger, args, expected: str):
         )
     if sys.version_info >= (3, 10):
         expected = expected.replace("optional arguments:", "options:")
+    if sys.version_info >= (3, 13):
+        expected = re.sub(
+        r"(-[a-z]) (\w+|\[.+\]|\{.+\}), (--[\w-]+) \2", 
+        r"\1, \3 \2", expected
+    )
     capture = capsys.readouterr()
     out = capture.err or capture.out
     assert out.split() == expected.split(), "".join(
