@@ -1,1 +1,1 @@
-from .main import Arger, Argument
+from .main import Arger, Argument # noqa: F401

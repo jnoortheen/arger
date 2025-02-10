@@ -1,8 +1,3 @@
-[tool.black]
-
-target-version = ["py38", ]
-skip-string-normalization = true
-
 [project.optional-dependencies]
 dev = [
     "ipython",
@@ -22,7 +17,7 @@ test = [
     "pytest-expecter",
     "pytest-random",
     "freezegun",
-    "pytest-lazy-fixture",
+    "pytest-lazy-fixtures",
     "nbformat",
 ]
 doc = [
@@ -49,13 +44,13 @@ authors = [
     { name = "Noortheen Raja", email = "jnoortheen@gmail.com" },
 ]
 license = { text = "MIT" }
-requires-python = ">=3.8,<4.0"
+requires-python = ">=3.9"
 dependencies = [
     "typing-extensions>3.7.4",
 ]
 name = "arger"
 version = "1.4.8"
-description = "Create argparser automatically from functions"
+description = "Create argparser automatically from function signatures"
 readme = "README.md"
 keywords = []
 classifiers = ["Development Status :: 1 - Planning", "Natural Language :: English", "Operating System :: OS Independent", "Environment :: Console", "Intended Audience :: Developers", "License :: Freely Distributable", "Programming Language :: Python", "Programming Language :: Python :: 3 :: Only", "Programming Language :: Python :: 3"]
@@ -66,12 +61,18 @@ repository = "https://github.com/jnoortheen/arger"
 documentation = "https://arger.readthedocs.io"
 
 
-[tool.pdm.scripts]
-post_install = "pre-commit install"
+[tool.ruff.lint]
+ignore = [
+    "E402", # top level imports
+]
+
+[tool.poe.tasks]
 clean-build = "rm -rf *.spec dist build"
 clean-docs = "rm -rf docs/*.png site"
 clean-test = "rm -rf .cache .pytest .coverage htmlcov"
 clean-install = "find $(PACKAGES) -name '__pycache__' -delete && rm -rf *.egg-info"
-clean = { composite = ["clean-build", "clean-docs", "clean-test", "clean-install"] }
+clean = ["clean-build", "clean-docs", "clean-test", "clean-install"]
 serve-docs = "mkdocs serve"
-lint = "mypy arger tests"
+format = "ruff check --fix ."
+typecheck = "mypy arger tests"
+lint = ["format", "typecheck"]

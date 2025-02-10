@@ -8,7 +8,12 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.8, 3.9, "3.10", "3.11"]
+        python-version:
+          - 3.9
+          - "3.10"
+          - 3.11
+          - 3.12
+          - 3.13
 
     steps:
     - uses: actions/checkout@v3
@@ -23,11 +28,11 @@ jobs:
     - name: Test with pytest
       run: pytest --cov=arger --cov-report=html --cov-report=term-missing:skip-covered
     - id: Coverage
-      if: matrix.python-version == 3.8
+      if: matrix.python-version == 3.12
       run: echo "##[set-output name=data;]$(python tasks.py show_coverage)"
     - name: coverage badge
       uses: RubbaBoy/BYOB@v1.3.0
-      if: matrix.python-version == 3.8
+      if: matrix.python-version == 3.12
       with:
         NAME: coverage
         LABEL: 'Coverage'

@@ -22,7 +22,7 @@ def args(cmd: str):
     return args
 
 
-def test_example(capsys, arger, args, expected: str):
+def test_example(capsys, pyfile, arger, args, expected: str):
     if "error" in expected or expected.startswith("usage:"):
         with pytest.raises(SystemExit):
             arger.run(*args, capture_sys=False)  # start function
@@ -39,7 +39,8 @@ def test_example(capsys, arger, args, expected: str):
     out = capture.err or capture.out
     assert out.split() == expected.split(), "".join(
         [
-            f"\ncmd: \n{args}",
+
+            f"\ncmd: {pyfile=} {args=}",
             f"\nout: \n{out}",
             f"\nexpected: \n{expected}",
         ]

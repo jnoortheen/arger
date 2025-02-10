@@ -1,7 +1,7 @@
 """Integration tests configuration file."""
 import re
 from pathlib import Path
-
+from typing import Iterator
 from nbformat import read
 from pytest import param
 
@@ -16,22 +16,19 @@ def parse_example(ipy_file: Path):
             py_file = ipy_file.with_name(cmd.split()[1])
             yield py_file, cmd, cell.outputs[0].text if cell.outputs else ""
 
-
-def get_examples():
+def get_examples() -> Iterator[tuple[Path, str, str]]:
     path = Path(__file__).parent.parent.joinpath("docs", "examples")
-    examples = []
     for file in path.rglob("*.ipynb"):
-        examples.extend(parse_example(file))
-    return examples
+        yield from parse_example(file)
 
 
 def get_example_params():
-    for py_file, cmd, output in get_examples():  # type: (Path, str, str)
+    for py_file, cmd, output in get_examples():
         cmds = cmd.split()
         cmds.pop(0)
         cmds.pop(0)
         cmds.insert(0, py_file.name)
-        yield param(py_file, cmd, output, id="-".join(cmds).replace('.', ''))
+        yield param(py_file, cmd, output, id="-".join(cmds).replace('.', '_'))
 
 
 # parameterize tests from examples directory
