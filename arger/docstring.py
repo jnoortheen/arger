@@ -6,7 +6,7 @@ import typing as tp
 
 class ParamDocTp(tp.NamedTuple):
     type_hint: tp.Any
-    flags: tp.Tuple[str, ...]
+    flags: tuple[str, ...]
     doc: str
 
     @classmethod
@@ -16,8 +16,8 @@ class ParamDocTp(tp.NamedTuple):
         Examples:
             ''':param arg1: -a --arg this is the document'''
         """
-        doc_parts: tp.List[str] = []
-        flags: tp.List[str] = []
+        doc_parts: list[str] = []
+        flags: list[str] = []
         for part in doc.split():
             if part.startswith(flag_symbol) and not doc_parts:
                 # strip both comma and empty space
@@ -31,7 +31,7 @@ class ParamDocTp(tp.NamedTuple):
 class DocstringTp(tp.NamedTuple):
     description: str
     epilog: str
-    params: tp.Dict[str, ParamDocTp]
+    params: dict[str, ParamDocTp]
 
 
 class DocstringParser:
@@ -41,7 +41,7 @@ class DocstringParser:
     section_ptrn: tp.Pattern
     param_ptrn: tp.Pattern
 
-    _parsers: tp.List["DocstringParser"] = []
+    _parsers: list["DocstringParser"] = []
 
     def __init_subclass__(cls, **_):
         # Cache costly init phase per session.
@@ -73,14 +73,14 @@ class NumpyDocParser(DocstringParser):
         self.section_ptrn = re.compile(r"\n\s*(?P<section>\w+)\n\s*[-]+\n+")
         self.param_ptrn = re.compile(r"^(?P<param>\w+)[ \t]*:?[ \t]*(?P<type>\w+)?")
 
-    def get_rest_of_section(self, params: str) -> tp.Tuple[str, str]:
+    def get_rest_of_section(self, params: str) -> tuple[str, str]:
         other_sect = self.section_ptrn.search(params)
         if other_sect:
             pos = other_sect.start()
             return params[pos:].strip(), params[:pos]
         return "", params
 
-    def parse_params(self, params: str) -> tp.Dict[str, ParamDocTp]:
+    def parse_params(self, params: str) -> dict[str, ParamDocTp]:
         docs = []
         for line in params.splitlines():
             match = self.param_ptrn.search(line)
@@ -125,7 +125,7 @@ class RstDocParser(DocstringParser):
         self.section_ptrn = re.compile(r"\n:[\w]+")  # matches any start of the section
         self.param_ptrn = re.compile(r"^[ ]+(?P<tp_param>.+):[ ]*(?P<doc>[\s\S]+)")
 
-    def parse_doc(self, line: str, params: tp.Dict[str, ParamDocTp]):
+    def parse_doc(self, line: str, params: dict[str, ParamDocTp]):
         match = self.param_ptrn.match(line)
         if match:
             tp_param, doc = match.groups()  # type: str, str
@@ -140,7 +140,7 @@ class RstDocParser(DocstringParser):
         lines = self.pattern.split(doc)
         long_desc = lines.pop(0)
         epilog = ""
-        params: tp.Dict[str, ParamDocTp] = {}
+        params: dict[str, ParamDocTp] = {}
         for idx, lin in enumerate(lines):
             sections = self.section_ptrn.split(lin, maxsplit=1)
             if idx + 1 == len(lines) and len(sections) > 1:

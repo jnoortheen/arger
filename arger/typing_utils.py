@@ -47,9 +47,8 @@ def unpack_type(tp, default=str) -> Any:
         type inside the container type
     """
     args = get_inner_args(tp)
-    if args:
-        if str(args[0]) not in {"~T", "typing.Any"}:
-            return args[0]
+    if args and str(args[0]) not in {"~T", "typing.Any"}:
+        return args[0]
     return default
 
 

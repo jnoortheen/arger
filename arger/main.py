@@ -21,7 +21,7 @@ class FlagsGenerator:
 
     def __init__(self, prefix: str):
         self.prefix = prefix
-        self.used_short_options: tp.Set[str] = set()
+        self.used_short_options: set[str] = set()
 
     def generate(self, param_name: str) -> tp.Iterator[str]:
         long_flag = (self.prefix * 2) + param_name.replace("_", "-")
@@ -40,13 +40,13 @@ class Argument:
     def __init__(
         self,
         *,
-        type: tp.Union[tp.Callable[[str], tp_utils.T], ap.FileType] = None,
-        metavar: str = None,
-        required: bool = None,
-        nargs: tp.Union[int, str] = None,
+        type: tp.Optional[tp.Union[tp.Callable[[str], tp_utils.T], ap.FileType]] = None,
+        metavar: tp.Optional[str] = None,
+        required: tp.Optional[bool] = None,
+        nargs: tp.Optional[tp.Union[int, str]] = None,
         const: tp.Any = None,
-        choices: tp.Iterable[tp.Any] = None,
-        action: tp.Union[str, tp.Type[ap.Action]] = None,
+        choices: tp.Optional[tp.Iterable[tp.Any]] = None,
+        action: tp.Optional[tp.Union[str, type[ap.Action]]] = None,
         flags: tp.Sequence[str] = (),
         **kwargs: tp.Any,
     ):
@@ -205,7 +205,7 @@ class Arger(ap.ArgumentParser):
         version: tp.Optional[str] = None,
         sub_parser_title="commands",
         formatter_class=ap.ArgumentDefaultsHelpFormatter,
-        exceptions_to_catch: tp.Sequence[tp.Type[Exception]] = (),
+        exceptions_to_catch: tp.Sequence[type[Exception]] = (),
         _doc_str: tp.Optional[DocstringTp] = None,
         _level=0,
         **kwargs,
@@ -235,7 +235,7 @@ class Arger(ap.ArgumentParser):
         self.sub_parser_title = sub_parser_title
         self.sub_parser: tp.Optional[ap._SubParsersAction] = None
 
-        self.args: tp.Dict[str, Argument] = OrderedDict()
+        self.args: dict[str, Argument] = OrderedDict()
         docstr = DocstringParser.parse(func) if _doc_str is None else _doc_str
         kwargs.setdefault("description", docstr.description)
         kwargs.setdefault("epilog", docstr.epilog)
@@ -342,7 +342,7 @@ class Arger(ap.ArgumentParser):
             return _wrapper
         return _wrapper(func)
 
-    def add_commands(self, *func: tp.Callable) -> tp.Tuple["Arger", ...]:
+    def add_commands(self, *func: tp.Callable) -> tuple["Arger", ...]:
         """Add multiple sub-commands to the main command at once"""
         return tuple(self.add_cmd(fn) for fn in func)
 
@@ -369,7 +369,7 @@ class Arger(ap.ArgumentParser):
         return self.func(*args, **kwargs) if self.func else None
 
 
-def get_nargs(typ: tp.Any) -> tp.Tuple[tp.Any, tp.Union[int, str]]:
+def get_nargs(typ: tp.Any) -> tuple[tp.Any, tp.Union[int, str]]:
     inner = tp_utils.unpack_type(typ)
     if tp_utils.is_tuple(typ) and typ != tuple and tp_utils.get_inner_args(typ):
         args = tp_utils.get_inner_args(typ)
