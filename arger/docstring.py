@@ -41,7 +41,7 @@ class DocstringParser:
     section_ptrn: tp.Pattern
     param_ptrn: tp.Pattern
 
-    _parsers: list["DocstringParser"] = []
+    _parsers: tp.ClassVar[list["DocstringParser"]] = []
 
     def __init_subclass__(cls, **_):
         # Cache costly init phase per session.
