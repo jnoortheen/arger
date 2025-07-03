@@ -1,7 +1,8 @@
 import types
+import typing
 from enum import Enum
 from inspect import isclass
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar, Union, get_args
 
 
 def get_origin(tp):
@@ -26,13 +27,6 @@ def match_types(tp, exp_typ) -> bool:
     return False
 
 
-ARGS = "__args__"
-
-
-def get_inner_args(tp):
-    return getattr(tp, ARGS, ())
-
-
 def unpack_type(tp, default=str) -> Any:
     """Unpack subscripted type for use with argparser.
 
@@ -43,7 +37,7 @@ def unpack_type(tp, default=str) -> Any:
     Returns:
         type inside the container type
     """
-    args = get_inner_args(tp)
+    args = get_args(tp)
     if args and str(args[0]) not in {"~T", "typing.Any"}:
         return args[0]
     return default
@@ -63,24 +57,24 @@ def is_literal(tp):
     return match_types(tp, ".Literal")
 
 
-def has_annotated(typ):
-    return ".Annotated" in str(typ)
+def has_annotated(typ) -> bool:
+    return typing.get_origin(typ) is typing.Annotated
 
 
 def get_literal_params(typ):
-    params = tuple(get_inner_args(typ))
+    params = tuple(get_args(typ))
     factory_type = type(params[0]) if params else str
     return params, factory_type
 
 
-def is_tuple(tp):
+def is_tuple(tp) -> bool:
     return match_types(tp, tuple)
 
 
-def is_optional(tp):
+def is_optional(tp) -> bool:
     """Check that tp = typing.Optional[typ1]"""
     if match_types(tp, Union) or isinstance(tp, types.UnionType):
-        args = get_inner_args(tp)
+        args = get_args(tp)
         if len(args) == 2:
             return type(None) in args
     return False
@@ -101,7 +95,7 @@ def cast(tp, val) -> Any:
 
     if is_seq_container(origin):
         val = origin(val)
-        args = get_inner_args(tp)
+        args = get_args(tp)
         if (
             origin
             in {

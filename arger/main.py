@@ -366,7 +366,7 @@ class Arger(ap.ArgumentParser):
 
 def get_nargs(typ: tp.Any) -> tuple[tp.Any, int | str]:
     inner = tp_utils.unpack_type(typ)
-    if tp_utils.is_tuple(typ) and (args := tp_utils.get_inner_args(typ)):
+    if tp_utils.is_tuple(typ) and (args := tp.get_args(typ)):
         inner = inner if len(set(args)) == 1 else str
         return inner, "+" if (... in args) else len(args)
     return inner, "*"
@@ -393,6 +393,8 @@ def get_type_kwargs(typ, **kwargs):
     {'nargs': '+', 'type': <class 'str'>}
     >>> get_type_kwargs(tuple[int, float, complex, str])
     {'nargs': 4, 'type': <class 'str'>}
+    >>> get_type_kwargs(tp.Annotated[str, Argument(metavar="var")])
+    {'type': <class 'str'>}
     """
     factory_type = tp_utils.get_origin(typ)
 
