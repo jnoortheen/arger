@@ -46,14 +46,6 @@ name = "arger"
 source = { editable = "." }
 
 [package.optional-dependencies]
-dev = [
-    { name = "better-exceptions" },
-    { name = "git-changelog" },
-    { name = "ipython", version = "8.18.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
-    { name = "ipython", version = "8.32.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
-    { name = "jupyter" },
-    { name = "tox" },
-]
 doc = [
     { name = "mkdocs" },
     { name = "mkdocs-material" },
@@ -63,12 +55,9 @@ doc = [
     { name = "pymdown-extensions" },
     { name = "pytkdocs" },
 ]
-lint = [
-    { name = "mypy" },
-    { name = "ruff" },
-]
 test = [
     { name = "freezegun" },
+    { name = "mypy" },
     { name = "nbformat" },
     { name = "pytest" },
     { name = "pytest-cov" },
@@ -76,20 +65,28 @@ test = [
     { name = "pytest-expecter" },
     { name = "pytest-lazy-fixtures" },
     { name = "pytest-random" },
+    { name = "ruff" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "arger", extra = ["test"] },
+    { name = "better-exceptions" },
+    { name = "git-changelog" },
+    { name = "ipython", version = "8.18.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
+    { name = "ipython", version = "8.32.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
+    { name = "jupyter" },
+    { name = "tox" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "better-exceptions", marker = "extra == 'dev'" },
     { name = "freezegun", marker = "extra == 'test'" },
-    { name = "git-changelog", marker = "extra == 'dev'" },
-    { name = "ipython", marker = "extra == 'dev'" },
-    { name = "jupyter", marker = "extra == 'dev'" },
     { name = "mkdocs", marker = "extra == 'doc'" },
     { name = "mkdocs-material", marker = "extra == 'doc'" },
     { name = "mkdocstrings", marker = "extra == 'doc'" },
     { name = "mknotebooks", marker = "extra == 'doc'" },
-    { name = "mypy", marker = "extra == 'lint'" },
+    { name = "mypy", marker = "extra == 'test'" },
     { name = "nbformat", marker = "extra == 'test'" },
     { name = "pygments", marker = "extra == 'doc'" },
     { name = "pymdown-extensions", marker = "extra == 'doc'" },
@@ -100,10 +97,19 @@ requires-dist = [
     { name = "pytest-lazy-fixtures", marker = "extra == 'test'" },
     { name = "pytest-random", marker = "extra == 'test'" },
     { name = "pytkdocs", marker = "extra == 'doc'" },
-    { name = "ruff", marker = "extra == 'lint'" },
-    { name = "tox", marker = "extra == 'dev'" },
+    { name = "ruff", marker = "extra == 'test'" },
 ]
-provides-extras = ["dev", "doc", "lint", "test"]
+provides-extras = ["doc", "test"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "arger", extras = ["test"] },
+    { name = "better-exceptions" },
+    { name = "git-changelog" },
+    { name = "ipython" },
+    { name = "jupyter" },
+    { name = "tox" },
+]
 
 [[package]]
 name = "argon2-cffi"

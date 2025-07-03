@@ -187,7 +187,7 @@ class Argument:
         if default is not None and typ is _EMPTY:
             typ = type(default)
 
-        if typ == bool:
+        if typ is bool:
             self.kwargs["action"] = "store_true" if default is False else "store_false"
         else:
             self._update_type(typ)
@@ -371,7 +371,7 @@ class Arger(ap.ArgumentParser):
 
 def get_nargs(typ: tp.Any) -> tuple[tp.Any, tp.Union[int, str]]:
     inner = tp_utils.unpack_type(typ)
-    if tp_utils.is_tuple(typ) and typ != tuple and tp_utils.get_inner_args(typ):
+    if tp_utils.is_tuple(typ) and typ is tuple and tp_utils.get_inner_args(typ):
         args = tp_utils.get_inner_args(typ)
         inner = inner if len(set(args)) == 1 else str
         return inner, "+" if (... in args) else len(args)

@@ -1,11 +1,4 @@
 [project.optional-dependencies]
-dev = [
-    "ipython",
-    "tox",
-    "jupyter",
-    "better-exceptions",
-    "git-changelog",
-]
 test = [
     "pytest",
     "pytest-cov",
@@ -26,6 +19,16 @@ doc = [
     "mknotebooks",
     "pymdown-extensions",
     "pygments",
+]
+
+[dependency-groups]
+dev = [
+    "ipython",
+    "tox",
+    "jupyter",
+    "better-exceptions",
+    "git-changelog",
+    "arger[test]",
 ]
 
 [tool.pdm.build]
