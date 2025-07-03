@@ -40,13 +40,13 @@ class Argument:
     def __init__(
         self,
         *,
-        type: tp.Optional[tp.Union[tp.Callable[[str], tp_utils.T], ap.FileType]] = None,
-        metavar: tp.Optional[str] = None,
-        required: tp.Optional[bool] = None,
-        nargs: tp.Optional[tp.Union[int, str]] = None,
+        type: tp.Callable[[str], tp_utils.T] | ap.FileType | None = None,
+        metavar: str | None = None,
+        required: bool | None = None,
+        nargs: int | str | None = None,
         const: tp.Any = None,
-        choices: tp.Optional[tp.Iterable[tp.Any]] = None,
-        action: tp.Optional[tp.Union[str, type[ap.Action]]] = None,
+        choices: tp.Iterable[tp.Any] | None = None,
+        action: str | type[ap.Action] | None = None,
         flags: tp.Sequence[str] = (),
         **kwargs: tp.Any,
     ):
@@ -119,7 +119,7 @@ class Argument:
     def create(
         cls,
         param: inspect.Parameter,
-        pdoc: tp.Optional[ParamDocTp],
+        pdoc: ParamDocTp | None,
         option_generator: FlagsGenerator,
     ) -> "Argument":
         hlp = pdoc.doc if pdoc else ""
@@ -198,12 +198,12 @@ class Arger(ap.ArgumentParser):
 
     def __init__(
         self,
-        func: tp.Optional[tp.Callable] = None,
-        version: tp.Optional[str] = None,
+        func: tp.Callable | None = None,
+        version: str | None = None,
         sub_parser_title="commands",
         formatter_class=ap.ArgumentDefaultsHelpFormatter,
         exceptions_to_catch: tp.Sequence[type[Exception]] = (),
-        _doc_str: tp.Optional[DocstringTp] = None,
+        _doc_str: DocstringTp | None = None,
         _level=0,
         **kwargs,
     ):
@@ -230,7 +230,7 @@ class Arger(ap.ArgumentParser):
         kwargs.setdefault("formatter_class", formatter_class)
 
         self.sub_parser_title = sub_parser_title
-        self.sub_parser: tp.Optional[ap._SubParsersAction] = None
+        self.sub_parser: ap._SubParsersAction | None = None
 
         self.args: dict[str, Argument] = OrderedDict()
         docstr = DocstringParser.parse(func) if _doc_str is None else _doc_str
@@ -364,7 +364,7 @@ class Arger(ap.ArgumentParser):
         return self.func(*args, **kwargs) if self.func else None
 
 
-def get_nargs(typ: tp.Any) -> tuple[tp.Any, tp.Union[int, str]]:
+def get_nargs(typ: tp.Any) -> tuple[tp.Any, int | str]:
     inner = tp_utils.unpack_type(typ)
     if tp_utils.is_tuple(typ) and (args := tp_utils.get_inner_args(typ)):
         inner = inner if len(set(args)) == 1 else str
@@ -380,6 +380,20 @@ def cast_enum(enum_cls, attr):
 
 
 def get_type_kwargs(typ, **kwargs):
+    """
+    >>> get_type_kwargs(int)
+    {'type': <class 'int'>}
+    >>> get_type_kwargs(tp.Optional[str])
+    {'nargs': '?', 'type': <class 'str'>}
+    >>> get_type_kwargs(str|None)
+    {'nargs': '?', 'type': <class 'str'>}
+    >>> get_type_kwargs(tuple)
+    {'nargs': '*', 'type': <class 'str'>}
+    >>> get_type_kwargs(tuple[int, ...])
+    {'nargs': '+', 'type': <class 'str'>}
+    >>> get_type_kwargs(tuple[int, float, complex, str])
+    {'nargs': 4, 'type': <class 'str'>}
+    """
     factory_type = tp_utils.get_origin(typ)
 
     if tp_utils.is_optional(typ):

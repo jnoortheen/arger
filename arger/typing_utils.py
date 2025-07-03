@@ -1,3 +1,4 @@
+import types
 from enum import Enum
 from inspect import isclass
 from typing import Any, TypeVar, Union
@@ -78,7 +79,7 @@ def is_tuple(tp):
 
 def is_optional(tp):
     """Check that tp = typing.Optional[typ1]"""
-    if match_types(tp, Union):
+    if match_types(tp, Union) or isinstance(tp, types.UnionType):
         args = get_inner_args(tp)
         if len(args) == 2:
             return type(None) in args

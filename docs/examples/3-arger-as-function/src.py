@@ -1,5 +1,3 @@
-from typing import Optional
-
 from arger import Arger
 from tests.utils import _reprint
 
@@ -7,7 +5,7 @@ ctx = {}
 
 
 @Arger.init(prog="pytest")  # any argument to the parser
-def arger(verbose=False, log=False, log_file: Optional[str] = None):
+def arger(verbose=False, log=False, log_file: str | None = None):
     """App Description goes here.
 
     :param verbose: verbose output
@@ -41,7 +39,7 @@ def remove(name: str):
 
 
 @arger.add_cmd
-def list(filter: Optional[str]):
+def list(filter: str | None):
     """List all tests."""
     _reprint(**locals(), container=container, **ctx)
 

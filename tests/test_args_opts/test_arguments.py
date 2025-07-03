@@ -26,8 +26,9 @@ Num3 = Literal["one", "two"]
         ("a_deci", Decimal, "25", 25.0),
         ("a_cmplx", complex, "4+8j", 4 + 8j),
         ("a_str", str, "new-str", "new-str"),
-        ("optional", Optional[str], "", None),
-        ("optional", Optional[str], "a-str", "a-str"),
+        ("optional", Optional[str], "", None),  # noqa: UP045
+        ("optional", Optional[str], "a-str", "a-str"),  # noqa: UP045
+        ("optional", str | None, "a-str", "a-str"),
         ("enum", Num, "one", Num.one),
         ("enum", Num, "two", Num.two),
         ("enum", Num2, "one", Num2.one),

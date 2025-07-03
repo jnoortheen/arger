@@ -48,7 +48,7 @@ class DocstringParser:
         cls._parsers.append(cls())
 
     @classmethod
-    def parse(cls, func: tp.Optional[tp.Callable]) -> DocstringTp:
+    def parse(cls, func: tp.Callable | None) -> DocstringTp:
         doc = (inspect.getdoc(func) or "") if func else ""
         if doc:
             for parser in cls._parsers:
