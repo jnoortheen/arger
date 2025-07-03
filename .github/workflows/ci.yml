@@ -9,11 +9,6 @@ on:
       - 'v*'
   pull_request:
   workflow_dispatch:
-  workflow_run:
-    workflows:
-      - "Release PR"
-    types:
-      - completed
 
 permissions:
   contents: read
@@ -58,7 +53,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   release:
-    if: ${{ github.event_name == 'workflow_run' && github.event.workflow.conclusion == 'success' }}
     name: Create Release
     needs: [test]
     runs-on: ubuntu-latest
@@ -74,16 +68,22 @@ jobs:
           python-version: 3.11
           cache: 'pip'
           cache-dependency-path: 'pyproject.toml'
+      - id: check_tag
+        run: |
+          tag=$(git tag --points-at HEAD | head -n 1)
+          echo "tag=$tag" >> $GITHUB_OUTPUT
       - name: Build
         run: |
           pip install build
           pip install '.[doc]'
           python -m build .
       - name: Publish package
+        if: steps.check_tag.outputs.tag != ''
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           skip-existing: true
       - name: Deploy docs
+        if: steps.check_tag.outputs.tag != ''
         run: mkdocs gh-deploy --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
