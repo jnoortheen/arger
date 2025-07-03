@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.0.2](https://github.com/jnoortheen/arger/compare/v2.0.1...v2.0.2) (2025-07-03)
+
+
+### Bug Fixes
+
+* PyPI release automation ([4d6227f](https://github.com/jnoortheen/arger/commit/4d6227f31fc997a8cac9221a156e0d86ca089885))
+
 ## [2.0.1](https://github.com/jnoortheen/arger/compare/v2.0.0...v2.0.1) (2025-07-03)
 
 
