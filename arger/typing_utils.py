@@ -1,4 +1,3 @@
-# pylint: disable = W0212
 from enum import Enum
 from inspect import isclass
 from typing import Any, TypeVar, Union
@@ -6,26 +5,23 @@ from typing import Any, TypeVar, Union
 
 def get_origin(tp):
     """Return the python class for the GenericAlias. Dict->dict, List->list..."""
-    if hasattr(tp, "_gorg"):
-        return tp._gorg
     if getattr(tp, "__origin__", None) is not None:
         return tp.__origin__
     return tp
 
 
-def match_types(tp, *matches) -> bool:
+def match_types(tp, exp_typ) -> bool:
     """Match the given type to list of other types.
 
     :param tp:
     :param matches:
     """
     origin = get_origin(tp)
-    for m in matches:
-        if isinstance(m, str):  # instead of imported class use the class names
-            if m in str(origin):
-                return True
-        elif get_origin(m) is origin:
+    if isinstance(exp_typ, str):  # instead of imported class use the class names
+        if exp_typ in str(origin):
             return True
+    elif get_origin(exp_typ) is origin:
+        return True
     return False
 
 

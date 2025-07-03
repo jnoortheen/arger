@@ -129,6 +129,7 @@ class Argument:
             arg = param.annotation
         elif tp_utils.has_annotated(param.annotation):
             typ, arg = tp_utils.get_annotated_args(param.annotation)
+            assert isinstance(arg, Argument), "Annotation should be an `arger.Argument` instance."
             param = param.replace(annotation=typ)
 
         if arg is None:
@@ -254,7 +255,7 @@ class Arger(ap.ArgumentParser):
         if not self.func:
             return
         option_generator = FlagsGenerator(self.prefix_chars)
-        sign = inspect.signature(self.func)
+        sign = inspect.signature(self.func, eval_str=True)
 
         for param in sign.parameters.values():
             param_doc = docstr.params.get(param.name)
@@ -371,8 +372,7 @@ class Arger(ap.ArgumentParser):
 
 def get_nargs(typ: tp.Any) -> tuple[tp.Any, tp.Union[int, str]]:
     inner = tp_utils.unpack_type(typ)
-    if tp_utils.is_tuple(typ) and typ is tuple and tp_utils.get_inner_args(typ):
-        args = tp_utils.get_inner_args(typ)
+    if tp_utils.is_tuple(typ) and (args := tp_utils.get_inner_args(typ)):
         inner = inner if len(set(args)) == 1 else str
         return inner, "+" if (... in args) else len(args)
     return inner, "*"
@@ -399,7 +399,7 @@ def get_type_kwargs(typ, **kwargs):
         kwargs.setdefault("choices", list(factory_type))
         factory_type = functools.partial(cast_enum, factory_type)
     elif tp_utils.is_literal(factory_type):
-        params, factory_type = tp_utils.get_literal_params(typ)
+        params, factory_type = tp_utils.get_literal_params(factory_type)
         if params:
             kwargs.setdefault("choices", params)
 
