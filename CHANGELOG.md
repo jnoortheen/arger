@@ -4,6 +4,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.0.0](https://github.com/jnoortheen/arger/compare/v1.4.8...v2.0.0) (2025-07-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop python 3.9 support
+
+### Features
+
+* support `X|None` optionals ([93a3c5f](https://github.com/jnoortheen/arger/commit/93a3c5f87b468a066ca0e02c81978ba7b33c6713))
+* update release action ([fe93827](https://github.com/jnoortheen/arger/commit/fe938279ce9dd3b5ef518011e1cb8a49d2139f11))
+
+
+### Bug Fixes
+
+* **CI:** test action ([b9c3d1a](https://github.com/jnoortheen/arger/commit/b9c3d1a82b8833fbceb7643dda146b8c432b6540))
+* failing tests ([8188486](https://github.com/jnoortheen/arger/commit/818848648c7c5bad7e30464c408c2ba699e3b7e6))
+* ruff lint ([286d0b5](https://github.com/jnoortheen/arger/commit/286d0b5740502b328c16317140e3ae4965986294))
+* use new pytest-lazy-fixtures ([b29d923](https://github.com/jnoortheen/arger/commit/b29d923fda1c63e6cc13d5866a0bda63301315f0))
+
+
+### Documentation
+
+* Update README.md ([6fb957b](https://github.com/jnoortheen/arger/commit/6fb957b347e9b6d4f110eb12c5061bfe1febb766))
+
+
+### Code Refactoring
+
+* drop python 3.9 support ([8a488cb](https://github.com/jnoortheen/arger/commit/8a488cbf55ba4f283888c106f5137da0b8fbffd7))
+
 ## [v1.4.8](https://github.com/jnoortheen/arger/releases/tag/v1.4.8) - 2022-11-09
 
 <small>[Compare with v1.4.7](https://github.com/jnoortheen/arger/compare/v1.4.7...v1.4.8)</small>
