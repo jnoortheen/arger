@@ -24,7 +24,8 @@ jobs:
         cache: 'pip'
         cache-dependency-path: 'pyproject.toml'
     - name: Install dependencies
-      run: pip install -e '.[test]'
+      run: pip install -e '.[test]' poethepoet
+    - run: poe lint
     - name: Test with pytest
       run: pytest --cov=arger --cov-report=html --cov-report=term-missing:skip-covered
     - id: Coverage
@@ -39,50 +40,3 @@ jobs:
         STATUS: ${{ steps.Coverage.outputs.data }}
         COLOR: 42a7f5
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  release:
-    if: startsWith(github.ref, 'refs/tags/v')
-    name: Create Release
-    needs: [test]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: changelog
-        uses: scottbrenner/generate-changelog-action@master
-        id: Changelog
-        env:
-          REPO: ${{ github.repository }}
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            ${{ steps.Changelog.outputs.changelog }}
-          draft: false
-          prerelease: false
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.11
-          cache: 'pip'
-          cache-dependency-path: 'pyproject.toml'
-      - name: Build
-        run: |
-          pip install build
-          pip install '.[doc]'
-          python -m build .
-      - name: Publish package
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          password: ${{ secrets.PYPI_TOKEN }}
-      - name: Deploy docs
-        run: mkdocs gh-deploy --force
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

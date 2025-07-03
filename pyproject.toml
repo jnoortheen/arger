@@ -6,10 +6,6 @@ dev = [
     "better-exceptions",
     "git-changelog",
 ]
-lint = [
-    "pydocstyle",
-    "pylint>=2.11",
-]
 test = [
     "pytest",
     "pytest-cov",
@@ -19,6 +15,8 @@ test = [
     "freezegun",
     "pytest-lazy-fixtures",
     "nbformat",
+    "ruff",
+    "mypy",
 ]
 doc = [
     "mkdocs",
@@ -32,10 +30,13 @@ doc = [
 
 [tool.pdm.build]
 includes = []
+
+[tool.pdm.version]
+source = "scm"
+
 [build-system]
 requires = ["pdm-pep517>=1.0.0"]
 build-backend = "pdm.pep517.api"
-
 
 [project]
 # PEP 621 project metadata
@@ -46,7 +47,7 @@ authors = [
 license = { text = "MIT" }
 requires-python = ">=3.9"
 name = "arger"
-version = "1.4.8"
+dynamic = ["version"]
 description = "Create argparser automatically from function signatures"
 readme = "README.md"
 keywords = []
