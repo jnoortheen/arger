@@ -1,0 +1,38 @@
+name: publish
+
+on:
+  release:
+    types: [created]
+  workflow_dispatch:
+jobs:
+  publish:
+    name: Publish Package
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    permissions:
+      id-token: write
+      attestations: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+          cache: 'pip'
+          cache-dependency-path: 'pyproject.toml'
+      - name: Build
+        run: |
+          pip install build
+          pip install '.[doc]'
+          python -m build .
+      - name: Publish package
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          skip-existing: true
+      - name: Deploy docs
+        run: mkdocs gh-deploy --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

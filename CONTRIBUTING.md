@@ -42,8 +42,4 @@ $ pdm run serve-docs
 
 # Release
 
-To create a new release
-
-```text
-$ python tasks.py release
-```
+Create a new release from GitHub UI; this will upload the package to PyPI and deploy the documentation.
