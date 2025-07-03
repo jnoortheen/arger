@@ -9,6 +9,14 @@ on:
       - 'v*'
   pull_request:
   workflow_dispatch:
+  workflow_run:
+    workflows:
+      - "Release PR"
+    types:
+      - completed
+
+permissions:
+  contents: read
 
 jobs:
   test:
@@ -50,10 +58,13 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   release:
-    if: ${{ startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch' }}
+    if: ${{ github.event_name == 'workflow_run' && github.event.workflow.conclusion == 'success' }}
     name: Create Release
     needs: [test]
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      attestations: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -71,7 +82,7 @@ jobs:
       - name: Publish package
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          password: ${{ secrets.PYPI_TOKEN }}
+          skip-existing: true
       - name: Deploy docs
         run: mkdocs gh-deploy --force
         env:
