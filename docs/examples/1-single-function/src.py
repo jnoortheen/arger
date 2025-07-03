@@ -17,8 +17,8 @@ def main(param1: int, param2: str, _namespace_: Namespace, kw1=None, kw2=False):
 
 arger = Arger(
     main,
-    prog='pytest',  # for testing purpose. otherwise not required
+    prog="pytest",  # for testing purpose. otherwise not required
 )
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     arger.run()

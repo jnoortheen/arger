@@ -1,7 +1,7 @@
 from arger import Arger
 from tests.utils import _reprint
 
-arger = Arger(prog='pytest', description="App Description goes here")
+arger = Arger(prog="pytest", description="App Description goes here")
 
 container = []
 
@@ -33,5 +33,5 @@ def list():
     _reprint(**locals(), container=container)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     arger.run()

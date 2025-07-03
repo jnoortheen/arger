@@ -11,7 +11,7 @@ All keyword arguments (ones with default value) in the function become flags/opt
 
 ### 3. type annotations:
 used to determine the type and action of the arguments.
-The function will be dispatched with values converted to the respective types.  
+The function will be dispatched with values converted to the respective types.
 **Note**: Use `arger.Argument` class as annotation in case you want to pass values to `parser.add_argument`.
 
 For example:

@@ -61,7 +61,7 @@ def func_rst():
 
 
 @pytest.mark.parametrize(
-    'fn',
+    "fn",
     [
         func_numpy,
         func_google,
@@ -71,23 +71,23 @@ def func_rst():
 def test_docstring_parser(fn):
     result = DocstringParser.parse(fn)
     assert result.description == "Summary line.\n\nExtended description of function."
-    assert list(result.params) == ['arg1', 'arg2', 'arg3', 'arg4']
+    assert list(result.params) == ["arg1", "arg2", "arg3", "arg4"]
     assert list(result.params.values()) == [
         ParamDocTp.init(
-            type_hint='int',
-            doc='Description of arg1',
+            type_hint="int",
+            doc="Description of arg1",
         ),
         ParamDocTp.init(
-            type_hint='str',
-            doc='Description of arg2 a line that extends to next line',
-        ),
-        ParamDocTp.init(
-            type_hint=None,
-            doc='arg3 without any type',
+            type_hint="str",
+            doc="Description of arg2 a line that extends to next line",
         ),
         ParamDocTp.init(
             type_hint=None,
-            doc='arg4 help content',
+            doc="arg3 without any type",
+        ),
+        ParamDocTp.init(
+            type_hint=None,
+            doc="arg4 help content",
         ),
     ]
-    assert 'Description of return value' in result.epilog
+    assert "Description of return value" in result.epilog

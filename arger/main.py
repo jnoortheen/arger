@@ -168,11 +168,7 @@ class Argument:
 
     def _update_type(self, typ: tp.Any):
         """Update type from annotation."""
-        if (
-            (typ is not _EMPTY)
-            and (not isinstance(typ, Argument))
-            and ("type" not in self.kwargs)
-        ):
+        if (typ is not _EMPTY) and (not isinstance(typ, Argument)) and ("type" not in self.kwargs):
             self.kwargs.setdefault("type", typ)
             if "action" not in self.kwargs:
                 self.kwargs["action"] = TypeAction
@@ -306,12 +302,10 @@ class Arger(ap.ArgumentParser):
         return _wrapper
 
     @tp.overload
-    def add_cmd(self, func: tp.Callable) -> "Arger":
-        ...
+    def add_cmd(self, func: tp.Callable) -> "Arger": ...
 
     @tp.overload
-    def add_cmd(self, func: None, **kwargs) -> tp.Callable[[tp.Callable], "Arger"]:
-        ...
+    def add_cmd(self, func: None, **kwargs) -> tp.Callable[[tp.Callable], "Arger"]: ...
 
     def add_cmd(self, func=None, **kwargs):
         """Create a sub-command from the function.

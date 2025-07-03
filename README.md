@@ -29,7 +29,7 @@ from arger import Arger
 
 def main(param1: int, param2: str, kw1=None, kw2=False):
     """Example function with types documented in the docstring.
-    
+
     Args:
         param1: The first parameter.
         param2: The second parameter.
@@ -83,17 +83,17 @@ $ python test.py 100 param2
     + [rst](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html)
 - Flags will be generated from parameter-name.
   1.  e.g. `def main(param: ...)` -> `-p, --param`
-  2.  If needed you could declare it inside docstring like `:param arg1: -a --arg this is the document`. 
-- one can use `Argument` class to pass any values to the 
+  2.  If needed you could declare it inside docstring like `:param arg1: -a --arg this is the document`.
+- one can use `Argument` class to pass any values to the
   [parser.add_argument](https://docs.python.org/3/library/argparse.html#the-add-argument-method) function
 - The decorated functions can be composed to form nested sub-commands of any level.
-- Most of the Standard types [supported](./tests/test_args_opts/test_arguments.py). 
+- Most of the Standard types [supported](./tests/test_args_opts/test_arguments.py).
   Please see [examples](./docs/examples/4-supported-types/src.py) for more supported types with examples.
 - No external dependency other than stdlib.
 
-> **_NOTE_** 
+> **_NOTE_**
 >  - `*args` supported but no `**kwargs` support yet.
->  - all optional arguments that start with underscore is not passed to `Parser`. 
+>  - all optional arguments that start with underscore is not passed to `Parser`.
 >    They are considered private to the function implementation.
 >    Some parameter names with special meaning
 >      - `_namespace_` -> to get the output from the `ArgumentParser.parse_args()`

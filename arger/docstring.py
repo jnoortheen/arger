@@ -91,10 +91,7 @@ class NumpyDocParser(DocstringParser):
             elif docs:
                 docs[-1][-1] += line
 
-        return {
-            param.strip("*"): ParamDocTp.init(tphint, doc)
-            for param, tphint, doc in docs
-        }
+        return {param.strip("*"): ParamDocTp.init(tphint, doc) for param, tphint, doc in docs}
 
     def _parse(self, doc: str) -> DocstringTp:
         desc, _, params = self.pattern.split(doc, maxsplit=1)

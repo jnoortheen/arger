@@ -10,7 +10,7 @@
         - __init__
         - add_cmd
         - run
-    
+
 ## Argument
 
 ::: arger.Argument
@@ -18,4 +18,3 @@
     selection:
       members:
         - __init__
-    

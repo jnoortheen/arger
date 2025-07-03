@@ -19,3 +19,4 @@ repos:
     rev: 'v1.16.1'  # Use the sha / tag you want to point at
     hooks:
       - id: mypy
+        pass_filenames: false

@@ -403,5 +403,3 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Add action to publish package ([e85fe08](https://github.com/jnoortheen/arger/commit/e85fe081cba967b5268d3bb80fbc4424a2e439b1) by Noortheen Raja).
 - Add github actions for testing and linting ([d9ea90d](https://github.com/jnoortheen/arger/commit/d9ea90d21aff1214c1b0d61639a1ca19ee7ff19d) by Noortheen Raja).
 - Add boilerplate from ([0e07f27](https://github.com/jnoortheen/arger/commit/0e07f27250630f02ddfb3d9cc515c724ef30395b) by Noortheen Raja).
-
-

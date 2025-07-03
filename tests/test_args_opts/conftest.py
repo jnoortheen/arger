@@ -10,8 +10,8 @@ from arger.main import FlagsGenerator
 
 
 @pytest.fixture
-def param_doc(hlp=''):
-    return ParamDocTp.init('', hlp)
+def param_doc(hlp=""):
+    return ParamDocTp.init("", hlp)
 
 
 @pytest.fixture
@@ -26,7 +26,7 @@ def add_arger():
 
 @pytest.fixture
 def gen_options():
-    return FlagsGenerator('-')
+    return FlagsGenerator("-")
 
 
 @pytest.fixture

@@ -5,14 +5,15 @@ from tests.utils import _reprint
 
 
 class Choice(Enum):
-    one = '1. One'
-    two = '2. Two'
+    one = "1. One"
+    two = "2. Two"
 
     def __str__(self):
         """by implementing this function one can control the enum-display in help string"""
         return self.name
 
-arger = Arger(prog='pytest', description="App Description goes here")
+
+arger = Arger(prog="pytest", description="App Description goes here")
 
 container = []
 
@@ -24,7 +25,7 @@ def cmd1(
     a_tuple: tuple[str, str, str],  # nargs: 3 -> consume 3
     a_var_tuple: tuple[str, ...],  # nargs: +  -> consume one or more
     an_enum=Choice.one,
-    optional_str='',
+    optional_str="",
     optional_int=0,
     optional_tpl=(),
 ):
@@ -49,5 +50,5 @@ def cmd2(
     _reprint(**locals())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     arger.run()

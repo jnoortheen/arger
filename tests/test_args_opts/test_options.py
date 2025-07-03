@@ -14,19 +14,19 @@ def parameter(name, default):
 
 
 @pytest.mark.parametrize(
-    'name, default, input, expected',
+    "name, default, input, expected",
     [
         # simple types
-        ('an_int', 10, '20', 20),
-        ('a_float', 10.0, '25', 25.0),
-        ('a_deci', Decimal('10.0'), '25', Decimal('25.0')),
-        ('a_cmplx', 2 + 3j, '4+8j', 4 + 8j),
-        ('a_str', 'a-str', 'new-str', 'new-str'),
-        ('true', True, '--true', False),
-        ('false', False, '--false', True),
+        ("an_int", 10, "20", 20),
+        ("a_float", 10.0, "25", 25.0),
+        ("a_deci", Decimal("10.0"), "25", Decimal("25.0")),
+        ("a_cmplx", 2 + 3j, "4+8j", 4 + 8j),
+        ("a_str", "a-str", "new-str", "new-str"),
+        ("true", True, "--true", False),
+        ("false", False, "--false", True),
         # container types
-        ('a_tuple', (), '1 2 3', ('1', '2', '3')),
-        ('a_list', [], '1 2 3', ['1', '2', '3']),
+        ("a_tuple", (), "1 2 3", ("1", "2", "3")),
+        ("a_list", [], "1 2 3", ["1", "2", "3"]),
     ],
 )
 def test_options(parser, argument, name, default, input, expected):

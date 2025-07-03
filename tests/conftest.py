@@ -1,4 +1,5 @@
 """Integration tests configuration file."""
+
 import re
 from collections.abc import Iterator
 from pathlib import Path
@@ -17,6 +18,7 @@ def parse_example(ipy_file: Path):
             py_file = ipy_file.with_name(cmd.split()[1])
             yield py_file, cmd, cell.outputs[0].text if cell.outputs else ""
 
+
 def get_examples() -> Iterator[tuple[Path, str, str]]:
     path = Path(__file__).parent.parent.joinpath("docs", "examples")
     for file in path.rglob("*.ipynb"):
@@ -29,7 +31,7 @@ def get_example_params():
         cmds.pop(0)
         cmds.pop(0)
         cmds.insert(0, py_file.name)
-        yield param(py_file, cmd, output, id="-".join(cmds).replace('.', '_'))
+        yield param(py_file, cmd, output, id="-".join(cmds).replace(".", "_"))
 
 
 # parameterize tests from examples directory

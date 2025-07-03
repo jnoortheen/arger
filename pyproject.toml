@@ -88,7 +88,7 @@ select = [
     "PLR2004",  # magic numbers in tests
     "S101",     # assert allowed in tests
     "UP006",
-    "UP035", 
+    "UP035",
     "UP036",
 ]
 "tasks.py" = [

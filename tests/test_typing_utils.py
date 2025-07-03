@@ -11,9 +11,7 @@ def list_type(request):
     return request.param
 
 
-@fixture(
-    params=[tuple, Tuple, Tuple[str], Tuple[str, str], Tuple[int], Tuple[int, ...]]
-)
+@fixture(params=[tuple, Tuple, Tuple[str], Tuple[str, str], Tuple[int], Tuple[int, ...]])
 def tuple_type(request):
     return request.param
 

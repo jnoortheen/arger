@@ -14,9 +14,7 @@ def main(param1: int, param2: str, kw1=None, kw2=False, *args: int):
 
 def test_parse_function():
     docs = Arger(func=main)
-    assert (
-        docs.description == "Example function with types documented in the docstring."
-    )
+    assert docs.description == "Example function with types documented in the docstring."
     exp_args = ["param1", "param2", "kw1", "kw2", "args"]
     assert list(docs.args) == exp_args
 

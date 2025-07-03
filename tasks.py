@@ -47,7 +47,7 @@ def release(
         "micro",
         "minor",
         "major",
-    ] = "micro"
+    ] = "micro",
 ):
     """Bump version, tag and push them.
 
