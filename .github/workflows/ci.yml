@@ -40,3 +40,31 @@ jobs:
         STATUS: ${{ steps.Coverage.outputs.data }}
         COLOR: 42a7f5
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    name: Create Release
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+          cache: 'pip'
+          cache-dependency-path: 'pyproject.toml'
+      - name: Build
+        run: |
+          pip install build
+          pip install '.[doc]'
+          python -m build .
+      - name: Publish package
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_TOKEN }}
+      - name: Deploy docs
+        run: mkdocs gh-deploy --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
