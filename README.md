@@ -1,6 +1,6 @@
 # Overview
 
-A wrapper around argparser to help build CLIs from functions. Uses type-hints extensively :snake:.
+A wrapper around stdlib [argparse](https://docs.python.org/3/library/argparse.html) to help build CLIs from functions using type-hints :snake:.
 
 [![PyPi Version](https://img.shields.io/pypi/v/arger.svg?style=flat)](https://pypi.python.org/pypi/arger)
 [![Python Version](https://img.shields.io/pypi/pyversions/arger.svg)](https://pypi.org/project/arger/)
@@ -87,9 +87,9 @@ $ python test.py 100 param2
 - one can use `Argument` class to pass any values to the 
   [parser.add_argument](https://docs.python.org/3/library/argparse.html#the-add-argument-method) function
 - The decorated functions can be composed to form nested sub-commands of any level.
-  
 - Most of the Standard types [supported](./tests/test_args_opts/test_arguments.py). 
   Please see [examples](./docs/examples/4-supported-types/src.py) for more supported types with examples.
+- No external dependency other than stdlib.
 
 > **_NOTE_** 
 >  - `*args` supported but no `**kwargs` support yet.
