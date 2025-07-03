@@ -2,7 +2,6 @@
 import shlex
 import subprocess as sp
 import sys
-from typing import Literal
 
 from arger import Arger
 
@@ -39,45 +38,6 @@ def prun(*cmd, **kwargs):
             status=c.returncode,
         )
     return c
-
-
-@arger.add_cmd
-def release(
-    typ: Literal[
-        "micro",
-        "minor",
-        "major",
-    ] = "micro",
-):
-    """Bump version, tag and push them.
-
-    Args:
-        typ: version bump as supported by `poetry version` command
-    """
-    prun("pdm", "bump", typ)
-    c = prun("pdm", "show", "--version")
-    version = c.stdout.decode().strip()
-
-    version_num = f"v{version}"
-    msg = f"chore: bump version to {version_num}"
-
-    # tagging the current commit in order to place the name correct in the changelog
-    prun(f"git tag {version_num}")
-
-    prun("git-changelog", ".", "-s", "angular", "-o", "CHANGELOG.md")
-    prun("git status")
-
-    answer = input(f"{msg}\nAdd to commit: [Y/n]?")
-    if answer.lower() in {"no", "n"}:
-        return
-    prun("git add .")
-    prun(f'git commit -m "{msg}"')
-
-    # using force to move the tag to the latest commit.
-    prun(f"git tag {version_num} --force")
-
-    prun("git push")
-    prun("git push --tags")
 
 
 class Devnull:
