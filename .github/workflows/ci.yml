@@ -52,10 +52,28 @@ jobs:
         COLOR: 42a7f5
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  check_tag:
+    name: Check Tag
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.check_tag.outputs.tag }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - id: check_tag
+        run: |
+          git fetch --tags
+          git tag --points-at HEAD
+          tag=$(git tag --points-at HEAD | head -n 1)
+          echo "tag=$tag" >> $GITHUB_OUTPUT
+
   release:
     name: Create Release
-    needs: [test]
+    needs: [test, check_tag]
     runs-on: ubuntu-latest
+    if: needs.check_tag.outputs.tag != '' || github.event_name == 'workflow_dispatch'
     permissions:
       id-token: write
       attestations: write
@@ -70,25 +88,16 @@ jobs:
           python-version: 3.11
           cache: 'pip'
           cache-dependency-path: 'pyproject.toml'
-      - id: check_tag
-        run: |
-          git fetch --tags
-          git tag --points-at HEAD
-          tag=$(git tag --points-at HEAD | head -n 1)
-          echo "tag=$tag" >> $GITHUB_OUTPUT
       - name: Build
-        if: steps.check_tag.outputs.tag != ''
         run: |
           pip install build
           pip install '.[doc]'
           python -m build .
       - name: Publish package
-        if: steps.check_tag.outputs.tag != ''
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           skip-existing: true
       - name: Deploy docs
-        if: steps.check_tag.outputs.tag != ''
         run: mkdocs gh-deploy --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
