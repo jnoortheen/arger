@@ -18,33 +18,33 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - "3.10"
           - 3.11
           - 3.12
           - 3.13
+          - 3.14
 
     steps:
-    - uses: actions/checkout@v3
-    - name: 'Set up Python ${{ matrix.python-version }}'
-      uses: 'actions/setup-python@v4'
-      with:
-        python-version: '${{ matrix.python-version }}'
-        cache: 'pip'
-        cache-dependency-path: 'pyproject.toml'
-    - name: Install dependencies
-      run: pip install -e '.[test]' poethepoet
-    - run: poe lint
-    - name: Test with pytest
-      run: pytest --cov=arger --cov-report=html --cov-report=term-missing:skip-covered
-    - id: Coverage
-      if: matrix.python-version == 3.12
-      run: echo "##[set-output name=data;]$(python tasks.py show_coverage)"
-    - name: coverage badge
-      uses: RubbaBoy/BYOB@v1.3.0
-      if: matrix.python-version == 3.12
-      with:
-        NAME: coverage
-        LABEL: 'Coverage'
-        STATUS: ${{ steps.Coverage.outputs.data }}
-        COLOR: 42a7f5
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v3
+      - name: "Set up Python ${{ matrix.python-version }}"
+        uses: "actions/setup-python@v4"
+        with:
+          python-version: "${{ matrix.python-version }}"
+          cache: "pip"
+          cache-dependency-path: "pyproject.toml"
+      - name: Install dependencies
+        run: pip install -e '.[test]' poethepoet
+      - run: poe lint
+      - name: Test with pytest
+        run: pytest --cov=arger --cov-report=html --cov-report=term-missing:skip-covered
+      - id: Coverage
+        if: matrix.python-version == 3.12
+        run: echo "##[set-output name=data;]$(python tasks.py show_coverage)"
+      - name: coverage badge
+        uses: RubbaBoy/BYOB@v1.3.0
+        if: matrix.python-version == 3.12
+        with:
+          NAME: coverage
+          LABEL: "Coverage"
+          STATUS: ${{ steps.Coverage.outputs.data }}
+          COLOR: 42a7f5
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
