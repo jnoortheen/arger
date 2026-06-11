@@ -11,6 +11,12 @@ jobs:
     permissions:
       id-token: write
       attestations: write
+      pages: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -20,8 +26,8 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: 3.11
-          cache: 'pip'
-          cache-dependency-path: 'pyproject.toml'
+          cache: "pip"
+          cache-dependency-path: "pyproject.toml"
       - name: Build
         run: |
           pip install build
@@ -31,7 +37,12 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           skip-existing: true
-      - name: Deploy docs
-        run: mkdocs gh-deploy --force
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build docs
+        run: mkdocs build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
