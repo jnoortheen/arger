@@ -1,11 +1,9 @@
 name: docs
 
 on:
-  push:
-    branches:
-      - main
-      - master
   workflow_dispatch:
+  release:
+    types: [created, edited]
 
 permissions:
   contents: read
@@ -37,4 +35,4 @@ jobs:
           path: site
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
