@@ -22,6 +22,10 @@ def args(cmd: str):
     return args
 
 
+@pytest.mark.skipif(
+    sys.version_info < (3, 13),
+    reason="help message format changed in python 3.13",
+)
 def test_example(capsys, pyfile, arger, args, expected: str):
     if "error" in expected or expected.startswith("usage:"):
         with pytest.raises(SystemExit):
