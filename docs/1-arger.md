@@ -17,37 +17,7 @@ The function will be dispatched with values converted to the respective types.
 For example:
 
 ```py
-import arger
-from typing import *
-from enum import Enum
-
-# Type -> resulting `arger.add_argument` method call
-
-def _(
-a_st:str,              # -> add_argument(dest='a', type=str)
-a_in:int,              # -> add_argument(dest='a', type=int)
-a_tp:Tuple[int, ...],  # -> add_argument(dest='a', type=int, nargs='+') : one or more
-a_tp_int:Tuple[int, int],  # -> add_argument(dest='a', type=int, nargs='2') : consumes 2 positional
-a_ls:List[int],        # -> add_argument(dest="a", type=int, nargs="*") : zero or more
-a_opt:Optional[int],    # -> add_argument(dest="a", type=int, nargs="?") : zero or one positional
-a_en:Enum(
-    'AnySubClsOfEnum',
-    'ONE TWO'
-    ),               # -> add_argument(dest="a", choices=list(cls), type=lambda x: cls[x]) : accepts str from cli and returns as an Enum.
-a_lt: Literal[
-    'one', 'two'
-],                  # -> add_argment(dest="a_lt", choices=["one", "two"], type=str) : accepts str from cli and returns the same
-a_lt_in: Literal[
-    1, 2
-],                  # -> add_argment(dest="a_lt", choices=[1, 2], type=int) : accepts str from cli and returns int
-a_cs2:Annotated[
-    int, # -> Argument's type argument. also satisfies type checkers
-    arger.Argument(
-        metavar="INT",
-        action=ActionSubCls
-)],                 # -> add_argument(dest="a", metavar="INT", type=int, action=ActionSubCls) : all the arguments to the `Argument` will get delegated to add_argument
-kwarg:int = 0,      # -> add_argument("--kwarg", "-k", dest="kwarg", type=int, default=0)
-):...
+--8<-- "examples/comprehensive.py"
 ```
 
 ### 4. Docstring (ReST or GoogleDoc)

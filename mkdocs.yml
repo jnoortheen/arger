@@ -11,11 +11,14 @@ theme: material
 
 markdown_extensions:
   - admonition
-  - codehilite:
-      linenums: true
   - pymdownx.snippets:
       base_path: docs
   - pymdownx.emoji
+  - pymdownx.highlight:
+      anchor_linenums: true
+      linenums: true
+  - pymdownx.superfences
+  - docs.custom_plugin:CommandRunnerExtension
 
 plugins:
   - search
@@ -24,7 +27,7 @@ plugins:
       default_handler: python
       handlers:
         python:
-          rendering:
+          options:
             show_source: true
             heading_level: 4
             show_root_toc_entry: false

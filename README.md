@@ -1,6 +1,6 @@
 # Overview
 
-A wrapper around stdlib [argparse](https://docs.python.org/3/library/argparse.html) to help build CLIs from functions using type-hints :snake:.
+A lightweight wrapper around [argparse](https://docs.python.org/3/library/argparse.html) to help build CLIs from functions.
 
 [![PyPi Version](https://img.shields.io/pypi/v/arger.svg?style=flat)](https://pypi.python.org/pypi/arger)
 [![Python Version](https://img.shields.io/pypi/pyversions/arger.svg)](https://pypi.org/project/arger/)
