@@ -13,6 +13,8 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     strategy:
       max-parallel: 4
       fail-fast: false
@@ -40,11 +42,13 @@ jobs:
         if: matrix.python-version == 3.12
         run: echo "data=$(python tasks.py show_coverage)" >> $GITHUB_OUTPUT
       - name: coverage badge
-        uses: RubbaBoy/BYOB@v1.3.0
         if: matrix.python-version == 3.12
-        with:
-          NAME: coverage
-          LABEL: "Coverage"
-          STATUS: ${{ steps.Coverage.outputs.data }}
-          COLOR: 42a7f5
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git clone --depth=1 --branch=shields https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git shields-branch
+          cd shields-branch
+          echo '{"coverage":{"label":"Coverage","status":"${{ steps.Coverage.outputs.data }}","color":"42a7f5"}}' > shields.json
+          git add shields.json
+          git commit -m "Update coverage badge [skip ci]" || exit 0
+          git push
