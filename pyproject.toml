@@ -7,7 +7,6 @@ test = [
     "pytest-random",
     "freezegun",
     "pytest-lazy-fixtures",
-    "nbformat",
     "ruff",
     "pyrefly",
 ]
@@ -16,7 +15,6 @@ doc = [
     "mkdocs-material",
     "mkdocstrings-python",
     "pytkdocs",
-    "mknotebooks",
     "pymdown-extensions",
     "pygments",
 ]

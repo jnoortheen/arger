@@ -14,15 +14,11 @@ markdown_extensions:
   - pymdownx.snippets:
       base_path: docs
   - pymdownx.emoji
-  - pymdownx.highlight:
-      anchor_linenums: true
-      linenums: true
+  - pymdownx.highlight
   - pymdownx.superfences
-  - docs.custom_plugin:CommandRunnerExtension
 
 plugins:
   - search
-  - mknotebooks
   - mkdocstrings:
       default_handler: python
       handlers:

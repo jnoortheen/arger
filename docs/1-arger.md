@@ -24,8 +24,8 @@ For example:
 - The top part of the docstring becomes the usage message for the command.
 - Parameter docstrings become help message for the arguments/options of the command.
 - Rest of the docstrings passed as `epilog` to the parser.
-- ReST/GoogleDoc-style/NumpyDoc-style are supported
-- Options-strings can further be defined in the docstring.
+- [ReST](https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html)/[GoogleDoc](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html)/[NumpyDoc](https://www.sphinx-doc.org/en/master/usage/extensions/example_numpy.html) are supported
+- Custom flags can be defined in the docstring itself.
 
 ```pydocstring
 Args:

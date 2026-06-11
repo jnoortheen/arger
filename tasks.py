@@ -74,5 +74,69 @@ def show_coverage():
     print(Precision(total).pc_covered_str)
 
 
+def _run_cmd(command):
+    import subprocess
+
+    run_command = command
+    if run_command.startswith("python "):
+        run_command = run_command.replace("python ", f'"{sys.executable}" ', 1)
+    elif run_command.startswith("python3 "):
+        run_command = run_command.replace("python3 ", f'"{sys.executable}" ', 1)
+    try:
+        result = subprocess.run(
+            run_command,
+            shell=True,
+            text=True,
+            capture_output=True,
+        )
+        return result.stdout + result.stderr
+    except Exception as e:
+        return str(e)
+
+
+def process_markdown_file(md_path):
+    content = md_path.read_text()
+    lines = content.splitlines()
+    new_lines = []
+
+    idx = 0
+    while idx < len(lines):
+        line = lines[idx]
+        if line.strip() == "```console":
+            idx += 1
+            if idx < len(lines):
+                cmd_line = lines[idx]
+                command = cmd_line[2:].strip() if cmd_line.startswith("$ ") else cmd_line.strip()
+
+                idx += 1
+                while idx < len(lines) and lines[idx].strip() != "```":
+                    idx += 1
+
+                output = _run_cmd(command)
+
+                new_lines.append("```console")
+                new_lines.append(f"$ {command}")
+                new_lines.extend(output.splitlines())
+                new_lines.append("```")
+            else:
+                new_lines.append(line)
+        else:
+            new_lines.append(line)
+        idx += 1
+
+    md_path.write_text("\n".join(new_lines) + "\n")
+
+
+@arger.add_cmd
+def update_example_usage():
+    """Run the cmd inside docs/examples/*.md and update their output"""
+    from pathlib import Path
+
+    examples_dir = Path("docs/examples")
+    for md_path in examples_dir.glob("*.md"):
+        print(f"Processing {md_path.name}...")
+        process_markdown_file(md_path)
+
+
 if __name__ == "__main__":
     arger.run()
