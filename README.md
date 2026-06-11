@@ -21,7 +21,7 @@ $ pip install arger
 
 # :books: Usage
 
-* create a python file called test.py
+* Create a Python file called `test.py`:
 
 ``` py
 from arger import Arger
@@ -33,24 +33,24 @@ def main(param1: int, param2: str, kw1=None, kw2=False):
     Args:
         param1: The first parameter.
         param2: The second parameter.
-        kw1: this is optional parameter.
-        kw2: this is boolean. setting flag sets True.
+        kw1: This is an optional parameter.
+        kw2: This is a boolean. Setting the flag sets it to True.
     """
     print(locals())
 
 
 arger = Arger(
     main,
-    prog="pytest",  # for testing purpose. otherwise not required
+    prog="pytest",  # for testing purposes; otherwise, not required
 )
 
 if __name__ == "__main__":
     arger.run()
 ```
 
-* Here Arger is just a subclass of `ArgumentParser`. It will not conceal you from using other `argparse` libraries.
+* Here `Arger` is just a subclass of `ArgumentParser`. It does not prevent you from using standard `argparse` features.
 
-* run this normally with
+* Run this normally with:
 
 ```sh
 $ python test.py -h
@@ -64,8 +64,8 @@ positional arguments:
 
 optional arguments:
   -h, --help         show this help message and exit
-  -k KW1, --kw1 KW1  this is optional parameter. (default: None)
-  -w, --kw2          this is boolean. setting flag sets True. (default: False)
+  -k KW1, --kw1 KW1  This is an optional parameter. (default: None)
+  -w, --kw2          This is a boolean. Setting the flag sets it to True. (default: False)
 ```
 
 ``` sh
@@ -73,31 +73,31 @@ $ python test.py 100 param2
 {'param1': 100, 'param2': 'param2', 'kw1': None, 'kw2': False}
 ```
 
-* Checkout [examples](docs/examples) folder and documentation to see more of `arger` in action. It supports any level of sub-commands.
+* Check out the [examples](docs/examples) folder and documentation to see more of `arger` in action. It supports any level of sub-commands.
 
 # Features
 
-- Uses docstring to parse help comment for arguments. Supports
+- Uses the docstring to parse help descriptions for arguments. Supports:
     + [google](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html)
     + [numpy](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html#example-numpy)
     + [rst](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html)
-- Flags will be generated from parameter-name.
-  1.  e.g. `def main(param: ...)` -> `-p, --param`
-  2.  If needed you could declare it inside docstring like `:param arg1: -a --arg this is the document`.
-- one can use `Argument` class to pass any values to the
-  [parser.add_argument](https://docs.python.org/3/library/argparse.html#the-add-argument-method) function
+- Flags will be generated from parameter names.
+  1.  E.g., `def main(param: ...)` -> `-p, --param`
+  2.  If needed, you can declare them inside the docstring, like `:param arg1: -a --arg this is the document`.
+- One can use the `Argument` class to pass any values to the
+  [parser.add_argument](https://docs.python.org/3/library/argparse.html#the-add-argument-method) function.
 - The decorated functions can be composed to form nested sub-commands of any level.
-- Most of the Standard types [supported](./tests/test_args_opts/test_arguments.py).
-  Please see [examples](./docs/examples/4-supported-types/src.py) for more supported types with examples.
-- No external dependency other than stdlib.
+- Most standard types are [supported](./tests/test_args_opts/test_arguments.py).
+  Please see the [examples](./docs/examples/4-supported-types/src.py) for more supported types with code examples.
+- No external dependency other than the standard library.
 
 > **_NOTE_**
->  - `*args` supported but no `**kwargs` support yet.
->  - all optional arguments that start with underscore is not passed to `Parser`.
->    They are considered private to the function implementation.
->    Some parameter names with special meaning
->      - `_namespace_` -> to get the output from the `ArgumentParser.parse_args()`
->      - `_arger_` -> to get the parser instance
+>  - `*args` is supported, but there is no `**kwargs` support yet.
+>  - Any optional argument starting with an underscore is not passed to the parser.
+>    They are considered private to the function's implementation.
+>    Some parameter names have special meaning:
+>      - `_namespace_` -> gets the output from `ArgumentParser.parse_args()`
+>      - `_arger_` -> gets the parser instance
 
 # Argparser enhancements
 

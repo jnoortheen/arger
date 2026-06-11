@@ -11,7 +11,7 @@ class ParamDocTp(tp.NamedTuple):
 
     @classmethod
     def init(cls, type_hint: tp.Any, doc: str, flag_symbol="-"):
-        """Parse flags defined in param's doc
+        """Parse flags defined in a parameter's documentation.
 
         Examples:
             ''':param arg1: -a --arg this is the document'''
@@ -35,7 +35,7 @@ class DocstringTp(tp.NamedTuple):
 
 
 class DocstringParser:
-    """Abstract class"""
+    """Abstract class for docstring parsing."""
 
     pattern: tp.Pattern
     section_ptrn: tp.Pattern
@@ -64,7 +64,8 @@ class DocstringParser:
 
 
 class NumpyDocParser(DocstringParser):
-    """Implement Numpy Docstring format parser
+    """Implements the NumPy docstring format parser.
+
     `Example <https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html#example-numpy>`_
     """
 
@@ -100,7 +101,8 @@ class NumpyDocParser(DocstringParser):
 
 
 class GoogleDocParser(NumpyDocParser):
-    """Implement Google Docstring format parser
+    """Implements the Google docstring format parser.
+
     `Example <https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html>`_
     """
 
@@ -113,7 +115,8 @@ class GoogleDocParser(NumpyDocParser):
 
 
 class RstDocParser(DocstringParser):
-    """Sphinx rst-style docstrings parser
+    """Sphinx reStructuredText (rst) style docstring parser.
+
     `Example <https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html>`_
     """
 

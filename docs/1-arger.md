@@ -1,18 +1,18 @@
 # Arger
 
 ## Function
-Function's signature is used to create generate parser arguments.
+A function's signature is used to generate parser arguments.
 
 ### 1. Positional Arguments:
-Positional parameters become mandatory.
+Positional parameters become mandatory arguments.
 
 ### 2. Optional Arguments:
-All keyword arguments (ones with default value) in the function become flags/optionals.
+All keyword arguments (those with a default value) in the function become flags/optionals.
 
-### 3. type annotations:
-used to determine the type and action of the arguments.
-The function will be dispatched with values converted to the respective types.
-**Note**: Use `arger.Argument` class as annotation in case you want to pass values to `parser.add_argument`.
+### 3. Type Annotations:
+They are used to determine the type and action of the arguments.
+The function will be dispatched with values converted to their respective types.
+**Note**: Use the `arger.Argument` class as an annotation if you want to pass values to `parser.add_argument`.
 
 For example:
 
@@ -22,9 +22,9 @@ For example:
 
 ### 4. Docstring (ReST or GoogleDoc)
 - The top part of the docstring becomes the usage message for the command.
-- Parameter docstrings become help message for the arguments/options of the command.
-- Rest of the docstrings passed as `epilog` to the parser.
-- [ReST](https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html)/[GoogleDoc](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html)/[NumpyDoc](https://www.sphinx-doc.org/en/master/usage/extensions/example_numpy.html) are supported
+- Parameter docstrings become help messages for the arguments/options of the command.
+- The rest of the docstring is passed as `epilog` to the parser.
+- [ReST](https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html)/[GoogleDoc](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html)/[NumpyDoc](https://www.sphinx-doc.org/en/master/usage/extensions/example_numpy.html) formats are supported.
 - Custom flags can be defined in the docstring itself.
 
 ```pydocstring

@@ -48,7 +48,7 @@ license = { text = "MIT" }
 requires-python = ">=3.11"
 name = "arger"
 dynamic = ["version"]
-description = "Create argparser automatically from function signatures"
+description = "Create ArgumentParser automatically from function signatures"
 readme = "README.md"
 keywords = []
 classifiers = [

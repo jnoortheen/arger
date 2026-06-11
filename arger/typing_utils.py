@@ -6,19 +6,19 @@ from typing import Any, TypeVar, Union, get_args
 
 
 def get_origin(tp):
-    """Return the python class for the GenericAlias. Dict->dict, List->list..."""
+    """Return the Python class for the GenericAlias. e.g., Dict -> dict, List -> list..."""
     return typing.get_origin(tp) or tp
 
 
 def unpack_type(tp, default=str) -> Any:
-    """Unpack subscripted type for use with argparser.
+    """Unpack subscripted type for use with argparse.
 
     Args:
         tp:
         default:
 
     Returns:
-        type inside the container type
+        The type inside the container type.
     """
     args = get_args(tp)
     if args and str(args[0]) not in {"~T", "typing.Any"}:
@@ -36,7 +36,7 @@ def is_enum(tp):
 
 
 def is_literal(tp):
-    """since Literal could be imported from either typing/typing_extensions we use the name of cls to check"""
+    """Since Literal could be imported from either typing or typing_extensions, we check the origin class."""
     return get_origin(tp) is typing.Literal
 
 
@@ -66,7 +66,7 @@ def is_optional(tp) -> bool:
 
 def cast(tp, val) -> Any:
     # https://github.com/contains-io/typingplus/blob/master/typingplus.py
-    # for advanced casting one should use pydantic
+    # For advanced casting, one should use pydantic.
     origin = get_origin(tp)
     if is_enum(origin):
         if isinstance(val, origin):

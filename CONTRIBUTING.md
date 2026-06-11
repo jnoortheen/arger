@@ -42,4 +42,4 @@ $ pdm run serve-docs
 
 # Release
 
-Create a new release from GitHub UI; this will upload the package to PyPI and deploy the documentation.
+Create a new release from the GitHub UI; this will upload the package to PyPI and deploy the documentation.

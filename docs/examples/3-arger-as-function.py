@@ -7,8 +7,8 @@ ctx = {}
 def main(verbose=False, log=False, log_file: str | None = None):
     """App Description goes here.
 
-    :param verbose: verbose output
-    :param log_file: name of the log file to write output
+    :param verbose: Verbose output
+    :param log_file: Name of the log file to write output to
     """
     ctx.update(**locals())
 
@@ -19,7 +19,7 @@ container = []
 
 @arger.add_cmd
 def create(name: str):
-    """Create new test.
+    """Create a new test.
 
     :param name: Name of the test
     """

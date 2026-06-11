@@ -2,32 +2,32 @@
 
 ## [argh](https://argh.readthedocs.io/en/latest/tutorial.html)
 
- - has similar goals as to ease up using argparser.
- - doesn't support type hints.
- - No recent releases.
+ - Has a similar goal of easing the use of `argparse`.
+ - Does not support type hints.
+ - Has had no recent releases.
 
 ## [typer](https://github.com/tiangolo/typer)
 
- - if you are using `click` , I highly recommend you to check this library.
- - it is neat and many features are drawn from it.
- - doesn't support loading help text for arguments from docstrings.
+ - If you are using `click`, it is highly recommended to check out this library.
+ - It is neat, and many features of `arger` are inspired by it.
+ - Does not support loading help text for arguments from docstrings.
 
 ## [invoke](http://www.pyinvoke.org/)
 
- - doesn't support type hints.
+ - Does not support type hints.
 
 ## [cliche](https://github.com/kootenpv/cliche)
 
- - has similar goals.
- - doesn't cover much use cases as `arger` .
+ - Has similar goals.
+ - Does not cover as many use cases as `arger`.
 
 ## [cliar](https://moigagoo.github.io/cliar/)
 
- - no docstring support for help argument.
+ - Has no docstring support for argument help messages.
 
 # Recommended Alternatives
 
-Projects that I highly recommend you to checkout.
+Projects that are highly recommended to check out:
 
 1.  [clize](https://github.com/epsy/clize)
 2.  [nuclear](https://github.com/igrek51/nuclear)

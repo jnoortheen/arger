@@ -9,7 +9,7 @@ class Choice(Enum):
     two = "2. Two"
 
     def __str__(self):
-        """by implementing this function one can control the enum-display in help string"""
+        """By implementing this function, one can control the enum display in the help string."""
         return self.name
 
 
@@ -22,8 +22,8 @@ container = []
 def cmd1(
     an_int: int,
     an_str: str,
-    a_tuple: tuple[str, str, str],  # nargs: 3 -> consume 3
-    a_var_tuple: tuple[str, ...],  # nargs: +  -> consume one or more
+    a_tuple: tuple[str, str, str],  # nargs: 3 -> consumes 3
+    a_var_tuple: tuple[str, ...],  # nargs: + -> consumes one or more
     an_enum=Choice.one,
     optional_str="",
     optional_int=0,
@@ -35,17 +35,17 @@ def cmd1(
 
 @arger.add_cmd
 def cmd2(
-    a_list: list[int],  # nargs='*': -> capture many args
+    a_list: list[int],  # nargs='*': -> captures many args
     m_opt=False,
     y_opt=False,
     my=False,
 ):
     """A script with three optional values.
 
-    :param a_list: catch all positional arguments
-    :param m_opt: the m_opt helptext
-    :param y_opt: the y_opt helptext
-    :param my: the my helptext
+    :param a_list: Catch all positional arguments
+    :param m_opt: The m_opt helptext
+    :param y_opt: The y_opt helptext
+    :param my: The my helptext
     """
     _reprint(**locals())
 

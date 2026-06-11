@@ -17,7 +17,7 @@ _EMPTY = inspect.Parameter.empty
 
 
 class FlagsGenerator:
-    """To identify short options that haven't been used yet based on the parameter name."""
+    """Identifies short options that haven't been used yet, based on the parameter name."""
 
     def __init__(self, prefix: str):
         self.prefix = prefix
@@ -51,50 +51,52 @@ class Argument:
         **kwargs: tp.Any,
     ):
         """Represent positional arguments to the command that are required by default.
+
         Analogous to
         [ArgumentParser.add_argument](https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_argument)
 
         Args:
             type: The type to which the command-line argument should be converted.
 
-                Got from annotation.
-                Use Argument class itself in case you want to pass variables to `Arger.add_argument`.
+                Obtained from the type annotation.
+                Use the `Argument` class itself if you want to pass variables to `Arger.add_argument`.
 
-                Ex: `typing.cast(int, Argument(type=int))`. If not passed then it is returned as str.
+                Example: `typing.cast(int, Argument(type=int))`. If not passed, it is returned as a string.
 
             metavar: A name for the argument in usage messages.
 
             nargs: The number of command-line arguments that should be consumed.
-                to be generated from the type-hint.
+                To be generated from the type hint.
 
-                Ex: types and how they are converted to nargs
+                Example: Types and how they are converted to `nargs`:
 
                 * `Tuple[str, ...] -> nargs='+'`
                 * `Tuple[str, str] -> nargs=2`
                 * `List[str]|tuple|list -> nargs=*`
 
-                Note: even though Tuple[str,...] doesn't mean one or more, it is just to make `nargs=+` easier to add.
+                Note: Even though `Tuple[str, ...]` does not strictly mean "one or more",
+                it is supported to make `nargs='+'` easier to add.
 
-            const: covered by type-hint and default value given
-            choices: Use `enum.Enum` as the typehint to generate choices automatically.
+            const: Covered by the type hint and the given default value.
+            choices: Use `enum.Enum` as the type hint to generate choices automatically.
             action: The basic type of action to be taken
                 when this argument is encountered at the command line.
 
-            flags: It will be generated from the argument name.
-                In case one wants to override the generated flags, could be done by passing them.
+            flags: These are generated from the argument name.
+                If you want to override the generated flags, you can pass them explicitly.
 
             default (tp.Any): The value produced if the argument is absent from the command line.
 
                 * The default value assigned to a keyword argument helps determine
-                    the type of option and action if it is not type annotated.
+                    the type of option and action if it is not type-annotated.
                 * The default value is assigned directly to the parser's default for that option.
-                * In addition, it determines the ArgumentParser action
-                    * a default value of False implies store_true, while True implies store_false.
-                    * If the default value is a list, the action is append
+                * In addition, it determines the `ArgumentParser` action:
+                    * A default value of `False` implies `store_true`, while `True` implies `store_false`.
+                    * If the default value is a list, the action is `append`
                     (multiple instances of that option are permitted).
-                    * Strings or None imply a store action.
+                    * Strings or `None` imply a `store` action.
 
-            kwargs: it is delegated to `ArgumentParser.add_argument` method.
+            kwargs: Delegated to the `ArgumentParser.add_argument` method.
         """
         for var_name in (
             "type",
@@ -112,7 +114,7 @@ class Argument:
         self.kwargs = kwargs
 
     def __repr__(self):
-        """helps during tests"""
+        """Helps during tests."""
         return f"<{self.__class__.__name__}: {self.flags}, {self.kwargs!r}>"
 
     @classmethod
@@ -198,7 +200,7 @@ R = tp.TypeVar("R")
 
 
 class Arger(ap.ArgumentParser):
-    """Contains one (parser) or more commands (subparsers)."""
+    """Contains one parser or multiple commands (subparsers)."""
 
     def __init__(
         self,
@@ -212,24 +214,23 @@ class Arger(ap.ArgumentParser):
         **kwargs,
     ):
         """
-
         Args:
-            func: A callable to parse root parser's arguments.
-            version: adds --version flag.
-            sub_parser_title: sub-parser title to pass.
-            exceptions_to_catch: exceptions to catch and print its message.
-                Will exit with 1 and will hide traceback.
+            func: A callable to parse the root parser's arguments.
+            version: Adds the `--version` flag.
+            sub_parser_title: The sub-parser title to pass.
+            exceptions_to_catch: Exceptions to catch and print their messages.
+                This will exit with code 1 and hide the traceback.
 
-            _doc_str: internally passed from arger.add_cmd
-            _level: internal
+            _doc_str: Internally passed from `arger.add_cmd`.
+            _level: Internal.
 
-            **kwargs: all the arguments that are supported by
+            **kwargs: All the arguments that are supported by
                     [ArgumentParser](https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser)
 
         Examples:
-            adding version flag
+            Adding a version flag:
                 version = '%(prog)s 2.0'
-                Arger() equals to Arger().add_argument('--version', action='version', version=version)
+                `Arger()` is equivalent to `Arger().add_argument('--version', action='version', version=version)`
         """
         kwargs.setdefault("formatter_class", formatter_class)
 
@@ -271,12 +272,12 @@ class Arger(ap.ArgumentParser):
             arg.add_to(self)
 
     def run(self, *args: str, capture_sys=True, **kwargs) -> ap.Namespace:
-        """Parse cli and dispatch functions.
+        """Parse CLI and dispatch functions.
 
         Args:
-            capture_sys: whether to capture `sys.argv` if `args` not passed. Useful during testing.
-            *args: The arguments will be passed onto as `self.parse_args(args)`.
-            **kwargs: will get passed to `parse_args` method
+            capture_sys: Whether to capture `sys.argv` if `args` is not passed. Useful during testing.
+            *args: The arguments passed to `self.parse_args(args)`.
+            **kwargs: Passed to the `parse_args` method.
         """
         if not args and capture_sys:
             args = tuple(sys.argv[1:])
@@ -300,14 +301,15 @@ class Arger(ap.ArgumentParser):
 
     def add_cmd(self, func: tp.Callable | None = None, **kwargs) -> tp.Any:
         """Create a sub-command from the function.
-        All its parameters will be converted to CLI args wrt their types.
+
+        All of its parameters will be converted to CLI arguments based on their types.
 
         Args:
-            func: function to create sub-command from.
-            **kwargs: will get passed to `subparser.add_parser` method
+            func: The function to create a sub-command from.
+            **kwargs: Passed to the `subparser.add_parser` method.
 
-        Returns
-            Arger: A new parser from the function is returned.
+        Returns:
+            Arger: A new parser created from the function.
         """
         if not self.sub_parser:
             self.sub_parser = self.add_subparsers(title=self.sub_parser_title)
@@ -329,14 +331,14 @@ class Arger(ap.ArgumentParser):
         return _wrapper(func)
 
     def add_commands(self, *func: tp.Callable) -> tuple["Arger", ...]:
-        """Add multiple sub-commands to the main command at once"""
+        """Add multiple sub-commands to the main command at once."""
         return tuple(self.add_cmd(fn) for fn in func)
 
     def _dispatch(self, **ns: tp.Any) -> tp.Any:
-        """Calls the given function with args parsed from CLI
+        """Calls the given function with arguments parsed from the CLI.
 
         Args:
-            ns: namespace after parsing
+            ns: The namespace dictionary after parsing.
         """
 
         kwargs = {}
@@ -409,7 +411,7 @@ def get_type_kwargs(typ, **kwargs):
 
 
 class TypeAction(ap.Action):
-    """After the parse update the type of value"""
+    """After parsing, update the type of the value."""
 
     def __init__(self, *args, **kwargs):
         typ = kwargs.pop("type", _EMPTY)

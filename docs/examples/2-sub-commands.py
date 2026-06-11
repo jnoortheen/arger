@@ -8,7 +8,7 @@ container = []
 
 @arger.add_cmd
 def create(name: str):
-    """Create new test.
+    """Create a new test.
 
     :param name: Name of the test
     """
@@ -18,9 +18,9 @@ def create(name: str):
 
 @arger.add_cmd
 def remove(*name: str):
-    """Remove a test with variadic argument.
+    """Remove a test with variadic arguments.
 
-    :param name: tests to remove
+    :param name: Tests to remove
     """
     if name in container:
         container.remove(remove)
