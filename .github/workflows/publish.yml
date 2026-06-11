@@ -2,7 +2,7 @@ name: publish
 
 on:
   release:
-    types: [created]
+    types: [created, edited]
   workflow_dispatch:
 jobs:
   publish:
@@ -11,11 +11,6 @@ jobs:
     permissions:
       id-token: write
       attestations: write
-      pages: write
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout code
@@ -31,18 +26,8 @@ jobs:
       - name: Build
         run: |
           pip install build
-          pip install '.[doc]'
           python -m build .
       - name: Publish package
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           skip-existing: true
-      - name: Build docs
-        run: mkdocs build
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
