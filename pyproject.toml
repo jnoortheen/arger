@@ -9,7 +9,7 @@ test = [
     "pytest-lazy-fixtures",
     "nbformat",
     "ruff",
-    "mypy",
+    "pyrefly",
 ]
 doc = [
     "mkdocs",
@@ -44,17 +44,25 @@ build-backend = "pdm.pep517.api"
 [project]
 # PEP 621 project metadata
 # See https://www.python.org/dev/peps/pep-0621/
-authors = [
-    { name = "Noortheen Raja", email = "jnoortheen@gmail.com" },
-]
+authors = [{ name = "Noortheen Raja", email = "jnoortheen@gmail.com" }]
 license = { text = "MIT" }
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 name = "arger"
 dynamic = ["version"]
 description = "Create argparser automatically from function signatures"
 readme = "README.md"
 keywords = []
-classifiers = ["Development Status :: 1 - Planning", "Natural Language :: English", "Operating System :: OS Independent", "Environment :: Console", "Intended Audience :: Developers", "License :: Freely Distributable", "Programming Language :: Python", "Programming Language :: Python :: 3 :: Only", "Programming Language :: Python :: 3"]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: Freely Distributable",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3",
+]
 
 [project.urls]
 homepage = "https://pypi.org/project/arger"
@@ -69,12 +77,12 @@ ignore = [
     "E402", # top level imports
 ]
 select = [
-    "F", # pyflakes
-    "E", # pycodestyle
+    "F",   # pyflakes
+    "E",   # pycodestyle
     "C90", # mccabe
-    "I", # isort
-    "UP", # pyupgrade
-    "B", # flake8-bugbear,
+    "I",   # isort
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear,
     "SIM", # simplify
     # "PL", # pylint
     "RUF", # ruff
@@ -85,18 +93,18 @@ select = [
     "E501", # line too long
 ]
 "tests/*" = [
-    "PLR2004",  # magic numbers in tests
-    "S101",     # assert allowed in tests
+    "PLR2004", # magic numbers in tests
+    "S101",    # assert allowed in tests
     "UP006",
     "UP035",
     "UP036",
 ]
 "tasks.py" = [
-    "S603",     # subprocess call - security implications
-    "S607",     # partial path subprocess call
+    "S603", # subprocess call - security implications
+    "S607", # partial path subprocess call
 ]
 "arger/main.py" = [
-    "PLR0913",  # too many arguments
+    "PLR0913", # too many arguments
 ]
 
 [tool.poe.tasks]
@@ -106,6 +114,10 @@ clean-test = "rm -rf .cache .pytest .coverage htmlcov"
 clean-install = "find $(PACKAGES) -name '__pycache__' -delete && rm -rf *.egg-info"
 clean = ["clean-build", "clean-docs", "clean-test", "clean-install"]
 serve-docs = "mkdocs serve"
-format = "ruff check --fix ."
-typecheck = "mypy arger tests"
-lint = ["format", "typecheck"]
+check = "ruff check --fix ."
+format = "ruff format ."
+typecheck = "pyrefly check"
+lint = ["check", "format", "typecheck"]
+
+[tool.pyrefly]
+project-includes = ["arger/**/*.py*"]

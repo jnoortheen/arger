@@ -193,6 +193,10 @@ class Argument:
         return parser.add_argument(*self.flags, **self.kwargs)
 
 
+P = tp.ParamSpec("P")
+R = tp.TypeVar("R")
+
+
 class Arger(ap.ArgumentParser):
     """Contains one (parser) or more commands (subparsers)."""
 
@@ -289,25 +293,25 @@ class Arger(ap.ArgumentParser):
         return namespace
 
     @classmethod
-    def init(cls, **kwargs) -> tp.Callable[[tp.Callable], "Arger"]:
+    def init(cls, **kwargs) -> tp.Callable[[tp.Callable[P, R]], "Arger"]:
         """Create parser from function as a decorator.
 
         Args:
             **kwargs: will be passed to arger.Arger initialisation.
         """
 
-        def _wrapper(fn: tp.Callable):
+        def _wrapper(fn: tp.Callable[P, R]):
             return cls(func=fn, **kwargs)
 
         return _wrapper
 
     @tp.overload
-    def add_cmd(self, func: tp.Callable) -> "Arger": ...
+    def add_cmd(self, func: tp.Callable[P, R]) -> "Arger": ...
 
     @tp.overload
-    def add_cmd(self, func: None, **kwargs) -> tp.Callable[[tp.Callable], "Arger"]: ...
+    def add_cmd(self, func: None = None, **kwargs) -> tp.Callable[[tp.Callable[P, R]], "Arger"]: ...
 
-    def add_cmd(self, func=None, **kwargs):
+    def add_cmd(self, func: tp.Callable | None = None, **kwargs) -> tp.Any:
         """Create a sub-command from the function.
         All its parameters will be converted to CLI args wrt their types.
 
@@ -321,7 +325,7 @@ class Arger(ap.ArgumentParser):
         if not self.sub_parser:
             self.sub_parser = self.add_subparsers(title=self.sub_parser_title)
 
-        def _wrapper(fn: tp.Callable) -> "Arger":
+        def _wrapper(fn: tp.Callable[P, R]) -> "Arger":
             docstr = DocstringParser.parse(fn)
             arger = self.sub_parser.add_parser(  # type: ignore
                 name=kwargs.pop("name", fn.__name__),
