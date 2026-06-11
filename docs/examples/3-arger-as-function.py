@@ -4,8 +4,7 @@ from tests.utils import _reprint
 ctx = {}
 
 
-@Arger.init(prog="pytest")  # any argument to the parser
-def arger(verbose=False, log=False, log_file: str | None = None):
+def main(verbose=False, log=False, log_file: str | None = None):
     """App Description goes here.
 
     :param verbose: verbose output
@@ -14,6 +13,7 @@ def arger(verbose=False, log=False, log_file: str | None = None):
     ctx.update(**locals())
 
 
+arger = Arger(func=main, prog="pytest")
 container = []
 
 

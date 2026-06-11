@@ -7,24 +7,7 @@ from typing import Any, TypeVar, Union, get_args
 
 def get_origin(tp):
     """Return the python class for the GenericAlias. Dict->dict, List->list..."""
-    if getattr(tp, "__origin__", None) is not None:
-        return tp.__origin__
-    return tp
-
-
-def match_types(tp, exp_typ) -> bool:
-    """Match the given type to list of other types.
-
-    :param tp:
-    :param matches:
-    """
-    origin = get_origin(tp)
-    if isinstance(exp_typ, str):  # instead of imported class use the class names
-        if exp_typ in str(origin):
-            return True
-    elif get_origin(exp_typ) is origin:
-        return True
-    return False
+    return typing.get_origin(tp) or tp
 
 
 def unpack_type(tp, default=str) -> Any:
@@ -54,7 +37,7 @@ def is_enum(tp):
 
 def is_literal(tp):
     """since Literal could be imported from either typing/typing_extensions we use the name of cls to check"""
-    return match_types(tp, ".Literal")
+    return get_origin(tp) is typing.Literal
 
 
 def has_annotated(typ) -> bool:
@@ -68,12 +51,13 @@ def get_literal_params(typ):
 
 
 def is_tuple(tp) -> bool:
-    return match_types(tp, tuple)
+    return get_origin(tp) is tuple
 
 
 def is_optional(tp) -> bool:
     """Check that tp = typing.Optional[typ1]"""
-    if match_types(tp, Union) or isinstance(tp, types.UnionType):
+    origin = get_origin(tp)
+    if origin in (Union, types.UnionType):
         args = get_args(tp)
         if len(args) == 2:
             return type(None) in args

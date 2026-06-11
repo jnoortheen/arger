@@ -292,19 +292,6 @@ class Arger(ap.ArgumentParser):
 
         return namespace
 
-    @classmethod
-    def init(cls, **kwargs) -> tp.Callable[[tp.Callable[P, R]], "Arger"]:
-        """Create parser from function as a decorator.
-
-        Args:
-            **kwargs: will be passed to arger.Arger initialisation.
-        """
-
-        def _wrapper(fn: tp.Callable[P, R]):
-            return cls(func=fn, **kwargs)
-
-        return _wrapper
-
     @tp.overload
     def add_cmd(self, func: tp.Callable[P, R]) -> "Arger": ...
 
